@@ -93,3 +93,9 @@ Then open the local URL shown in your terminal (usually `http://localhost:5173`)
 - All content comes from `src/data/mockData.js`.
 - Cards have built-in fallback placeholders (emoji/blocks) when an image is missing.
 - You can safely edit labels, card texts, categories, and CTA buttons directly in the data/page files.
+
+## Deploy on Render
+
+- **Service type:** Static Site
+- **Build command:** `npm install && npm run build`
+- **Publish directory:** `dist`

@@ -1,3 +1,8 @@
+import discoverTrendingGame from './images/discover/discover-trending-game.png';
+import discoverWeeklyTournament from './images/discover/discover-weekly-tournament.png';
+import discoverShopPromo from './images/discover/discover-shop-promo.png';
+import discoverDailyChallenge from './images/discover/discover-daily-challenge.png';
+
 // Central place for future local image imports.
 // 1) Drop images inside src/assets/images/<section>/
 // 2) Import them here
@@ -8,13 +13,13 @@
 export const imagePlaceholders = {
   discover: {
     // discover-trending-game.png
-    trending: '',
+    trending: discoverTrendingGame,
     // discover-weekly-tournament.png
-    weekly: '',
+    weekly: discoverWeeklyTournament,
     // discover-shop-promo.png
-    promo: '',
+    promo: discoverShopPromo,
     // discover-daily-challenge.png
-    challenge: '',
+    challenge: discoverDailyChallenge,
   },
   play: {
     // play-game-puzzle.png
