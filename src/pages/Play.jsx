@@ -1,34 +1,47 @@
-import MetricCard from '../components/MetricCard';
-import { freeGames } from '../data/mockData';
+import SectionHeader from '../components/SectionHeader';
+import { gamesByCategory, mostPlayedGames, playCategories, recommendedGames } from '../data/mockData';
 
-const metrics = ['Traffic', 'DAU', 'Ads revenue'];
-
-export default function Play() {
+function GameRow({ title, games }) {
   return (
-    <section>
-      <h2 className="text-xl font-bold text-orangeBrand">Play</h2>
-      <p className="mt-2 text-sm text-zinc-300">Discover free games and play instantly</p>
-
-      <div className="mt-5 space-y-3">
-        {freeGames.map((game) => (
-          <article key={game.name} className="card-base">
-            <h3 className="text-base font-semibold">{game.name}</h3>
-            <p className="mt-1 text-xs text-zinc-400">Category: {game.category}</p>
-            <button
-              type="button"
-              className="mt-3 rounded-lg bg-orangeBrand px-3 py-2 text-sm font-medium text-black"
-            >
+    <div>
+      <SectionHeader title={title} />
+      <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+        {games.map((game) => (
+          <article key={game.id} className="card-base w-40 flex-shrink-0 p-3">
+            <div className="mb-2 text-3xl">{game.image}</div>
+            <h3 className="text-sm font-semibold">{game.title}</h3>
+            <button type="button" className="mt-3 w-full rounded-md bg-orangeBrand px-2 py-2 text-xs font-semibold text-black">
               Play now
             </button>
           </article>
         ))}
       </div>
+    </div>
+  );
+}
 
-      <div className="mt-6 grid grid-cols-3 gap-2">
-        {metrics.map((metric) => (
-          <MetricCard key={metric} label={metric} />
+export default function Play() {
+  return (
+    <section className="space-y-6">
+      <header>
+        <h1 className="text-2xl font-bold text-orangeBrand">Play</h1>
+        <p className="mt-2 text-sm text-zinc-300">Discover games like a streaming catalog</p>
+      </header>
+
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+        {playCategories.map((category) => (
+          <span key={category} className="rounded-full bg-zinc-900 px-4 py-2 text-xs text-zinc-200">
+            {category}
+          </span>
         ))}
       </div>
+
+      {playCategories.map((category) => (
+        <GameRow key={category} title={category} games={gamesByCategory[category]} />
+      ))}
+
+      <GameRow title="Recommended" games={recommendedGames} />
+      <GameRow title="Most played" games={mostPlayedGames} />
     </section>
   );
 }

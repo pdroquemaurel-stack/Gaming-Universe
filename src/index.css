@@ -15,7 +15,15 @@ body {
   color: #fff;
 }
 
-/* Utility class for consistent mobile card style */
 .card-base {
-  @apply rounded-xl border border-zinc-800 bg-zinc-900/70 p-4 shadow-sm;
+  @apply rounded-2xl border border-zinc-800 bg-zinc-900/75 p-4 shadow-sm;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
