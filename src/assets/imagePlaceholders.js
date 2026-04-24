@@ -1,7 +1,7 @@
-import discoverTrendingGame from './images/discover/discover-trending-game.svg';
-import discoverWeeklyTournament from './images/discover/discover-weekly-tournament.svg';
-import discoverShopPromo from './images/discover/discover-shop-promo.svg';
-import discoverDailyChallenge from './images/discover/discover-daily-challenge.svg';
+import discoverTrendingGame from './images/discover/discover-trending-game.png';
+import discoverWeeklyTournament from './images/discover/discover-weekly-tournament.png';
+import discoverShopPromo from './images/discover/discover-shop-promo.png';
+import discoverDailyChallenge from './images/discover/discover-daily-challenge.png';
 
 import playGamePuzzle from './images/play/play-game-puzzle.svg';
 import playGameAction from './images/play/play-game-action.svg';
