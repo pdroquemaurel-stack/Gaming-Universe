@@ -3,10 +3,10 @@ import discoverWeeklyTournament from './images/discover/discover-weekly-tourname
 import discoverShopPromo from './images/discover/discover-shop-promo.png';
 import discoverDailyChallenge from './images/discover/discover-daily-challenge.png';
 
-import playGamePuzzle from './images/play/play-game-puzzle.svg';
+import playGamePuzzle from './images/play/play-game-puzzle.png';
 import playGameAction from './images/play/play-game-action.svg';
-import playGameSports from './images/play/play-game-sports.svg';
-import playGameArcade from './images/play/play-game-arcade.svg';
+import playGameSports from './images/play/play-game-sports.png';
+import playGameArcade from './images/play/play-game-arcade.png';
 import playGameStrategy from './images/play/play-game-strategy.svg';
 
 import shopCoinsPack from './images/shop/shop-coins-pack.svg';
