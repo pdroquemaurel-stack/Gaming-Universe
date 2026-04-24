@@ -1,50 +1,64 @@
-import discoverTrendingGame from './images/discover/discover-trending-game.png';
-import discoverWeeklyTournament from './images/discover/discover-weekly-tournament.png';
-import discoverShopPromo from './images/discover/discover-shop-promo.png';
-import discoverDailyChallenge from './images/discover/discover-daily-challenge.png';
+import discoverTrendingGame from './images/discover/discover-trending-game.svg';
+import discoverWeeklyTournament from './images/discover/discover-weekly-tournament.svg';
+import discoverShopPromo from './images/discover/discover-shop-promo.svg';
+import discoverDailyChallenge from './images/discover/discover-daily-challenge.svg';
 
-// Central place for future local image imports.
-// 1) Drop images inside src/assets/images/<section>/
-// 2) Import them here
-// 3) Replace empty strings with imported variables
-// Example:
-// import playGamePuzzle from './images/play/play-game-puzzle.png';
+import playGamePuzzle from './images/play/play-game-puzzle.svg';
+import playGameAction from './images/play/play-game-action.svg';
+import playGameSports from './images/play/play-game-sports.svg';
+import playGameArcade from './images/play/play-game-arcade.svg';
+import playGameStrategy from './images/play/play-game-strategy.svg';
+
+import shopCoinsPack from './images/shop/shop-coins-pack.svg';
+import shopPremiumPass from './images/shop/shop-premium-pass.svg';
+import shopGiftCard from './images/shop/shop-gift-card.svg';
+import shopDealBundle from './images/shop/shop-deal-bundle.svg';
+
+import esportFeaturedTournament from './images/esport/esport-featured-tournament.svg';
+import esportLiveCup from './images/esport/esport-live-cup.svg';
+import esportCommunityClash from './images/esport/esport-community-clash.svg';
+
+import favoriteNeonRunner from './images/favorites/favorite-neon-runner.svg';
+import purchaseDiamondPack from './images/purchase/purchase-diamond-pack.svg';
+
+import rewardCoins from './images/rewards/reward-coins.svg';
+import rewardBadge from './images/rewards/reward-badge.svg';
+import rewardDailyMission from './images/rewards/reward-daily-mission.svg';
 
 export const imagePlaceholders = {
   discover: {
-    // discover-trending-game.png
     trending: discoverTrendingGame,
-    // discover-weekly-tournament.png
     weekly: discoverWeeklyTournament,
-    // discover-shop-promo.png
     promo: discoverShopPromo,
-    // discover-daily-challenge.png
     challenge: discoverDailyChallenge,
   },
   play: {
-    // play-game-puzzle.png
-    puzzle: '',
-    // play-game-action.png
-    action: '',
-    // play-game-sports.png
-    sports: '',
+    puzzle: playGamePuzzle,
+    action: playGameAction,
+    sports: playGameSports,
+    arcade: playGameArcade,
+    strategy: playGameStrategy,
   },
   shop: {
-    // shop-coins-pack.png
-    coins: '',
-    // shop-premium-pass.png
-    pass: '',
+    coins: shopCoinsPack,
+    pass: shopPremiumPass,
+    giftCard: shopGiftCard,
+    deal: shopDealBundle,
   },
   esport: {
-    // esport-featured-tournament.png
-    featured: '',
+    featured: esportFeaturedTournament,
+    liveCup: esportLiveCup,
+    communityClash: esportCommunityClash,
   },
   favorites: {
-    // favorite-neon-runner.png
-    runner: '',
+    neonRunner: favoriteNeonRunner,
   },
   purchase: {
-    // purchase-diamond-pack.png
-    diamonds: '',
+    diamondPack: purchaseDiamondPack,
+  },
+  rewards: {
+    coins: rewardCoins,
+    badge: rewardBadge,
+    dailyMission: rewardDailyMission,
   },
 };
