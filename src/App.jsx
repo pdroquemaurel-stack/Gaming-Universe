@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
-import BottomNav from './components/BottomNav';
+import FloatingBackButton from './components/FloatingBackButton';
 import Esport from './pages/Esport';
 import Gameshop from './pages/Gameshop';
 import Home from './pages/Home';
 import Play from './pages/Play';
 
 export default function App() {
-  // State-based navigation to keep the app beginner-friendly (no router needed)
+  // Simple state-based navigation keeps the app easy to understand.
   const [currentPage, setCurrentPage] = useState('home');
 
   const CurrentView = useMemo(() => {
@@ -24,9 +24,9 @@ export default function App() {
   }, [currentPage]);
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-black px-4 pb-24 pt-6 text-white">
-      <CurrentView />
-      <BottomNav currentPage={currentPage} onChange={setCurrentPage} />
+    <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-24 pt-6 text-white">
+      <CurrentView currentPage={currentPage} onNavigate={setCurrentPage} />
+      <FloatingBackButton onHome={() => setCurrentPage('home')} />
     </div>
   );
 }

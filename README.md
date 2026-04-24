@@ -29,10 +29,22 @@ It includes 4 screens:
 
 ```bash
 src/
+  assets/
+    images/
+      play/
+      shop/
+      esport/
+      discover/
+      favorites/
+      purchase/
+    imagePlaceholders.js
   components/
-    BottomNav.jsx
+    Carousel.jsx
     FeatureCard.jsx
-    MetricCard.jsx
+    FloatingBackButton.jsx
+    GameCard.jsx
+    ProductCard.jsx
+    SectionHeader.jsx
   pages/
     Home.jsx
     Play.jsx
@@ -59,8 +71,25 @@ npm run dev
 
 Then open the local URL shown in your terminal (usually `http://localhost:5173`).
 
+## How to add images
+
+1. Upload your files in the right folder:
+   - `src/assets/images/play`
+   - `src/assets/images/shop`
+   - `src/assets/images/esport`
+   - `src/assets/images/discover`
+   - `src/assets/images/favorites`
+   - `src/assets/images/purchase`
+2. Use consistent file names, for example:
+   - `play-game-puzzle.png`
+   - `shop-coins-pack.png`
+   - `discover-trending-game.png`
+3. Open `src/assets/imagePlaceholders.js` and replace the empty strings with imports.
+4. The UI cards already read image fields from `src/data/mockData.js`, so once paths/imports are set, cards will render local images automatically.
+
 ## Notes for beginners
 
 - The app uses **state-based navigation** in `App.jsx` instead of React Router to keep things easy.
 - All content comes from `src/data/mockData.js`.
-- You can edit text, cards, and metrics directly in the page files and data file.
+- Cards have built-in fallback placeholders (emoji/blocks) when an image is missing.
+- You can safely edit labels, card texts, categories, and CTA buttons directly in the data/page files.

@@ -1,34 +1,36 @@
-import MetricCard from '../components/MetricCard';
-import { shopProducts } from '../data/mockData';
-
-const metrics = ['Direct revenue', 'Conversion', 'ARPU'];
+import ProductCard from '../components/ProductCard';
+import SectionHeader from '../components/SectionHeader';
+import { shopSections } from '../data/mockData';
 
 export default function Gameshop() {
+  const sectionNames = Object.keys(shopSections);
+
   return (
-    <section>
-      <h2 className="text-xl font-bold text-orangeBrand">Gameshop</h2>
-      <p className="mt-2 text-sm text-zinc-300">Buy gaming content with Orange Money or airtime</p>
+    <section className="space-y-6">
+      <header>
+        <h1 className="text-2xl font-bold text-white">Game<span className="text-orangeBrand">shop</span></h1>
+        <p className="mt-2 text-sm text-zinc-300">Premium gaming store with clean mobile cards</p>
+      </header>
 
-      <div className="mt-5 space-y-3">
-        {shopProducts.map((product) => (
-          <article key={product.name} className="card-base">
-            <h3 className="text-base font-semibold">{product.name}</h3>
-            <p className="mt-1 text-xs text-zinc-400">{product.detail}</p>
-            <button
-              type="button"
-              className="mt-3 rounded-lg bg-orangeBrand px-3 py-2 text-sm font-medium text-black"
-            >
-              Buy now
-            </button>
-          </article>
-        ))}
-      </div>
-
-      <div className="mt-6 grid grid-cols-3 gap-2">
-        {metrics.map((metric) => (
-          <MetricCard key={metric} label={metric} />
-        ))}
-      </div>
+      {sectionNames.map((sectionName) => (
+        <div key={sectionName}>
+          <SectionHeader title={sectionName} />
+          <div className="space-y-3">
+            {shopSections[sectionName].map((product) => (
+              <ProductCard
+                key={product.id}
+                title={product.title}
+                description={product.description}
+                price={product.price}
+                image={product.image}
+                fallback={product.fallback}
+                featured={product.featured}
+                cta="Buy"
+              />
+            ))}
+          </div>
+        </div>
+      ))}
     </section>
   );
 }
