@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Play from './pages/Play';
 
 export default function App() {
-  // Simple state-based navigation keeps the app easy to read for beginners.
+  // Simple state-based navigation keeps the app easy to understand.
   const [currentPage, setCurrentPage] = useState('home');
 
   const CurrentView = useMemo(() => {
@@ -24,7 +24,7 @@ export default function App() {
   }, [currentPage]);
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-black px-4 pb-24 pt-6 text-white">
+    <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-24 pt-6 text-white">
       <CurrentView currentPage={currentPage} onNavigate={setCurrentPage} />
       <FloatingBackButton onHome={() => setCurrentPage('home')} />
     </div>

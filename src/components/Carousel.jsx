@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default function Carousel({ items, renderItem, autoScrollMs = 3500 }) {
+export default function Carousel({ items, renderItem, autoScrollMs = 3500, cardWidthClass = 'w-[86%]' }) {
   const trackRef = useRef(null);
 
   useEffect(() => {
@@ -10,9 +10,9 @@ export default function Carousel({ items, renderItem, autoScrollMs = 3500 }) {
       return undefined;
     }
 
-    // Beginner-friendly auto-scroll: every few seconds we move one card to the right.
+    // Simple auto-scroll for beginners: move one card every few seconds.
     const intervalId = setInterval(() => {
-      const cardWidth = track.firstChild?.clientWidth || 260;
+      const cardWidth = track.firstChild?.clientWidth || 280;
       const gap = 12;
       const maxScrollLeft = track.scrollWidth - track.clientWidth;
 
@@ -28,12 +28,9 @@ export default function Carousel({ items, renderItem, autoScrollMs = 3500 }) {
   }, [autoScrollMs, items.length]);
 
   return (
-    <div
-      ref={trackRef}
-      className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1"
-    >
+    <div ref={trackRef} className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1">
       {items.map((item, index) => (
-        <div key={item.id || index} className="w-[82%] flex-shrink-0 snap-start">
+        <div key={item.id || index} className={`${cardWidthClass} flex-shrink-0 snap-start`}>
           {renderItem(item)}
         </div>
       ))}

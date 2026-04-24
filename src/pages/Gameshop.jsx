@@ -1,3 +1,4 @@
+import ProductCard from '../components/ProductCard';
 import SectionHeader from '../components/SectionHeader';
 import { shopSections } from '../data/mockData';
 
@@ -7,27 +8,25 @@ export default function Gameshop() {
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-orangeBrand">Gameshop</h1>
-        <p className="mt-2 text-sm text-zinc-300">Clean store for gaming products</p>
+        <h1 className="text-2xl font-bold text-white">Game<span className="text-orangeBrand">shop</span></h1>
+        <p className="mt-2 text-sm text-zinc-300">Premium gaming store with clean mobile cards</p>
       </header>
 
       {sectionNames.map((sectionName) => (
         <div key={sectionName}>
           <SectionHeader title={sectionName} />
-          <div className="space-y-2">
+          <div className="space-y-3">
             {shopSections[sectionName].map((product) => (
-              <article key={product.id} className="card-base p-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="text-sm font-semibold">{product.title}</h3>
-                    <p className="mt-1 text-xs text-zinc-400">{product.description}</p>
-                  </div>
-                  <span className="text-xs font-semibold text-orangeBrand">{product.price}</span>
-                </div>
-                <button type="button" className="mt-3 rounded-md bg-orangeBrand px-3 py-2 text-xs font-semibold text-black">
-                  Buy
-                </button>
-              </article>
+              <ProductCard
+                key={product.id}
+                title={product.title}
+                description={product.description}
+                price={product.price}
+                image={product.image}
+                fallback={product.fallback}
+                featured={product.featured}
+                cta="Buy"
+              />
             ))}
           </div>
         </div>
