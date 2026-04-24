@@ -30,6 +30,9 @@ export default function Play() {
           </span>
         ))}
       </div>
+    </div>
+  );
+}
 
       {playCategories.map((category) => (
         <GameRow key={category} title={category} games={gamesByCategory[category]} />
