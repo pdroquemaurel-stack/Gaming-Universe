@@ -1,29 +1,25 @@
-# Max it Gaming — Simple POC (React + Vite + Tailwind)
+# Max it Gaming — Orange Product Vision POC
 
-This project is a **mobile-first proof of concept** for **Max it Gaming**, Orange's gaming universe inside the Max it super app.
+This project is a mobile-first product vision demo for **Orange / Max it Gaming**.
+It showcases a simple super-app journey:
 
-## What this POC demonstrates
+**Play → Pay → Compete → Reward**
 
-A simple user journey with 3 pillars:
-
-- **Play**: discover free games and play instantly
-- **Pay (Gameshop)**: buy gaming content
-- **Compete (Esport)**: join tournaments and view leaderboard
-
-It includes 4 screens:
-- Home
-- Play
-- Gameshop
-- Esport
-
-> This is intentionally simple: no backend, no authentication, no wallet logic, and no advanced gamification.
-
-## Tech stack
-
-- React
-- Vite
-- Tailwind CSS
+The implementation is intentionally beginner-friendly:
+- React + Vite + Tailwind CSS
+- No backend
+- No authentication
+- No database
 - Mocked data only
+- State-based page navigation
+
+## Screens included
+
+- Home
+- Play (Free Gaming)
+- Gameshop
+- Esport Arena
+- Leaderboard
 
 ## Project structure
 
@@ -31,25 +27,35 @@ It includes 4 screens:
 src/
   assets/
     images/
+      discover/
       play/
       shop/
       esport/
-      discover/
       favorites/
       purchase/
+      rewards/
     imagePlaceholders.js
   components/
+    Badge.jsx
     Carousel.jsx
     FeatureCard.jsx
     FloatingBackButton.jsx
     GameCard.jsx
+    LeaderboardCard.jsx
+    MissionCard.jsx
+    PillarCard.jsx
+    PlayerStatusCard.jsx
     ProductCard.jsx
+    ProgressBar.jsx
+    PurchaseConfirmationModal.jsx
     SectionHeader.jsx
+    TournamentCard.jsx
   pages/
     Home.jsx
     Play.jsx
     Gameshop.jsx
     Esport.jsx
+    Leaderboard.jsx
   data/
     mockData.js
   App.jsx
@@ -57,42 +63,61 @@ src/
   index.css
 ```
 
-## How to install
+## Image naming convention
+
+All image placeholders are centralized in `src/assets/imagePlaceholders.js`.
+
+Current placeholder files are SVG assets with these names:
+
+- `discover/discover-trending-game.svg`
+- `discover/discover-weekly-tournament.svg`
+- `discover/discover-shop-promo.svg`
+- `discover/discover-daily-challenge.svg`
+- `play/play-game-puzzle.svg`
+- `play/play-game-action.svg`
+- `play/play-game-sports.svg`
+- `play/play-game-arcade.svg`
+- `play/play-game-strategy.svg`
+- `shop/shop-coins-pack.svg`
+- `shop/shop-premium-pass.svg`
+- `shop/shop-gift-card.svg`
+- `shop/shop-deal-bundle.svg`
+- `esport/esport-featured-tournament.svg`
+- `esport/esport-live-cup.svg`
+- `esport/esport-community-clash.svg`
+- `favorites/favorite-neon-runner.svg`
+- `purchase/purchase-diamond-pack.svg`
+- `rewards/reward-coins.svg`
+- `rewards/reward-badge.svg`
+- `rewards/reward-daily-mission.svg`
+
+## How to replace placeholders with PNG files
+
+When you are ready to use real visuals:
+
+1. Replace each `.svg` file with a `.png` file using the same base name (example: `play-game-puzzle.png`).
+2. Update imports in `src/assets/imagePlaceholders.js` from `.svg` to `.png`.
+3. Keep object keys the same (`discover`, `play`, `shop`, etc.) so `src/data/mockData.js` keeps working.
+
+## Run locally
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-## How to run locally
+Start dev server:
 
 ```bash
 npm run dev
 ```
 
-Then open the local URL shown in your terminal (usually `http://localhost:5173`).
+Build production bundle:
 
-## How to add images
-
-1. Upload your files in the right folder:
-   - `src/assets/images/play`
-   - `src/assets/images/shop`
-   - `src/assets/images/esport`
-   - `src/assets/images/discover`
-   - `src/assets/images/favorites`
-   - `src/assets/images/purchase`
-2. Use consistent file names, for example:
-   - `play-game-puzzle.png`
-   - `shop-coins-pack.png`
-   - `discover-trending-game.png`
-3. Open `src/assets/imagePlaceholders.js` and replace the empty strings with imports.
-4. The UI cards already read image fields from `src/data/mockData.js`, so once paths/imports are set, cards will render local images automatically.
-
-## Notes for beginners
-
-- The app uses **state-based navigation** in `App.jsx` instead of React Router to keep things easy.
-- All content comes from `src/data/mockData.js`.
-- Cards have built-in fallback placeholders (emoji/blocks) when an image is missing.
-- You can safely edit labels, card texts, categories, and CTA buttons directly in the data/page files.
+```bash
+npm run build
+```
 
 ## Deploy on Render
 

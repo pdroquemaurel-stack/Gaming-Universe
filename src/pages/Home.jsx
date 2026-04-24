@@ -1,41 +1,30 @@
 import Carousel from '../components/Carousel';
 import FeatureCard from '../components/FeatureCard';
+import MissionCard from '../components/MissionCard';
+import PillarCard from '../components/PillarCard';
+import PlayerStatusCard from '../components/PlayerStatusCard';
 import SectionHeader from '../components/SectionHeader';
-import { discoverItems, favoriteGames, lastPurchases } from '../data/mockData';
+import { discoverItems, favoriteGames, lastPurchases, missions, pillars, playerProfile } from '../data/mockData';
 
-const navItems = [
-  { key: 'play', label: 'Play' },
-  { key: 'shop', label: 'Gameshop' },
-  { key: 'esport', label: 'E-Sport' },
-];
-
-export default function Home({ currentPage, onNavigate }) {
+export default function Home({ onNavigate }) {
   return (
-    <section className="space-y-7">
-      <header>
+    <section className="space-y-6">
+      <header className="orange-glow card-base space-y-2 bg-gradient-to-br from-zinc-900 to-black">
         <h1 className="text-2xl font-bold tracking-tight text-white">Max it <span className="text-orangeBrand">Gaming</span></h1>
-        <p className="mt-2 text-sm text-zinc-300">Premium mobile hub for play, shop, and competition</p>
+        <p className="text-base font-semibold text-white">Play. Pay. Compete. Get rewarded.</p>
+        <p className="text-sm text-zinc-300">Your gaming hub inside Max it</p>
       </header>
 
-      <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
-        {navItems.map((item) => {
-          const isActive = currentPage === item.key || (currentPage === 'home' && item.key === 'play');
+      <PlayerStatusCard profile={playerProfile} />
+      <MissionCard mission={missions[0]} />
 
-          return (
-            <button
-              key={item.key}
-              type="button"
-              onClick={() => onNavigate(item.key)}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                isActive
-                  ? 'border-orangeBrand bg-orangeBrand text-white shadow-md shadow-orangeBrand/30'
-                  : 'border-white/10 bg-zinc-900 text-zinc-300'
-              }`}
-            >
-              {item.label}
-            </button>
-          );
-        })}
+      <div>
+        <SectionHeader title="Product pillars" subtitle="Play → Pay → Compete → Reward" />
+        <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+          {pillars.map((pillar) => (
+            <PillarCard key={pillar.id} pillar={pillar} onNavigate={onNavigate} />
+          ))}
+        </div>
       </div>
 
       <div>
@@ -58,7 +47,7 @@ export default function Home({ currentPage, onNavigate }) {
 
       <div>
         <SectionHeader title="Favorites" subtitle="Your quick picks" />
-        <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+        <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
           {favoriteGames.map((game) => (
             <article key={game.id} className="card-base w-36 flex-shrink-0 overflow-hidden p-0">
               {game.image ? (

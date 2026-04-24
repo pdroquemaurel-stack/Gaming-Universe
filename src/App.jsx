@@ -3,10 +3,10 @@ import FloatingBackButton from './components/FloatingBackButton';
 import Esport from './pages/Esport';
 import Gameshop from './pages/Gameshop';
 import Home from './pages/Home';
+import Leaderboard from './pages/Leaderboard';
 import Play from './pages/Play';
 
 export default function App() {
-  // Simple state-based navigation keeps the app easy to understand.
   const [currentPage, setCurrentPage] = useState('home');
 
   const CurrentView = useMemo(() => {
@@ -17,6 +17,8 @@ export default function App() {
         return Gameshop;
       case 'esport':
         return Esport;
+      case 'leaderboard':
+        return Leaderboard;
       case 'home':
       default:
         return Home;
@@ -26,7 +28,7 @@ export default function App() {
   return (
     <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-24 pt-6 text-white">
       <CurrentView currentPage={currentPage} onNavigate={setCurrentPage} />
-      <FloatingBackButton onHome={() => setCurrentPage('home')} />
+      {currentPage !== 'home' ? <FloatingBackButton onHome={() => setCurrentPage('home')} /> : null}
     </div>
   );
 }
