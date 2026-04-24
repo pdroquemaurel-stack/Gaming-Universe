@@ -1,34 +1,64 @@
-import { useMemo, useState } from 'react';
-import FloatingBackButton from './components/FloatingBackButton';
+import { useEffect, useMemo, useState } from 'react';
+import GlobalHeader from './components/GlobalHeader';
+import MainNav from './components/MainNav';
 import Esport from './pages/Esport';
 import Gameshop from './pages/Gameshop';
 import Home from './pages/Home';
 import Leaderboard from './pages/Leaderboard';
 import Play from './pages/Play';
+import Profile from './pages/Profile';
+
+const routeMap = {
+  '/': Home,
+  '/play': Play,
+  '/shop': Gameshop,
+  '/esport': Esport,
+  '/leaderboard': Leaderboard,
+  '/profile': Profile,
+};
+
+const legacyToPath = {
+  home: '/',
+  play: '/play',
+  shop: '/shop',
+  esport: '/esport',
+  leaderboard: '/leaderboard',
+  profile: '/profile',
+};
+
+function normalizePath(pathname) {
+  return routeMap[pathname] ? pathname : '/';
+}
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPath, setCurrentPath] = useState(() => normalizePath(window.location.pathname));
 
-  const CurrentView = useMemo(() => {
-    switch (currentPage) {
-      case 'play':
-        return Play;
-      case 'shop':
-        return Gameshop;
-      case 'esport':
-        return Esport;
-      case 'leaderboard':
-        return Leaderboard;
-      case 'home':
-      default:
-        return Home;
+  useEffect(() => {
+    const onPopState = () => {
+      setCurrentPath(normalizePath(window.location.pathname));
+    };
+
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const navigate = (pathOrLegacy) => {
+    const nextPath = legacyToPath[pathOrLegacy] || pathOrLegacy;
+    const normalized = normalizePath(nextPath);
+
+    if (normalized !== currentPath) {
+      window.history.pushState({}, '', normalized);
+      setCurrentPath(normalized);
     }
-  }, [currentPage]);
+  };
+
+  const CurrentView = useMemo(() => routeMap[currentPath] || Home, [currentPath]);
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-24 pt-6 text-white">
-      <CurrentView currentPage={currentPage} onNavigate={setCurrentPage} />
-      {currentPage !== 'home' ? <FloatingBackButton onHome={() => setCurrentPage('home')} /> : null}
+    <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-10 pt-28 text-white">
+      <GlobalHeader onNavigate={navigate} />
+      <MainNav currentPath={currentPath} onNavigate={navigate} />
+      <CurrentView currentPath={currentPath} onNavigate={navigate} />
     </div>
   );
 }
