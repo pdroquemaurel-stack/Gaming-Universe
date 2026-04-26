@@ -55,6 +55,9 @@ src/
 Notes:
 - Si une image manque, l’application doit afficher un fallback visuel propre.
 - Les fichiers peuvent être remplacés plus tard sans changer le code si le nom et le chemin sont respectés.
+- Les champs d’image dans les fichiers de données peuvent pointer vers :
+  - des fichiers locaux dans `/public/assets/`
+  - des URLs distantes Google Play Store (ex: `https://play-lh.googleusercontent.com/...`) pour un POC.
 
 ## Données mockées centralisées
 
