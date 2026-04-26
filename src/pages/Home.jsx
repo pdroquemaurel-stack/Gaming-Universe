@@ -1,12 +1,11 @@
 import Carousel from '../components/Carousel';
 import FeatureCard from '../components/FeatureCard';
 import MissionCard from '../components/MissionCard';
-import PillarCard from '../components/PillarCard';
 import PlayerStatusCard from '../components/PlayerStatusCard';
 import SectionHeader from '../components/SectionHeader';
-import { discoverItems, favoriteGames, lastPurchases, missions, pillars, playerProfile } from '../data/mockData';
+import { discoverItems, favoriteGames, lastPurchases, missions, playerProfile } from '../data/mockData';
 
-export default function Home({ onNavigate }) {
+export default function Home() {
   return (
     <section className="space-y-6">
       <header className="orange-glow card-base space-y-2 bg-gradient-to-br from-zinc-900 to-black">
@@ -19,28 +18,13 @@ export default function Home({ onNavigate }) {
       <MissionCard mission={missions[0]} />
 
       <div>
-        <SectionHeader title="Product pillars" subtitle="Play → Pay → Compete → Reward" />
-        <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
-          {pillars.map((pillar) => (
-            <PillarCard key={pillar.id} pillar={pillar} onNavigate={onNavigate} />
-          ))}
-        </div>
-      </div>
-
-      <div>
         <SectionHeader title="Discover" subtitle="Trending now" />
         <Carousel
           items={discoverItems}
           autoScrollMs={3200}
           cardWidthClass="w-full"
           renderItem={(item) => (
-            <FeatureCard
-              title={item.title}
-              description={item.description}
-              cta={item.cta}
-              image={item.image}
-              fallback={item.fallback}
-            />
+            <FeatureCard title={item.title} description={item.description} cta={item.cta} image={item.image} fallback={item.fallback} />
           )}
         />
       </div>
@@ -50,11 +34,7 @@ export default function Home({ onNavigate }) {
         <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
           {favoriteGames.map((game) => (
             <article key={game.id} className="card-base w-36 flex-shrink-0 overflow-hidden p-0">
-              {game.image ? (
-                <img src={game.image} alt={game.title} className="h-24 w-full object-cover" />
-              ) : (
-                <div className="flex h-24 w-full items-center justify-center bg-zinc-800 text-3xl">{game.fallback}</div>
-              )}
+              {game.image ? <img src={game.image} alt={game.title} className="h-24 w-full object-cover" /> : <div className="flex h-24 w-full items-center justify-center bg-zinc-800 text-3xl">{game.fallback}</div>}
               <div className="p-3">
                 <h3 className="text-sm font-semibold text-white">{game.title}</h3>
                 <p className="mt-1 text-xs text-zinc-400">{game.genre}</p>

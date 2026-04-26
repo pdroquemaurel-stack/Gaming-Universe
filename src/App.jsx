@@ -6,6 +6,7 @@ import Gameshop from './pages/Gameshop';
 import Home from './pages/Home';
 import Leaderboard from './pages/Leaderboard';
 import Play from './pages/Play';
+import Points from './pages/Points';
 import Profile from './pages/Profile';
 
 const routeMap = {
@@ -15,6 +16,7 @@ const routeMap = {
   '/esport': Esport,
   '/leaderboard': Leaderboard,
   '/profile': Profile,
+  '/points': Points,
 };
 
 const legacyToPath = {
@@ -24,6 +26,7 @@ const legacyToPath = {
   esport: '/esport',
   leaderboard: '/leaderboard',
   profile: '/profile',
+  points: '/points',
 };
 
 function normalizePath(pathname) {

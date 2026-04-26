@@ -29,10 +29,10 @@ export default function GlobalHeader({ onNavigate }) {
         </button>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 rounded-full border border-white/10 bg-zinc-900 px-2 py-1">
+          <button type="button" onClick={() => onNavigate('/points')} className="flex items-center gap-1 rounded-full border border-white/10 bg-zinc-900 px-2 py-1">
             <IconWithFallback src="/assets/coin.png" alt="Coin" fallback={assetFallback.coin} />
             <span className="text-xs font-semibold text-white">12 450</span>
-          </div>
+          </button>
 
           <button type="button" onClick={() => onNavigate('/profile')} aria-label="Profile">
             <IconWithFallback src="/assets/avatar.png" alt="Avatar" fallback={assetFallback.avatar} rounded />
