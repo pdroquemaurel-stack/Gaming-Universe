@@ -1,49 +1,57 @@
 import { useState } from 'react';
-import ProductCard from '../components/ProductCard';
-import PurchaseConfirmationModal from '../components/PurchaseConfirmationModal';
+import ModalOverlay from '../components/ModalOverlay';
 import SectionHeader from '../components/SectionHeader';
-import { shopSections } from '../data/mockData';
+import ShopGameBubble from '../components/ShopGameBubble';
+import ShopItemCard from '../components/ShopItemCard';
+import AssetImage from '../components/AssetImage';
+import { shopGames } from '../data/shop';
 
 export default function Gameshop() {
-  const sectionNames = Object.keys(shopSections);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedGame, setSelectedGame] = useState(null);
+  const [playerId, setPlayerId] = useState('');
+  const [connected, setConnected] = useState(false);
+
+  const openGame = (game) => {
+    setSelectedGame(game);
+    setPlayerId('');
+    setConnected(false);
+  };
 
   return (
     <section className="space-y-6">
       <header>
         <h1 className="text-2xl font-bold text-white">Game<span className="text-orangeBrand">shop</span></h1>
-        <p className="mt-2 text-sm text-zinc-300">Top-ups, passes and gaming content</p>
+        <p className="mt-2 text-sm text-zinc-300">Choisis ton jeu et débloque des bonus.</p>
       </header>
 
-      <article className="card-base orange-glow flex items-center justify-between gap-3 bg-gradient-to-r from-orangeBrand/20 to-zinc-900/70">
-        <div>
-          <p className="text-xs text-orangeBrand">Orange Money ready</p>
-          <p className="text-sm font-semibold text-white">Fast checkout with Orange Money</p>
+      <div>
+        <SectionHeader title="Jeux populaires" subtitle="Sélectionne un jeu" />
+        <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+          {shopGames.map((game) => <ShopGameBubble key={game.id} game={game} active={selectedGame?.id === game.id} onClick={openGame} />)}
         </div>
-        <span className="rounded-full border border-orangeBrand/40 px-2 py-1 text-[10px] text-orangeBrand">Secure</span>
-      </article>
+      </div>
 
-      {sectionNames.map((sectionName) => (
-        <div key={sectionName} className="space-y-3">
-          <SectionHeader title={sectionName} />
-          {shopSections[sectionName].map((product) => (
-            <ProductCard
-              key={product.id}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              image={product.image}
-              fallback={product.fallback}
-              cta="Buy"
-              badge={product.badge}
-              category={product.category}
-              onBuy={() => setSelectedProduct(product)}
-            />
-          ))}
-        </div>
-      ))}
+      {selectedGame ? (
+        <ModalOverlay title={selectedGame.name} onClose={() => setSelectedGame(null)}>
+          <div className="space-y-3">
+            <AssetImage src={selectedGame.image} alt={selectedGame.name} fallback="🎮" className="h-36 w-full" />
+            <p className="text-xs text-zinc-300">{selectedGame.description}</p>
+            <a href={selectedGame.storeUrl} target="_blank" rel="noreferrer" className="inline-flex w-full items-center justify-center rounded-lg border border-orangeBrand px-3 py-2 text-xs font-semibold text-orangeBrand">Download game</a>
 
-      <PurchaseConfirmationModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+            <input value={playerId} onChange={(event) => setPlayerId(event.target.value)} placeholder="Player ID" className="w-full rounded-lg border border-white/20 bg-zinc-900 px-3 py-2 text-sm text-white outline-none" />
+            <button type="button" onClick={() => setConnected(true)} className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-sm font-semibold text-white">Me connecter</button>
+
+            {connected ? <span className="inline-flex rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-300">Connected</span> : null}
+
+            {connected ? (
+              <div className="space-y-3">
+                <SectionHeader title="Contenus achetables" />
+                {selectedGame.items.map((item) => <ShopItemCard key={item.id} item={item} />)}
+              </div>
+            ) : null}
+          </div>
+        </ModalOverlay>
+      ) : null}
     </section>
   );
 }

@@ -20,84 +20,52 @@ The implementation is intentionally beginner-friendly:
 - Gameshop
 - Esport Arena
 - Leaderboard
+- Points
 
 ## Project structure
 
 ```bash
 src/
-  assets/
-    images/
-      discover/
-      play/
-      shop/
-      esport/
-      favorites/
-      purchase/
-      rewards/
-    imagePlaceholders.js
   components/
-    Badge.jsx
-    Carousel.jsx
-    FeatureCard.jsx
-    FloatingBackButton.jsx
-    GameCard.jsx
-    LeaderboardCard.jsx
-    MissionCard.jsx
-    PillarCard.jsx
-    PlayerStatusCard.jsx
-    ProductCard.jsx
-    ProgressBar.jsx
-    PurchaseConfirmationModal.jsx
-    SectionHeader.jsx
-    TournamentCard.jsx
   pages/
-    Home.jsx
-    Play.jsx
-    Gameshop.jsx
-    Esport.jsx
-    Leaderboard.jsx
   data/
-    mockData.js
-  App.jsx
-  main.jsx
-  index.css
+  assets/
 ```
 
-## Image naming convention
+## Assets à uploader
 
-All image placeholders are centralized in `src/assets/imagePlaceholders.js`.
+| Asset | Chemin attendu | Usage | Format recommandé | Dimension recommandée | Statut |
+|---|---|---|---|---|---|
+| coin.png | /public/assets/coin.png | Icône Max it Points | PNG (transparent) | 128x128 | Requis |
+| avatar.png | /public/assets/avatar.png | Avatar utilisateur | PNG / JPG | 256x256 | Requis |
+| leaderboard.png | /public/assets/leaderboard.png | Icône leaderboard | PNG (transparent) | 128x128 | Requis |
+| game-placeholder.png | /public/assets/placeholders/game-placeholder.png | Fallback jeux | PNG | 640x360 | Requis |
+| app-placeholder.png | /public/assets/placeholders/app-placeholder.png | Fallback apps | PNG | 640x360 | Requis |
+| video-placeholder.png | /public/assets/placeholders/video-placeholder.png | Fallback vidéos | PNG | 1280x720 | Requis |
+| tournament-placeholder.png | /public/assets/placeholders/tournament-placeholder.png | Fallback tournois | PNG | 640x360 | Requis |
+| images mini-jeux | /public/assets/games/ | Cards Instant Play | PNG / JPG | 640x360 | Requis |
+| images apps | /public/assets/apps/ | Apps Play Store | PNG / JPG | 640x360 | Requis |
+| logos jeux shop | /public/assets/shop/games/ | Bulles jeux populaires | PNG (transparent) | 256x256 | Requis |
+| images bonus shop | /public/assets/shop/items/ | Bonus / IAP | PNG / JPG | 640x360 | Requis |
+| thumbnails VOD | /public/assets/esport/videos/ | Vidéos VOD | PNG / JPG | 1280x720 | Requis |
+| thumbnails live | /public/assets/esport/live/ | Lives | PNG / JPG | 1280x720 | Requis |
+| logos tournois | /public/assets/esport/tournaments/ | Tournois | PNG (transparent) | 256x256 | Requis |
 
-Current placeholder files are SVG assets with these names:
+Notes:
+- Si une image manque, l’application doit afficher un fallback visuel propre.
+- Les fichiers peuvent être remplacés plus tard sans changer le code si le nom et le chemin sont respectés.
 
-- `discover/discover-trending-game.svg`
-- `discover/discover-weekly-tournament.svg`
-- `discover/discover-shop-promo.svg`
-- `discover/discover-daily-challenge.svg`
-- `play/play-game-puzzle.svg`
-- `play/play-game-action.svg`
-- `play/play-game-sports.svg`
-- `play/play-game-arcade.svg`
-- `play/play-game-strategy.svg`
-- `shop/shop-coins-pack.svg`
-- `shop/shop-premium-pass.svg`
-- `shop/shop-gift-card.svg`
-- `shop/shop-deal-bundle.svg`
-- `esport/esport-featured-tournament.svg`
-- `esport/esport-live-cup.svg`
-- `esport/esport-community-clash.svg`
-- `favorites/favorite-neon-runner.svg`
-- `purchase/purchase-diamond-pack.svg`
-- `rewards/reward-coins.svg`
-- `rewards/reward-badge.svg`
-- `rewards/reward-daily-mission.svg`
+## Données mockées centralisées
 
-## How to replace placeholders with PNG files
+- `src/data/play.js`
+- `src/data/shop.js`
+- `src/data/esport.js`
+- `src/data/points.js`
 
-When you are ready to use real visuals:
+## Modifier les liens Google Play
 
-1. Replace each `.svg` file with a `.png` file using the same base name (example: `play-game-puzzle.png`).
-2. Update imports in `src/assets/imagePlaceholders.js` from `.svg` to `.png`.
-3. Keep object keys the same (`discover`, `play`, `shop`, etc.) so `src/data/mockData.js` keeps working.
+- Aller dans `src/data/play.js` (`playStoreUrl` de chaque app)
+- Aller dans `src/data/shop.js` (`storeUrl` de chaque jeu)
 
 ## Run locally
 
