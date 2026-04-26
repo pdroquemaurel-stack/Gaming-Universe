@@ -11,7 +11,7 @@ export const playCategories = [
       { id: 'puzzle-rush', name: 'Puzzle Rush', image: '/assets/games/puzzle-rush.png', description: 'Match combos before time runs out.', dailyMission: 'Finish 2 rounds', points: 100, recommended: true, fallback: '🧠' },
     ],
     apps: [
-      { id: 'royal-kingdom', name: 'Royal Kingdom', packageName: 'com.dreamgames.royalkingdom', playStoreUrl: 'https://play.google.com/store/apps/details?id=com.dreamgames.royalkingdom', image: 'https://play-lh.googleusercontent.com/nAAF2bxrD2BeoM1IkUZ6qeRG_QGG_Rekrrh4VYQSMDeRa7FR8sWMWaHClID547XJ3D4=s96-rw', rating: '4.5', downloads: '10M+', points: 200, recommended: true, popular: true, fallback: '🏰' },
+      { id: 'royal-kingdom', name: 'Royal Kingdom', packageName: 'com.dreamgames.royalkingdom', playStoreUrl: 'https://play.google.com/store/apps/details?id=com.dreamgames.royalkingdom', image: '/assets/apps/royal-kingdom.png', rating: '4.5', downloads: '10M+', points: 200, recommended: true, popular: true, fallback: '🏰' },
       { id: 'candy-crush', name: 'Candy Crush Saga', packageName: 'com.king.candycrushsaga', playStoreUrl: 'https://play.google.com/store/apps/details?id=com.king.candycrushsaga', image: '/assets/apps/candy-crush.png', rating: '4.5', downloads: '1B+', points: 160, fallback: '🍬' },
     ],
   },
