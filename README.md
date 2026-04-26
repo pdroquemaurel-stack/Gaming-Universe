@@ -44,6 +44,7 @@ src/
 | video-placeholder.png | /public/assets/placeholders/video-placeholder.png | Fallback vidéos | PNG | 1280x720 | Requis |
 | tournament-placeholder.png | /public/assets/placeholders/tournament-placeholder.png | Fallback tournois | PNG | 640x360 | Requis |
 | images mini-jeux | /public/assets/games/ | Cards Instant Play | PNG / JPG | 640x360 | Requis |
+| catch-the-coin.png | /public/assets/games/catch-the-coin.png | Card du mini-jeu Catch the Coin | PNG / JPG | 640x360 | Recommandé |
 | images apps | /public/assets/apps/ | Apps Play Store | PNG / JPG | 640x360 | Requis |
 | logos jeux shop | /public/assets/shop/games/ | Bulles jeux populaires | PNG (transparent) | 256x256 | Requis |
 | images bonus shop | /public/assets/shop/items/ | Bonus / IAP | PNG / JPG | 640x360 | Requis |
