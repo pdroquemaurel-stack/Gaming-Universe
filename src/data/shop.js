@@ -204,15 +204,59 @@ export const shopSubscriptions = [
 ];
 
 export const shopECards = [
-  { id: 'playstation-card', name: 'PlayStation Store', image: 'https://gmedia.playstation.com/is/image/SIEPDC/gift-cards-digital-card-keyart-01-en-20oct22?$facebook$', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
+  { id: 'playstation-card', name: 'PlayStation Store', image: 'https://gmedia.playstation.com/is/image/SIEPDC/gift-cards-digital-card-keyart-01-en-20oct22?$facebook$', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
   { id: 'xbox-card', name: 'Xbox', image: 'https://thumbs.dreamstime.com/b/e-r-143552371.jpg', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-10% avec 1 000 points', badge: 'Instantané' },
-  { id: 'steam-card', name: 'Steam', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyPF9UGCqP5ee_owuCZs_rkxb8gcT80bTWIw&s', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
+  { id: 'steam-card', name: 'Steam', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyPF9UGCqP5ee_owuCZs_rkxb8gcT80bTWIw&s', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
   { id: 'google-play-card', name: 'Google Play', image: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: 'Bonus 200 points offert', badge: 'Instantané' },
-  { id: 'nintendo-card', name: 'Nintendo eShop', image: 'https://images.unsplash.com/photo-1617096200347-cb04ae810b1d?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
-  { id: 'riot-card', name: 'Riot Games', image: 'https://images.unsplash.com/photo-1548686304-89d188a80029?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-10% avec 1 000 points', badge: 'Digital' },
+  { id: 'nintendo-card', name: 'Nintendo eShop', image: 'https://images.unsplash.com/photo-1617096200347-cb04ae810b1d?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
+  { id: 'riot-card', name: 'Riot Games', image: 'https://images.unsplash.com/photo-1548686304-89d188a80029?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-10% avec 1 000 points', badge: 'Numérique' },
   { id: 'roblox-card', name: 'Roblox', image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: 'Bonus 200 points offert', badge: 'Instantané' },
-  { id: 'garena-card', name: 'Garena / Free Fire', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
+  { id: 'garena-card', name: 'Garena / Free Fire', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
 ];
 
 // Compatibilité rétro : conserve l'ancien export utilisé dans d'autres écrans potentiels.
 export const shopGames = popularShopGames;
+
+
+export const previousPurchases = [
+  {
+    id: 'purchase-vbucks',
+    productName: 'Pack V-Bucks',
+    game: 'Fortnite',
+    image: 'https://images.unsplash.com/photo-1624953587687-daf255b6b80a?auto=format&fit=crop&w=400&q=80',
+    date: 'Hier',
+    price: '8,99€',
+    status: 'Utilisé',
+    cta: 'Racheter',
+  },
+  {
+    id: 'purchase-robux',
+    productName: 'Robux Pack',
+    game: 'Roblox',
+    image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=400&q=80',
+    date: 'Il y a 3 jours',
+    price: '4,99€',
+    status: 'Disponible',
+    cta: 'Racheter',
+  },
+  {
+    id: 'purchase-battle-pass',
+    productName: 'Battle Pass',
+    game: 'PUBG Mobile',
+    image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=400&q=80',
+    date: 'Il y a 1 semaine',
+    price: '11,99€',
+    status: 'Activé',
+    cta: 'Racheter',
+  },
+  {
+    id: 'purchase-diamonds',
+    productName: 'Diamonds Pack',
+    game: 'Free Fire',
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80',
+    date: 'Il y a 2 semaines',
+    price: '5,99€',
+    status: 'Utilisé',
+    cta: 'Racheter',
+  },
+];

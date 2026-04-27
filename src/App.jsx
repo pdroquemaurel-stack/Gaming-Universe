@@ -34,12 +34,23 @@ function normalizePath(pathname) {
   return routeMap[pathname] ? pathname : '/';
 }
 
+function parseNavigationTarget(pathOrLegacy) {
+  const resolvedPath = legacyToPath[pathOrLegacy] || pathOrLegacy;
+  const [rawPath, rawSearch = ''] = resolvedPath.split('?');
+  const normalizedPath = normalizePath(rawPath);
+  const search = rawSearch ? `?${rawSearch}` : '';
+
+  return { path: normalizedPath, search };
+}
+
 export default function App() {
   const [currentPath, setCurrentPath] = useState(() => normalizePath(window.location.pathname));
+  const [currentSearch, setCurrentSearch] = useState(() => window.location.search || '');
 
   useEffect(() => {
     const onPopState = () => {
       setCurrentPath(normalizePath(window.location.pathname));
+      setCurrentSearch(window.location.search || '');
     };
 
     window.addEventListener('popstate', onPopState);
@@ -47,13 +58,14 @@ export default function App() {
   }, []);
 
   const navigate = (pathOrLegacy) => {
-    const nextPath = legacyToPath[pathOrLegacy] || pathOrLegacy;
-    const normalized = normalizePath(nextPath);
+    const target = parseNavigationTarget(pathOrLegacy);
+    const hasChanged = target.path !== currentPath || target.search !== currentSearch;
 
-    if (normalized !== currentPath) {
-      window.history.pushState({}, '', normalized);
-      setCurrentPath(normalized);
-    }
+    if (!hasChanged) return;
+
+    window.history.pushState({}, '', `${target.path}${target.search}`);
+    setCurrentPath(target.path);
+    setCurrentSearch(target.search);
   };
 
   const CurrentView = useMemo(() => routeMap[currentPath] || Home, [currentPath]);
@@ -63,7 +75,7 @@ export default function App() {
       <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-10 pt-28 text-white">
         <GlobalHeader onNavigate={navigate} />
         <MainNav currentPath={currentPath} onNavigate={navigate} />
-        <CurrentView currentPath={currentPath} onNavigate={navigate} />
+        <CurrentView currentPath={currentPath} currentSearch={currentSearch} onNavigate={navigate} />
       </div>
     </ToastProvider>
   );

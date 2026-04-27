@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PointsBadge from '../components/PointsBadge';
 import Tabs from '../components/Tabs';
 import { pointsBalance, pointsEarnWays, pointsUseWays } from '../data/points';
@@ -6,9 +6,23 @@ import AssetImage from '../components/AssetImage';
 import SectionHeader from '../components/SectionHeader';
 import { useToast } from '../components/ToastProvider';
 
-export default function Points() {
-  const [activeTab, setActiveTab] = useState('earn');
+function getTabFromSearch(search = '') {
+  const params = new URLSearchParams(search);
+  return params.get('tab') === 'use' ? 'use' : 'earn';
+}
+
+export default function Points({ currentSearch }) {
+  const [activeTab, setActiveTab] = useState(() => getTabFromSearch(currentSearch));
   const { showToast } = useToast();
+
+  useEffect(() => {
+    setActiveTab(getTabFromSearch(currentSearch));
+  }, [currentSearch]);
+
+  const title = useMemo(
+    () => (activeTab === 'earn' ? 'Missions récompensées' : 'Récompenses disponibles'),
+    [activeTab],
+  );
 
   return (
     <section className="space-y-4">
@@ -22,7 +36,7 @@ export default function Points() {
 
       <Tabs tabs={[{ id: 'earn', label: 'Gagner' }, { id: 'use', label: 'Utiliser' }]} activeId={activeTab} onChange={setActiveTab} />
 
-      <SectionHeader title={activeTab === 'earn' ? 'Missions récompensées' : 'Récompenses disponibles'} subtitle={activeTab === 'earn' ? 'Gagne des points chaque jour' : 'Utilise tes points maintenant'} />
+      <SectionHeader title={title} subtitle={activeTab === 'earn' ? 'Gagne des points chaque jour' : 'Utilise tes points maintenant'} />
 
       <div className="space-y-3">
         {(activeTab === 'earn' ? pointsEarnWays : pointsUseWays).map((item) => (
