@@ -11,7 +11,7 @@ export const popularShopGames = [
     id: 'fortnite',
     name: 'Fortnite',
     shortName: 'Fortnite',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Fortnite_logo.svg/512px-Fortnite_logo.svg.png',
+    logo: 'https://play-lh.googleusercontent.com/FxJDPDIDJKlG9C8lOxaS041X27A0SrHAa46SGDIpPusAd4IEJihZTyGf-8rTZ_GpF34aeLvULilVuO0cpCJxTg=s96-rw',
     image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1400&q=80',
     storeUrl: 'https://www.fortnite.com/download',
     description: 'Connecte ton ID joueur pour accéder à tes contenus Fortnite.',
