@@ -6,8 +6,8 @@ const accessStyles = {
   live: 'bg-red-500/20 text-red-100',
 };
 
-export default function VideoCard({ video, subtitle, onOpen }) {
-  const isLocked = video.locked;
+export default function VideoCard({ video, subtitle, onOpen, isSubscriber = false }) {
+  const isLocked = Boolean(video.requiresSubscription) && !isSubscriber;
 
   return (
     <article className="card-base overflow-hidden p-0">

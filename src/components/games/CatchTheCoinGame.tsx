@@ -22,7 +22,11 @@ function getPerformanceMessage(score) {
   return 'Bon début';
 }
 
-export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onWatchAd, bestScore = 0 }) {
+function getXpGainFromReward(reward) {
+  return reward * 2;
+}
+
+export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onGoShop, onDownloadGame, onWatchAd, bestScore = 0 }) {
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [score, setScore] = useState(0);
   const [coinsCollected, setCoinsCollected] = useState(0);
@@ -33,7 +37,12 @@ export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onWa
 
   const isGameOver = timeLeft <= 0;
   const reward = useMemo(() => getRewardFromScore(score), [score]);
+  const xpGain = useMemo(() => getXpGainFromReward(reward), [reward]);
   const performanceMessage = useMemo(() => getPerformanceMessage(score), [score]);
+  const currentXp = 650;
+  const targetXp = 1000;
+  const nextXp = Math.min(currentXp + xpGain, targetXp);
+  const progressionPercent = Math.round((nextXp / targetXp) * 100);
 
   useEffect(() => {
     if (isGameOver) return undefined;
@@ -53,8 +62,9 @@ export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onWa
       score,
       coinsCollected,
       reward,
+      xpGain,
     });
-  }, [coinsCollected, isGameOver, onComplete, reward, score]);
+  }, [coinsCollected, isGameOver, onComplete, reward, score, xpGain]);
 
   const handleCollectCoin = () => {
     if (isGameOver) return;
@@ -89,13 +99,27 @@ export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onWa
           </div>
         </div>
         <p className="mt-3 text-sm text-zinc-200">Score : {score}</p>
+        <p className="text-sm text-zinc-200">XP gagnée : +{xpGain}</p>
         <p className="text-xs text-zinc-300">Ton meilleur score : {Math.max(bestScore, score)}</p>
         <p className="mt-1 text-sm text-orange-200">Bravo, tu as gagné +{reward} Max it Points</p>
         <p className="mt-1 text-xs text-zinc-400">{performanceMessage}</p>
 
+        <div className="mt-3 rounded-lg border border-white/10 bg-black/30 p-3 text-left">
+          <p className="text-xs text-zinc-300">Progression niveau : {nextXp} / {targetXp} XP</p>
+          <div className="mt-2 h-2 rounded-full bg-zinc-800">
+            <div className="h-full rounded-full bg-orangeBrand" style={{ width: `${progressionPercent}%` }} />
+          </div>
+        </div>
+
         <div className="mt-5 space-y-2">
           <button type="button" onClick={onUsePoints} className="w-full rounded-xl bg-orangeBrand px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110">
             Utiliser mes points
+          </button>
+          <button type="button" onClick={onGoShop} className="w-full rounded-xl border border-orangeBrand/60 bg-orangeBrand/10 px-3 py-2 text-sm font-medium text-orange-100">
+            Voir les offres boutique
+          </button>
+          <button type="button" onClick={onDownloadGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
+            Télécharger un jeu recommandé pour gagner +200 points
           </button>
           <button type="button" onClick={restartGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
             Rejouer

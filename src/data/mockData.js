@@ -33,22 +33,22 @@ export const pillars = [
   {
     id: 'pillar-shop',
     title: 'Gameshop',
-    subtitle: 'Top-ups, passes and digital items',
-    cta: 'Shop now',
+    subtitle: 'Recharges, pass et contenus digitaux',
+    cta: 'Voir la boutique',
     page: 'shop',
   },
   {
     id: 'pillar-esport',
     title: 'Esport',
-    subtitle: 'Tournaments and community competition',
-    cta: 'Compete',
+    subtitle: 'Tournois et compétition communautaire',
+    cta: 'Participer',
     page: 'esport',
   },
   {
     id: 'pillar-leaderboard',
     title: 'Leaderboard',
-    subtitle: 'Recognition, ranking and rewards',
-    cta: 'View ranking',
+    subtitle: 'Reconnaissance, classement et récompenses',
+    cta: 'Voir le classement',
     page: 'leaderboard',
   },
 ];
@@ -207,15 +207,15 @@ export const gamesByCategory = {
 };
 
 export const shopSections = {
-  'Top-ups': [
+  'Recharges': [
     {
       id: 'shop-1',
       title: 'Diamond Boost Pack',
       description: 'Fast refill for skins and upgrades.',
       price: '1,900 XOF',
       image: imagePlaceholders.shop.coins,
-      category: 'Top-ups',
-      badge: 'Popular',
+      category: 'Recharges',
+      badge: 'Populaire',
       fallback: '💎',
     },
     {
@@ -224,44 +224,44 @@ export const shopSections = {
       description: 'High-volume coins for heavy players.',
       price: '59 MAD',
       image: imagePlaceholders.shop.coins,
-      category: 'Top-ups',
+      category: 'Recharges',
       badge: '',
       fallback: '🪙',
     },
   ],
-  'Game passes': [
+  'Pass de jeu': [
     {
       id: 'shop-3',
       title: 'Premium Pass',
       description: '30-day rewards and exclusive missions.',
       price: '2,500 XOF',
       image: imagePlaceholders.shop.pass,
-      category: 'Game passes',
-      badge: 'Best value',
+      category: 'Pass de jeu',
+      badge: 'Meilleure offre',
       fallback: '🎟️',
     },
   ],
-  'Gift cards': [
+  'Cartes cadeaux': [
     {
       id: 'shop-4',
       title: 'Gaming Gift Card',
       description: 'Send value to friends and family.',
       price: '5,000 XOF',
       image: imagePlaceholders.shop.giftCard,
-      category: 'Gift cards',
+      category: 'Cartes cadeaux',
       badge: '',
       fallback: '🎁',
     },
   ],
-  Deals: [
+  Offres: [
     {
       id: 'shop-5',
       title: 'Weekend Deal Bundle',
       description: 'Pass + coins with limited promo pricing.',
       price: '3,900 XOF',
       image: imagePlaceholders.shop.deal,
-      category: 'Deals',
-      badge: 'Limited',
+      category: 'Offres',
+      badge: 'Limité',
       fallback: '🔥',
     },
   ],
@@ -272,7 +272,7 @@ export const tournaments = [
     id: 'tournament-1',
     title: 'Max it Champions Cup',
     game: 'Street Striker',
-    status: 'Upcoming',
+    status: 'À venir',
     prizePool: '120,000 XOF',
     participants: 128,
     image: imagePlaceholders.esport.featured,
@@ -282,7 +282,7 @@ export const tournaments = [
     id: 'tournament-2',
     title: 'Neon Rush Live Cup',
     game: 'Neon Runner',
-    status: 'Live',
+    status: 'En direct',
     prizePool: '80,000 XOF',
     participants: 96,
     image: imagePlaceholders.esport.liveCup,
@@ -292,7 +292,7 @@ export const tournaments = [
     id: 'tournament-3',
     title: 'Community Clash Finals',
     game: 'Sky Tactics',
-    status: 'Closed',
+    status: 'Fermé',
     prizePool: '45,000 XOF',
     participants: 64,
     image: imagePlaceholders.esport.communityClash,
@@ -301,27 +301,27 @@ export const tournaments = [
 ];
 
 export const leaderboardGlobal = [
-  { rank: 1, player: 'AwaGamer', country: 'Senegal', points: 980, badge: 'Legend' },
+  { rank: 1, player: 'AwaGamer', country: 'Senegal', points: 980, badge: 'Légende' },
   { rank: 2, player: 'NeoKing', country: "Côte d’Ivoire", points: 945, badge: 'Pro' },
-  { rank: 3, player: 'PixelFox', country: 'Maroc', points: 920, badge: 'Elite' },
-  { rank: 12, player: 'Paul', country: 'Maroc', points: 720, badge: 'Rising' },
-  { rank: 14, player: 'CamGiant', country: 'Cameroon', points: 700, badge: 'Rising' },
+  { rank: 3, player: 'PixelFox', country: 'Maroc', points: 920, badge: 'Élite' },
+  { rank: 12, player: 'Paul', country: 'Maroc', points: 720, badge: 'Montant' },
+  { rank: 14, player: 'CamGiant', country: 'Cameroun', points: 700, badge: 'Montant' },
 ];
 
 export const leaderboardCountry = [
-  { rank: 1, player: 'MinaAtlas', country: 'Maroc', points: 900, badge: 'Legend' },
+  { rank: 1, player: 'MinaAtlas', country: 'Maroc', points: 900, badge: 'Légende' },
   { rank: 2, player: 'RifSniper', country: 'Maroc', points: 860, badge: 'Pro' },
-  { rank: 3, player: 'Casashot', country: 'Maroc', points: 820, badge: 'Elite' },
-  { rank: 12, player: 'Paul', country: 'Maroc', points: 720, badge: 'Rising' },
-  { rank: 16, player: 'AtlasJoy', country: 'Maroc', points: 670, badge: 'Contender' },
+  { rank: 3, player: 'Casashot', country: 'Maroc', points: 820, badge: 'Élite' },
+  { rank: 12, player: 'Paul', country: 'Maroc', points: 720, badge: 'Montant' },
+  { rank: 16, player: 'AtlasJoy', country: 'Maroc', points: 670, badge: 'Compétiteur' },
 ];
 
 export const leaderboardFriends = [
-  { rank: 1, player: 'Amine', country: 'Maroc', points: 760, badge: 'Elite' },
-  { rank: 2, player: 'Paul', country: 'Maroc', points: 720, badge: 'Rising' },
-  { rank: 3, player: 'Fatou', country: 'Senegal', points: 690, badge: 'Contender' },
-  { rank: 4, player: 'Kader', country: 'Mali', points: 655, badge: 'Contender' },
-  { rank: 5, player: 'Aya', country: 'Cameroon', points: 620, badge: 'Starter' },
+  { rank: 1, player: 'Amine', country: 'Maroc', points: 760, badge: 'Élite' },
+  { rank: 2, player: 'Paul', country: 'Maroc', points: 720, badge: 'Montant' },
+  { rank: 3, player: 'Fatou', country: 'Senegal', points: 690, badge: 'Compétiteur' },
+  { rank: 4, player: 'Kader', country: 'Mali', points: 655, badge: 'Compétiteur' },
+  { rank: 5, player: 'Aya', country: 'Cameroun', points: 620, badge: 'Starter' },
 ];
 
 export const rewards = [
@@ -332,6 +332,6 @@ export const rewards = [
 
 export const upcomingEvents = [
   { id: 'event-1', title: 'Saturday Showdown', date: 'Saturday • 18:00', region: 'Morocco & Senegal' },
-  { id: 'event-2', title: 'Orange Live Cup', date: 'Sunday • 16:30', region: "Côte d’Ivoire" },
+  { id: 'event-2', title: 'Orange Cup en direct', date: 'Dimanche • 16:30', region: "Côte d’Ivoire" },
   { id: 'event-3', title: 'Arcade Open Night', date: 'Tuesday • 19:00', region: 'Cameroon & Mali' },
 ];

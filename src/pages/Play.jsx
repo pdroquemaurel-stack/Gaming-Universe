@@ -58,7 +58,7 @@ export default function Play({ onNavigate }) {
     [catchStats, currentCategory?.instantPlay],
   );
 
-  const handleCatchComplete = ({ score, reward }) => {
+  const handleCatchComplete = ({ score, reward, xpGain }) => {
     const bestScore = Math.max(catchStats.bestScore, score);
 
     window.localStorage.setItem(STORAGE_KEYS.lastScore, String(score));
@@ -66,7 +66,7 @@ export default function Play({ onNavigate }) {
     window.localStorage.setItem(STORAGE_KEYS.bestScore, String(bestScore));
 
     setCatchStats({ lastScore: score, lastReward: reward, bestScore });
-    showToast(`+${reward} Max it Points gagnés`);
+    showToast(`Partie terminée : +${reward} points et +${xpGain} XP`);
   };
 
   return (
@@ -134,8 +134,16 @@ export default function Play({ onNavigate }) {
               onBack={() => setActiveGame(null)}
               onComplete={handleCatchComplete}
               onUsePoints={() => {
-                onNavigate('/points');
+                onNavigate('/points?tab=use');
                 setActiveGame(null);
+              }}
+              onGoShop={() => {
+                onNavigate('/shop');
+                setActiveGame(null);
+              }}
+              onDownloadGame={() => {
+                showToast('+50 points gagnés');
+                window.open('https://play.google.com/store/apps/details?id=com.dts.freefireth', '_blank', 'noopener,noreferrer');
               }}
               onWatchAd={() => showToast('Publicité terminée — nouvelle tentative débloquée')}
               bestScore={catchStats.bestScore}

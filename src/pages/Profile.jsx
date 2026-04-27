@@ -6,7 +6,7 @@ const profile = {
   points: '12 450',
   gamesPlayed: 186,
   playHours: 342,
-  rank: '#14 Global',
+  rank: '#14 Mondial',
   favoriteGames: ['League of Legends', 'Fortnite', 'Free Fire', 'Royal Match'],
   externalConnecterions: ['League of Legends', 'Fortnite', 'Free Fire', 'EA SPORTS FC'],
 };

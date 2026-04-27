@@ -2,6 +2,7 @@ import { useState } from 'react';
 import AssetImage from '../components/AssetImage';
 import ECardItem from '../components/ECardItem';
 import ModalOverlay from '../components/ModalOverlay';
+import PreviousPurchaseCard from '../components/PreviousPurchaseCard';
 import SectionHeader from '../components/SectionHeader';
 import ShopGameBubble from '../components/ShopGameBubble';
 import ShopItemCard from '../components/ShopItemCard';
@@ -10,6 +11,7 @@ import ShopSubscriptionCard from '../components/ShopSubscriptionCard';
 import { useToast } from '../components/ToastProvider';
 import {
   popularShopGames,
+  previousPurchases,
   shopECards,
   shopPromotions,
   shopSubscriptions,
@@ -40,7 +42,7 @@ export default function Gameshop({ onNavigate }) {
 
         <div className="flex items-center justify-between rounded-xl border border-white/10 bg-zinc-950/90 p-3">
           <p className="text-sm font-semibold text-white">🪙 12 450 points</p>
-          <button type="button" onClick={() => onNavigate('/points')} className="rounded-lg border border-orangeBrand px-3 py-1.5 text-xs font-semibold text-orangeBrand">Voir mes points</button>
+          <button type="button" onClick={() => onNavigate('/points?tab=use')} className="rounded-lg border border-orangeBrand px-3 py-1.5 text-xs font-semibold text-orangeBrand">Voir mes points</button>
         </div>
       </header>
 
@@ -96,7 +98,16 @@ export default function Gameshop({ onNavigate }) {
           <li>• Accède à des abonnements premium</li>
           <li>• Participe à des tirages au sort</li>
         </ul>
-        <button type="button" onClick={() => onNavigate('/points')} className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-sm font-semibold text-white">Voir mes points</button>
+        <button type="button" onClick={() => onNavigate('/points?tab=use')} className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-sm font-semibold text-white">Voir mes points</button>
+      </div>
+
+      <div className="space-y-2">
+        <SectionHeader title="Mes anciens achats" subtitle="Retrouve tes derniers achats gaming" />
+        <div className="space-y-2">
+          {previousPurchases.map((purchase) => (
+            <PreviousPurchaseCard key={purchase.id} purchase={purchase} onRepurchase={() => showToast('Achat simulé pour la démo')} />
+          ))}
+        </div>
       </div>
 
       {selectedGame ? (
