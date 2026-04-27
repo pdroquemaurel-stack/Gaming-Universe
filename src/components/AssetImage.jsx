@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 
-export default function AssetImage({ src, alt, fallback = '🎮', className = '', imgClassName = '', rounded = 'rounded-xl' }) {
+export default function AssetImage({
+  src,
+  alt,
+  fallback = '🎮',
+  className = '',
+  imgClassName = '',
+  rounded = 'rounded-xl',
+  fit = 'cover',
+}) {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
@@ -8,6 +16,7 @@ export default function AssetImage({ src, alt, fallback = '🎮', className = ''
   }, [src]);
 
   const shouldShowImage = Boolean(src) && !hasError;
+  const fitClass = fit === 'contain' ? 'object-contain p-2' : 'object-cover';
 
   return (
     <div className={`relative overflow-hidden bg-zinc-800 ${rounded} ${className}`}>
@@ -15,11 +24,15 @@ export default function AssetImage({ src, alt, fallback = '🎮', className = ''
         <img
           src={src}
           alt={alt}
-          className={`h-full w-full object-cover ${imgClassName}`}
+          className={`h-full w-full ${fitClass} ${imgClassName}`}
           onError={() => setHasError(true)}
+          loading="lazy"
         />
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center text-3xl">{fallback}</div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-zinc-900 text-zinc-300">
+          <span className="text-3xl">{fallback}</span>
+          <span className="text-[10px] uppercase tracking-wide text-zinc-500">Image indisponible</span>
+        </div>
       )}
     </div>
   );

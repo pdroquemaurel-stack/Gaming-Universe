@@ -5,20 +5,40 @@ import PlayerStatusCard from '../components/PlayerStatusCard';
 import SectionHeader from '../components/SectionHeader';
 import { discoverItems, favoriteGames, lastPurchases, missions, playerProfile } from '../data/mockData';
 
-export default function Home() {
+const kpis = [
+  { label: 'points gagnés', value: '12 450' },
+  { label: 'jeux actifs', value: '8' },
+  { label: 'tournois en cours', value: '3' },
+];
+
+export default function Home({ onNavigate }) {
   return (
     <section className="space-y-6">
-      <header className="orange-glow card-base space-y-2 bg-gradient-to-br from-zinc-900 to-black">
-        <h1 className="text-2xl font-bold tracking-tight text-white">Max it <span className="text-orangeBrand">Gaming</span></h1>
-        <p className="text-base font-semibold text-white">Play. Pay. Compete. Get rewarded.</p>
-        <p className="text-sm text-zinc-300">Your gaming hub inside Max it</p>
+      <header className="orange-glow card-base space-y-4 bg-gradient-to-br from-zinc-900 to-black">
+        <p className="text-xs uppercase tracking-[0.2em] text-orangeBrand">Max it Gaming</p>
+        <h1 className="text-2xl font-bold tracking-tight text-white">Le hub gaming de Max it</h1>
+        <p className="text-sm text-zinc-200">Joue, gagne des points, achète du contenu et participe à des compétitions.</p>
+
+        <div className="grid grid-cols-3 gap-2">
+          {kpis.map((kpi) => (
+            <article key={kpi.label} className="rounded-xl border border-white/10 bg-black/30 p-2 text-center">
+              <p className="text-sm font-extrabold text-orangeBrand">{kpi.value}</p>
+              <p className="text-[10px] uppercase tracking-wide text-zinc-400">{kpi.label}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <button type="button" onClick={() => onNavigate('/play')} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white">Commencer à jouer</button>
+          <button type="button" onClick={() => onNavigate('/points')} className="rounded-lg border border-orangeBrand px-3 py-2 text-xs font-semibold text-orangeBrand">Utiliser mes points</button>
+        </div>
       </header>
 
       <PlayerStatusCard profile={playerProfile} />
       <MissionCard mission={missions[0]} />
 
       <div>
-        <SectionHeader title="Discover" subtitle="Trending now" />
+        <SectionHeader title="À découvrir" subtitle="Tendances du moment" />
         <Carousel
           items={discoverItems}
           autoScrollMs={3200}
@@ -30,7 +50,7 @@ export default function Home() {
       </div>
 
       <div>
-        <SectionHeader title="Favorites" subtitle="Your quick picks" />
+        <SectionHeader title="Favoris" subtitle="Accès rapide" />
         <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
           {favoriteGames.map((game) => (
             <article key={game.id} className="card-base w-36 flex-shrink-0 overflow-hidden p-0">
@@ -45,7 +65,7 @@ export default function Home() {
       </div>
 
       <div>
-        <SectionHeader title="Last purchases" subtitle="Recent transactions" />
+        <SectionHeader title="Derniers achats" subtitle="Transactions récentes" />
         <div className="space-y-2">
           {lastPurchases.map((purchase) => (
             <article key={purchase.id} className="card-base flex items-center justify-between gap-3 p-3">

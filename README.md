@@ -1,98 +1,81 @@
-# Max it Gaming — Orange Product Vision POC
+# Max it Gaming — POC Product Vision
 
-This project is a mobile-first product vision demo for **Orange / Max it Gaming**.
-It showcases a simple super-app journey:
+POC mobile-first construit avec **React + Vite + Tailwind CSS**.
 
-**Play → Pay → Compete → Reward**
+Parcours principal de la démo :
 
-The implementation is intentionally beginner-friendly:
-- React + Vite + Tailwind CSS
-- No backend
-- No authentication
-- No database
-- Mocked data only
-- State-based page navigation
+**Jouer → Gagner → Utiliser**
 
-## Screens included
+## Stack et contraintes
 
-- Home
-- Play (Free Gaming)
-- Gameshop
-- Esport Arena
-- Leaderboard
+- Frontend uniquement (pas de backend)
+- Données entièrement mockées
+- Déploiement Render Static Site
+- Build Render : `npm install && npm run build`
+- Dossier de publication : `dist`
+
+## Écrans inclus
+
+- Accueil
+- Jouer
+- Boutique
+- E-Sport
 - Points
+- Classement
+- Profil
 
-## Project structure
+## Images en ligne
 
-```bash
-src/
-  components/
-  pages/
-  data/
-  assets/
-```
+Les visuels peuvent être alimentés directement par des **URLs externes HTTPS** (Google Play, YouTube, Twitch, sites officiels).
 
-## Assets à uploader
+Le composant image gère les fallbacks si une URL ne charge pas.
 
-| Asset | Chemin attendu | Usage | Format recommandé | Dimension recommandée | Statut |
-|---|---|---|---|---|---|
-| coin.png | /public/assets/coin.png | Icône Max it Points | PNG (transparent) | 128x128 | Requis |
-| avatar.png | /public/assets/avatar.png | Avatar utilisateur | PNG / JPG | 256x256 | Requis |
-| leaderboard.png | /public/assets/leaderboard.png | Icône leaderboard | PNG (transparent) | 128x128 | Requis |
-| game-placeholder.png | /public/assets/placeholders/game-placeholder.png | Fallback jeux | PNG | 640x360 | Requis |
-| app-placeholder.png | /public/assets/placeholders/app-placeholder.png | Fallback apps | PNG | 640x360 | Requis |
-| video-placeholder.png | /public/assets/placeholders/video-placeholder.png | Fallback vidéos | PNG | 1280x720 | Requis |
-| tournament-placeholder.png | /public/assets/placeholders/tournament-placeholder.png | Fallback tournois | PNG | 640x360 | Requis |
-| images mini-jeux | /public/assets/games/ | Cards Instant Play | PNG / JPG | 640x360 | Requis |
-| catch-the-coin.png | /public/assets/games/catch-the-coin.png | Card du mini-jeu Catch the Coin | PNG / JPG | 640x360 | Recommandé |
-| images apps | /public/assets/apps/ | Apps Play Store | PNG / JPG | 640x360 | Requis |
-| logos jeux shop | /public/assets/shop/games/ | Bulles jeux populaires | PNG (transparent) | 256x256 | Requis |
-| images bonus shop | /public/assets/shop/items/ | Bonus / IAP | PNG / JPG | 640x360 | Requis |
-| thumbnails VOD | /public/assets/esport/videos/ | Vidéos VOD | PNG / JPG | 1280x720 | Requis |
-| thumbnails live | /public/assets/esport/live/ | Lives | PNG / JPG | 1280x720 | Requis |
-| logos tournois | /public/assets/esport/tournaments/ | Tournois | PNG (transparent) | 256x256 | Requis |
+## Où modifier les images
 
-Notes:
-- Si une image manque, l’application doit afficher un fallback visuel propre.
-- Les fichiers peuvent être remplacés plus tard sans changer le code si le nom et le chemin sont respectés.
-- Les champs d’image dans les fichiers de données peuvent pointer vers :
-  - des fichiers locaux dans `/public/assets/`
-  - des URLs distantes Google Play Store (ex: `https://play-lh.googleusercontent.com/...`) pour un POC.
+- Play : `src/data/play.js`
+- Shop : `src/data/shop.js`
+- E-Sport : `src/data/esport.js`
+- Home : `src/data/mockData.js`
 
-## Données mockées centralisées
+## Comment mettre à jour les images en ligne
 
-- `src/data/play.js`
-- `src/data/shop.js`
-- `src/data/esport.js`
-- `src/data/points.js`
+1. Ouvrir la page Google Play / YouTube / Twitch / site officiel du jeu.
+2. Clic droit sur l’image souhaitée.
+3. Copier l’adresse de l’image.
+4. Coller l’URL dans le champ `image`, `logo`, `thumbnail` ou `cover` du fichier data correspondant.
+5. Vérifier que l’image commence par `https://`.
+6. Relancer `npm run dev` ou `npm run build`.
 
-## Modifier les liens Google Play
+## Formats recommandés
 
-- Aller dans `src/data/play.js` (`playStoreUrl` de chaque app)
-- Aller dans `src/data/shop.js` (`storeUrl` de chaque jeu)
+- Apps / jeux : carré ou 16:9 accepté
+- Logos : carré transparent recommandé
+- Vidéos : 16:9
+- Tournois : 16:9 ou logo carré
 
-## Run locally
+## Règle d’affichage
 
-Install dependencies:
+Le composant image supporte plusieurs ratios grâce à :
+
+- `fit="cover"` pour les cards visuelles
+- `fit="contain"` pour logos/icônes
+- fallback visuel en cas d’erreur de chargement
+
+## Développement local
 
 ```bash
 npm install
-```
-
-Start dev server:
-
-```bash
 npm run dev
 ```
 
-Build production bundle:
+## Build production
 
 ```bash
 npm run build
 ```
 
-## Deploy on Render
+## Déploiement Render
 
-- **Service type:** Static Site
-- **Build command:** `npm install && npm run build`
-- **Publish directory:** `dist`
+- Type : **Static Site**
+- Build command : `npm install && npm run build`
+- Publish directory : `dist`

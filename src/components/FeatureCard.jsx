@@ -1,13 +1,9 @@
-export default function FeatureCard({ title, description, cta, image, fallback = '🎮' }) {
-  const hasImage = Boolean(image);
+import AssetImage from './AssetImage';
 
+export default function FeatureCard({ title, description, cta, image, fallback = '🎮' }) {
   return (
     <article className="card-base relative min-h-44 overflow-hidden p-0">
-      {hasImage ? (
-        <img src={image} alt={title} className="h-44 w-full object-cover" />
-      ) : (
-        <div className="flex h-44 w-full items-center justify-center bg-zinc-800 text-5xl">{fallback}</div>
-      )}
+      <AssetImage src={image} alt={title} fallback={fallback} className="h-44 w-full" rounded="rounded-none" />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
 

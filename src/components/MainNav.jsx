@@ -1,7 +1,7 @@
 const navItems = [
-  { label: 'HOME', path: '/' },
-  { label: 'PLAY', path: '/play' },
-  { label: 'SHOP', path: '/shop' },
+  { label: 'ACCUEIL', path: '/' },
+  { label: 'JOUER', path: '/play' },
+  { label: 'BOUTIQUE', path: '/shop' },
   { label: 'E-SPORT', path: '/esport' },
 ];
 

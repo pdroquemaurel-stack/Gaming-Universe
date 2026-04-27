@@ -9,14 +9,14 @@ export default function PlayerStatusCard({ profile }) {
       </div>
       <div>
         <div className="mb-2 flex items-center justify-between text-xs text-zinc-300">
-          <span>XP progress</span>
+          <span>Progression XP</span>
           <span>{profile.xpProgress}%</span>
         </div>
         <ProgressBar value={profile.xpProgress} />
       </div>
       <div className="grid grid-cols-2 gap-2 text-xs">
-        <div className="rounded-xl border border-white/10 bg-black/30 p-2 text-zinc-300">Coins <p className="text-sm font-semibold text-white">{profile.coins.toLocaleString()}</p></div>
-        <div className="rounded-xl border border-white/10 bg-black/30 p-2 text-zinc-300">Daily streak <p className="text-sm font-semibold text-white">{profile.dailyStreak} days</p></div>
+        <div className="rounded-xl border border-white/10 bg-black/30 p-2 text-zinc-300">Points <p className="text-sm font-semibold text-white">{profile.coins.toLocaleString()}</p></div>
+        <div className="rounded-xl border border-white/10 bg-black/30 p-2 text-zinc-300">Série du jour <p className="text-sm font-semibold text-white">{profile.dailyStreak} jours</p></div>
       </div>
     </article>
   );

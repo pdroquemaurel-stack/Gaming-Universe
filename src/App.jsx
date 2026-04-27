@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import GlobalHeader from './components/GlobalHeader';
 import MainNav from './components/MainNav';
+import { ToastProvider } from './components/ToastProvider';
 import Esport from './pages/Esport';
 import Gameshop from './pages/Gameshop';
 import Home from './pages/Home';
@@ -58,10 +59,12 @@ export default function App() {
   const CurrentView = useMemo(() => routeMap[currentPath] || Home, [currentPath]);
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-10 pt-28 text-white">
-      <GlobalHeader onNavigate={navigate} />
-      <MainNav currentPath={currentPath} onNavigate={navigate} />
-      <CurrentView currentPath={currentPath} onNavigate={navigate} />
-    </div>
+    <ToastProvider>
+      <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-10 pt-28 text-white">
+        <GlobalHeader onNavigate={navigate} />
+        <MainNav currentPath={currentPath} onNavigate={navigate} />
+        <CurrentView currentPath={currentPath} onNavigate={navigate} />
+      </div>
+    </ToastProvider>
   );
 }

@@ -10,8 +10,8 @@ export const pointsEarnWays = [
 ];
 
 export const pointsUseWays = [
-  { id: 'use-1', title: 'Ticket S25 Ultra Giveaway', description: '1 ticket de tirage au sort.', cost: 500, cta: 'Participer', badge: 'Popular' },
-  { id: 'use-2', title: '1 Go Data Bundle', description: 'Data mobile valable 7 jours.', cost: 1000, cta: 'Échanger', badge: 'Best value' },
-  { id: 'use-3', title: '-20% sur un pack coins', description: 'Réduction IAP gaming.', cost: 300, cta: 'Utiliser', badge: 'Limited' },
+  { id: 'use-1', title: 'Ticket tirage S25 Ultra', description: '1 ticket de tirage au sort.', cost: 500, cta: 'Participer', badge: 'Populaire' },
+  { id: 'use-2', title: 'Pack Data 1 Go', description: 'Data mobile valable 7 jours.', cost: 1000, cta: 'Échanger', badge: 'Meilleure offre' },
+  { id: 'use-3', title: '-20% sur un pack coins', description: 'Réduction IAP gaming.', cost: 300, cta: 'Utiliser', badge: 'Limité' },
   { id: 'use-4', title: 'Skin exclusif Max it', description: 'Bonus cosmétique premium.', cost: 800, cta: 'Utiliser' },
 ];

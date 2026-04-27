@@ -11,7 +11,7 @@ export default function AppCard({ app }) {
       <div className="space-y-2 p-3">
         <h3 className="text-sm font-semibold text-white">{app.name}</h3>
         <p className="text-xs text-zinc-300">⭐ {app.rating} · {app.downloads}</p>
-        <a href={app.playStoreUrl} target="_blank" rel="noreferrer" className="inline-flex w-full items-center justify-center rounded-lg border border-orangeBrand px-3 py-2 text-xs font-semibold text-orangeBrand">Download</a>
+        <a href={app.playStoreUrl} target="_blank" rel="noreferrer" className="inline-flex w-full items-center justify-center rounded-lg border border-orangeBrand px-3 py-2 text-xs font-semibold text-orangeBrand">Télécharger</a>
       </div>
     </article>
   );
