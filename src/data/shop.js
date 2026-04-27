@@ -204,9 +204,9 @@ export const shopSubscriptions = [
 ];
 
 export const shopECards = [
-  { id: 'playstation-card', name: 'PlayStation Store', image: 'https://images.unsplash.com/photo-1486401899868-0e435ed85128?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
-  { id: 'xbox-card', name: 'Xbox', image: 'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-10% avec 1 000 points', badge: 'Instantané' },
-  { id: 'steam-card', name: 'Steam', image: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
+  { id: 'playstation-card', name: 'PlayStation Store', image: 'https://gmedia.playstation.com/is/image/SIEPDC/gift-cards-digital-card-keyart-01-en-20oct22?$facebook$', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
+  { id: 'xbox-card', name: 'Xbox', image: 'https://thumbs.dreamstime.com/b/e-r-143552371.jpg', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-10% avec 1 000 points', badge: 'Instantané' },
+  { id: 'steam-card', name: 'Steam', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyPF9UGCqP5ee_owuCZs_rkxb8gcT80bTWIw&s', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
   { id: 'google-play-card', name: 'Google Play', image: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: 'Bonus 200 points offert', badge: 'Instantané' },
   { id: 'nintendo-card', name: 'Nintendo eShop', image: 'https://images.unsplash.com/photo-1617096200347-cb04ae810b1d?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Digital' },
   { id: 'riot-card', name: 'Riot Games', image: 'https://images.unsplash.com/photo-1548686304-89d188a80029?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-10% avec 1 000 points', badge: 'Digital' },
