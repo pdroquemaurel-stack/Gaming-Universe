@@ -1,19 +1,21 @@
+import { useState } from 'react';
 import PointsBadge from '../components/PointsBadge';
 import Tabs from '../components/Tabs';
 import { pointsBalance, pointsEarnWays, pointsUseWays } from '../data/points';
 import AssetImage from '../components/AssetImage';
 import SectionHeader from '../components/SectionHeader';
-import { useState } from 'react';
+import { useToast } from '../components/ToastProvider';
 
 export default function Points() {
   const [activeTab, setActiveTab] = useState('earn');
+  const { showToast } = useToast();
 
   return (
     <section className="space-y-4">
       <header className="card-base orange-glow space-y-3 bg-gradient-to-r from-orangeBrand/20 to-zinc-900/80">
         <p className="text-xs uppercase tracking-wide text-orangeBrand">Max it Points</p>
         <div className="flex items-center gap-3">
-          <AssetImage src="/assets/coin.png" alt="Coin" fallback="🪙" className="h-12 w-12" rounded="rounded-full" />
+          <AssetImage src="/assets/coin.png" alt="Pièce" fallback="🪙" className="h-12 w-12" rounded="rounded-full" fit="contain" />
           <h1 className="text-3xl font-extrabold text-white">{pointsBalance.toLocaleString('fr-FR')} points</h1>
         </div>
       </header>
@@ -34,7 +36,13 @@ export default function Points() {
             </div>
             <div className="flex items-center justify-between">
               <PointsBadge points={activeTab === 'earn' ? item.points : item.cost} prefix={activeTab === 'earn' ? '+' : '-'} />
-              <button type="button" className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white">{item.cta}</button>
+              <button
+                type="button"
+                onClick={() => showToast(activeTab === 'earn' ? 'Récompense ajoutée à votre compte' : 'Demande prise en compte')}
+                className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white"
+              >
+                {item.cta}
+              </button>
             </div>
           </article>
         ))}

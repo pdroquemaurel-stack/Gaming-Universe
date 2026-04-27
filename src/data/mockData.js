@@ -2,11 +2,11 @@ import { imagePlaceholders } from '../assets/imagePlaceholders';
 
 export const playerProfile = {
   name: 'Paul',
-  level: 'Level 8',
+  level: 'Niveau 8',
   xpProgress: 68,
   coins: 2450,
   dailyStreak: 5,
-  country: 'Morocco',
+  country: 'Maroc',
   points: 720,
   rank: 12,
 };
@@ -14,10 +14,10 @@ export const playerProfile = {
 export const missions = [
   {
     id: 'mission-today',
-    title: "Today's mission",
-    text: 'Play 3 games and earn 100 coins',
-    cta: 'Start mission',
-    reward: '+100 coins',
+    title: 'Mission du jour',
+    text: 'Joue à 3 jeux et gagne 100 points',
+    cta: 'Commencer',
+    reward: '+100 points',
     image: imagePlaceholders.rewards.dailyMission,
   },
 ];
@@ -27,7 +27,7 @@ export const pillars = [
     id: 'pillar-play',
     title: 'Free Gaming',
     subtitle: 'Instant games to drive engagement',
-    cta: 'Play now',
+    cta: 'Jouer maintenant',
     page: 'play',
   },
   {
@@ -56,33 +56,33 @@ export const pillars = [
 export const discoverItems = [
   {
     id: 'discover-trend',
-    title: 'Trending game',
-    description: 'Neon Runner is climbing this week in Morocco and Senegal.',
-    cta: 'Play now',
+    title: 'Jeu tendance',
+    description: 'Neon Runner explose cette semaine au Maroc et au Sénégal.',
+    cta: 'Jouer maintenant',
     image: imagePlaceholders.discover.trending,
     fallback: '🔥',
   },
   {
     id: 'discover-weekly',
-    title: 'Weekly tournament',
-    description: 'Street Striker Cup opens this Friday with regional prizes.',
-    cta: 'Join event',
+    title: 'Tournoi hebdomadaire',
+    description: 'La Street Striker Cup ouvre ce vendredi avec des prix régionaux.',
+    cta: 'Rejoindre',
     image: imagePlaceholders.discover.weekly,
     fallback: '🏆',
   },
   {
     id: 'discover-shop',
-    title: 'Gameshop promo',
-    description: 'Top-up bundles now include bonus coins for Orange Money users.',
-    cta: 'See deals',
+    title: 'Promo boutique',
+    description: 'Les bundles recharge incluent des bonus points pour les utilisateurs Orange Money.',
+    cta: 'Voir les offres',
     image: imagePlaceholders.discover.promo,
     fallback: '🛍️',
   },
   {
     id: 'discover-daily',
-    title: 'Daily challenge',
-    description: 'Complete today’s challenge and unlock a mission badge.',
-    cta: 'Start challenge',
+    title: 'Défi du jour',
+    description: 'Termine le défi du jour et débloque un badge mission.',
+    cta: 'Commencer le défi',
     image: imagePlaceholders.discover.challenge,
     fallback: '🎯',
   },
@@ -91,14 +91,14 @@ export const discoverItems = [
 export const favoriteGames = [
   { id: 'fav-1', title: 'Neon Runner', genre: 'Arcade', image: imagePlaceholders.favorites.neonRunner, fallback: '🕹️' },
   { id: 'fav-2', title: 'Puzzle Clash', genre: 'Puzzle', image: imagePlaceholders.play.puzzle, fallback: '🧩' },
-  { id: 'fav-3', title: 'Street Striker', genre: 'Sports', image: imagePlaceholders.play.sports, fallback: '⚽' },
+  { id: 'fav-3', title: 'Street Striker', genre: 'Sport', image: imagePlaceholders.play.sports, fallback: '⚽' },
   { id: 'fav-4', title: 'Sky Tactics', genre: 'Strategy', image: imagePlaceholders.play.strategy, fallback: '♟️' },
 ];
 
 export const lastPurchases = [
-  { id: 'purchase-1', item: 'Diamond Pack', game: 'Neon Runner', price: '39 MAD', image: imagePlaceholders.purchase.diamondPack, icon: '💎' },
-  { id: 'purchase-2', item: 'Premium Pass', game: 'Street Striker', price: '2,500 XOF', image: imagePlaceholders.shop.pass, icon: '🎟️' },
-  { id: 'purchase-3', item: 'Coin Bundle', game: 'Puzzle Clash', price: '1,900 XOF', image: imagePlaceholders.shop.coins, icon: '🪙' },
+  { id: 'purchase-1', item: 'Pack Diamants', game: 'Neon Runner', price: '39 MAD', image: imagePlaceholders.purchase.diamondPack, icon: '💎' },
+  { id: 'purchase-2', item: 'Pass Premium', game: 'Street Striker', price: '2,500 XOF', image: imagePlaceholders.shop.pass, icon: '🎟️' },
+  { id: 'purchase-3', item: 'Pack Coins', game: 'Puzzle Clash', price: '1,900 XOF', image: imagePlaceholders.shop.coins, icon: '🪙' },
 ];
 
 export const playCategories = ['Action', 'Puzzle', 'Sports', 'Arcade', 'Strategy'];
@@ -148,7 +148,7 @@ export const gamesByCategory = {
     {
       id: 'sports-1',
       title: 'Street Striker',
-      genre: 'Sports',
+      genre: 'Sport',
       image: imagePlaceholders.play.sports,
       tags: ['Trending', 'Rewarded'],
       reward: 'Win 1 match for mission progress',
@@ -157,7 +157,7 @@ export const gamesByCategory = {
     {
       id: 'sports-2',
       title: 'Hoops Now',
-      genre: 'Sports',
+      genre: 'Sport',
       image: imagePlaceholders.play.sports,
       tags: ['Free'],
       reward: '',
@@ -303,22 +303,22 @@ export const tournaments = [
 export const leaderboardGlobal = [
   { rank: 1, player: 'AwaGamer', country: 'Senegal', points: 980, badge: 'Legend' },
   { rank: 2, player: 'NeoKing', country: "Côte d’Ivoire", points: 945, badge: 'Pro' },
-  { rank: 3, player: 'PixelFox', country: 'Morocco', points: 920, badge: 'Elite' },
-  { rank: 12, player: 'Paul', country: 'Morocco', points: 720, badge: 'Rising' },
+  { rank: 3, player: 'PixelFox', country: 'Maroc', points: 920, badge: 'Elite' },
+  { rank: 12, player: 'Paul', country: 'Maroc', points: 720, badge: 'Rising' },
   { rank: 14, player: 'CamGiant', country: 'Cameroon', points: 700, badge: 'Rising' },
 ];
 
 export const leaderboardCountry = [
-  { rank: 1, player: 'MinaAtlas', country: 'Morocco', points: 900, badge: 'Legend' },
-  { rank: 2, player: 'RifSniper', country: 'Morocco', points: 860, badge: 'Pro' },
-  { rank: 3, player: 'Casashot', country: 'Morocco', points: 820, badge: 'Elite' },
-  { rank: 12, player: 'Paul', country: 'Morocco', points: 720, badge: 'Rising' },
-  { rank: 16, player: 'AtlasJoy', country: 'Morocco', points: 670, badge: 'Contender' },
+  { rank: 1, player: 'MinaAtlas', country: 'Maroc', points: 900, badge: 'Legend' },
+  { rank: 2, player: 'RifSniper', country: 'Maroc', points: 860, badge: 'Pro' },
+  { rank: 3, player: 'Casashot', country: 'Maroc', points: 820, badge: 'Elite' },
+  { rank: 12, player: 'Paul', country: 'Maroc', points: 720, badge: 'Rising' },
+  { rank: 16, player: 'AtlasJoy', country: 'Maroc', points: 670, badge: 'Contender' },
 ];
 
 export const leaderboardFriends = [
-  { rank: 1, player: 'Amine', country: 'Morocco', points: 760, badge: 'Elite' },
-  { rank: 2, player: 'Paul', country: 'Morocco', points: 720, badge: 'Rising' },
+  { rank: 1, player: 'Amine', country: 'Maroc', points: 760, badge: 'Elite' },
+  { rank: 2, player: 'Paul', country: 'Maroc', points: 720, badge: 'Rising' },
   { rank: 3, player: 'Fatou', country: 'Senegal', points: 690, badge: 'Contender' },
   { rank: 4, player: 'Kader', country: 'Mali', points: 655, badge: 'Contender' },
   { rank: 5, player: 'Aya', country: 'Cameroon', points: 620, badge: 'Starter' },

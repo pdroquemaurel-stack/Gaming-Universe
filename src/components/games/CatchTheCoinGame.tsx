@@ -16,13 +16,13 @@ export function getRewardFromScore(score) {
 }
 
 function getPerformanceMessage(score) {
-  if (score >= 15) return 'Amazing performance';
-  if (score >= 10) return 'Great score';
-  if (score >= 5) return 'Good run';
-  return 'Nice start';
+  if (score >= 15) return 'Performance incroyable';
+  if (score >= 10) return 'Très bon score';
+  if (score >= 5) return 'Belle partie';
+  return 'Bon début';
 }
 
-export default function CatchTheCoinGame({ onBack, onComplete }) {
+export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onWatchAd, bestScore = 0 }) {
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [score, setScore] = useState(0);
   const [coinsCollected, setCoinsCollected] = useState(0);
@@ -81,35 +81,37 @@ export default function CatchTheCoinGame({ onBack, onComplete }) {
   if (isGameOver) {
     return (
       <div className="rounded-2xl border border-orangeBrand bg-[#121212] p-4 text-center shadow-lg shadow-orangeBrand/10">
-        <p className="text-xs uppercase tracking-[0.18em] text-orangeBrand">Game completed</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-orangeBrand">Partie terminée</p>
         <h4 className="mt-1 text-xl font-bold text-white">Catch the Coin</h4>
         <div className="mt-4 flex justify-center">
           <div className="rounded-full border border-orangeBrand/60 bg-orangeBrand/20 px-5 py-2 text-sm font-semibold text-orange-100">
             +{reward} Max it Points
           </div>
         </div>
-        <p className="mt-4 text-sm text-zinc-200">You collected {coinsCollected} coins</p>
-        <p className="mt-1 text-lg font-semibold text-white">Score: {score}</p>
-        <p className="mt-1 text-sm text-orange-200">{performanceMessage}</p>
-        <div className="mt-2 text-xs text-zinc-400">
-          <p>You are #8 today</p>
-          <p>Top score today: 22</p>
-        </div>
+        <p className="mt-3 text-sm text-zinc-200">Score : {score}</p>
+        <p className="text-xs text-zinc-300">Ton meilleur score : {Math.max(bestScore, score)}</p>
+        <p className="mt-1 text-sm text-orange-200">Bravo, tu as gagné +{reward} Max it Points</p>
+        <p className="mt-1 text-xs text-zinc-400">{performanceMessage}</p>
 
         <div className="mt-5 space-y-2">
-          <button
-            type="button"
-            onClick={restartGame}
-            className="w-full rounded-xl bg-orangeBrand px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110"
-          >
-            Play again
+          <button type="button" onClick={onUsePoints} className="w-full rounded-xl bg-orangeBrand px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110">
+            Utiliser mes points
+          </button>
+          <button type="button" onClick={restartGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
+            Rejouer
           </button>
           <button
             type="button"
-            onClick={onBack}
-            className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100"
+            onClick={() => {
+              onWatchAd?.();
+              restartGame();
+            }}
+            className="w-full rounded-xl border border-orangeBrand/40 bg-orangeBrand/10 px-3 py-2 text-sm font-medium text-orange-100"
           >
-            Back to Play
+            Regarder une pub pour rejouer et améliorer mon score
+          </button>
+          <button type="button" onClick={onBack} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-300">
+            Retour à Jouer
           </button>
         </div>
       </div>
@@ -121,10 +123,10 @@ export default function CatchTheCoinGame({ onBack, onComplete }) {
       <div className="flex items-center justify-between rounded-xl border border-orangeBrand/40 bg-zinc-900/90 p-3">
         <div>
           <h4 className="text-base font-bold text-white">Catch the Coin</h4>
-          <p className="text-xs text-zinc-300">Tap the coin as fast as you can</p>
+          <p className="text-xs text-zinc-300">Attrape les pièces le plus vite possible</p>
         </div>
         <div className="text-right">
-          <p className="text-xs uppercase tracking-wide text-zinc-400">Time</p>
+          <p className="text-xs uppercase tracking-wide text-zinc-400">Temps</p>
           <p className="text-lg font-bold text-orangeBrand">{timeLeft}s</p>
         </div>
       </div>
@@ -135,27 +137,23 @@ export default function CatchTheCoinGame({ onBack, onComplete }) {
           <p className="font-bold text-white">{score}</p>
         </div>
 
-        <div className="relative h-[48vh] min-h-[260px] max-h-[380px] rounded-xl border border-orangeBrand/20 bg-[#0d0d0d]">
+        <div className="relative h-[58vh] min-h-[320px] max-h-[620px] rounded-xl border border-orangeBrand/20 bg-[#0d0d0d]">
           <button
             type="button"
             onClick={handleCollectCoin}
             className="absolute flex h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-orangeBrand/70 bg-orangeBrand/10 text-2xl shadow-[0_0_30px_rgba(255,121,0,0.45)] transition duration-100 active:scale-90"
             style={{ left: `${coinPosition.x}%`, top: `${coinPosition.y}%` }}
-            aria-label="Catch coin"
+            aria-label="Attraper la pièce"
           >
             {hasCoinImage ? (
               <img
                 src="/assets/coin.png"
-                alt="Coin"
+                alt="Pièce"
                 className="h-full w-full object-contain p-2"
                 onError={() => setHasCoinImage(false)}
               />
             ) : (
-              <span
-                className="flex h-full w-full items-center justify-center rounded-full bg-orangeBrand text-3xl"
-                role="img"
-                aria-label="coin fallback"
-              >
+              <span className="flex h-full w-full items-center justify-center rounded-full bg-orangeBrand text-3xl" role="img" aria-label="pièce secours">
                 🪙
               </span>
             )}
@@ -169,7 +167,7 @@ export default function CatchTheCoinGame({ onBack, onComplete }) {
         </div>
       </div>
 
-      <p className="text-center text-xs text-zinc-400">Each coin = +1 score • Reward up to +100 Max it points</p>
+      <p className="text-center text-xs text-zinc-400">Chaque pièce = +1 score • Récompense jusqu’à +100 Max it points</p>
     </div>
   );
 }

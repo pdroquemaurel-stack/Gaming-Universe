@@ -1,7 +1,7 @@
 import AssetImage from './AssetImage';
 import PointsBadge from './PointsBadge';
 
-export default function GameCard({ game, onPlay, compact = false, cta = 'Play' }) {
+export default function GameCard({ game, onPlay, compact = false, cta = 'Jouer' }) {
   return (
     <article className="card-base overflow-hidden p-0">
       <div className="relative">
@@ -14,9 +14,9 @@ export default function GameCard({ game, onPlay, compact = false, cta = 'Play' }
 
         {game.id === 'catch-the-coin' ? (
           <div className="rounded-lg border border-orangeBrand/30 bg-zinc-950/80 p-2 text-[11px] text-zinc-200">
-            <p>Last score: <span className="font-semibold text-white">{game.lastScore ?? 0}</span></p>
-            <p>Best score: <span className="font-semibold text-white">{game.bestScore ?? 0}</span></p>
-            <p>Last reward: <span className="font-semibold text-orangeBrand">+{game.lastReward ?? 0} points</span></p>
+            <p>Dernier score : <span className="font-semibold text-white">{game.lastScore ?? 0}</span></p>
+            <p>Meilleur score : <span className="font-semibold text-white">{game.bestScore ?? 0}</span></p>
+            <p>Dernière récompense : <span className="font-semibold text-orangeBrand">+{game.lastReward ?? 0} points</span></p>
           </div>
         ) : null}
 

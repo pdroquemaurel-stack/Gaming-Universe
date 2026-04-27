@@ -34,11 +34,11 @@ export default function GlobalHeader({ onNavigate }) {
             <span className="text-xs font-semibold text-white">12 450</span>
           </button>
 
-          <button type="button" onClick={() => onNavigate('/profile')} aria-label="Profile">
+          <button type="button" onClick={() => onNavigate('/profile')} aria-label="Profil">
             <IconWithFallback src="/assets/avatar.png" alt="Avatar" fallback={assetFallback.avatar} rounded />
           </button>
 
-          <button type="button" onClick={() => onNavigate('/leaderboard')} aria-label="Leaderboard">
+          <button type="button" onClick={() => onNavigate('/leaderboard')} aria-label="Classement">
             <IconWithFallback src="/assets/leaderboard.png" alt="Leaderboard" fallback={assetFallback.leaderboard} />
           </button>
         </div>
