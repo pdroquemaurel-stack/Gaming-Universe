@@ -5,7 +5,7 @@ import SectionHeader from '../components/SectionHeader';
 import Tabs from '../components/Tabs';
 import VideoCard from '../components/VideoCard';
 import { useToast } from '../components/ToastProvider';
-import { esportTournaments, esportVideos, premiumPlans } from '../data/esport';
+import { esportChallenges, esportTournaments, esportVideos, headshotLeaderboard, premiumPlans } from '../data/esport';
 
 const STORAGE_KEY_PREMIUM = 'maxit_esport_premium_active';
 
@@ -25,6 +25,9 @@ export default function Esport() {
   const [premiumTarget, setPremiumTarget] = useState(null);
   const [videoDetail, setVideoDetail] = useState(null);
   const [isPremiumSubscriber, setIsPremiumSubscriber] = useState(false);
+  const [isFreeFireConnected, setIsFreeFireConnected] = useState(false);
+  const [showConnectModal, setShowConnectModal] = useState(false);
+  const [freeFirePlayerId, setFreeFirePlayerId] = useState('');
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function Esport() {
         {isPremiumSubscriber ? <p className="mt-2 inline-flex rounded-full border border-orangeBrand/40 bg-orangeBrand/10 px-3 py-1 text-xs font-semibold text-orange-100">Abonnement Premium actif</p> : null}
       </header>
 
-      <Tabs tabs={[{ id: 'video', label: 'Vidéo' }, { id: 'competition', label: 'Compétition' }]} activeId={activeTab} onChange={setActiveTab} />
+      <Tabs tabs={[{ id: 'video', label: 'Vidéo' }, { id: 'competition', label: 'Compétition' }, { id: 'challenge', label: 'Challenge' }]} activeId={activeTab} onChange={setActiveTab} />
 
       {activeTab === 'video' ? (
         <div className="space-y-4">
@@ -85,13 +88,57 @@ export default function Esport() {
             {esportVideos.live.map((video) => <VideoCard key={video.id} video={video} subtitle={(item) => `${item.game} · ${item.time}`} onOpen={openVideo} isSubscriber={isPremiumSubscriber} />)}
           </div>
         </div>
-      ) : (
+      ) : activeTab === 'competition' ? (
         <div className="space-y-4">
           {groupedTournaments.map((group) => (
             <div key={group.id} className="space-y-2">
               <SectionHeader title={group.title} />
               {group.items.map((tournament) => <EsportTournamentCard key={tournament.id} tournament={tournament} onOpen={openTournament} isSubscriber={isPremiumSubscriber} />)}
             </div>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {esportChallenges.map((challenge) => (
+            <article key={challenge.id} className="card-base space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-sm font-semibold text-white">{challenge.title} — {challenge.game}</p>
+                {challenge.isMain ? <span className="rounded-full border border-orangeBrand/40 px-2 py-0.5 text-[10px] text-orangeBrand">{challenge.status}</span> : null}
+              </div>
+              {challenge.objective ? <p className="text-xs text-zinc-300">{challenge.objective}</p> : null}
+              <div className="grid grid-cols-2 gap-2 text-xs text-zinc-300">
+                <p>Temps restant : {challenge.timeLeft}</p>
+                <p>Récompense : {challenge.reward}</p>
+                <p>Participants : {challenge.participants.toLocaleString('fr-FR')}</p>
+              </div>
+              {challenge.id === 'challenge-headshot-ff' && isFreeFireConnected ? <span className="inline-flex rounded-full border border-emerald-400/40 bg-emerald-500/10 px-2 py-0.5 text-[10px] text-emerald-300">Compte connecté</span> : null}
+              <button
+                type="button"
+                onClick={() => {
+                  if (challenge.id === 'challenge-headshot-ff' && !isFreeFireConnected) {
+                    setShowConnectModal(true);
+                    return;
+                  }
+                  showToast('Participation simulée pour la démo');
+                }}
+                className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white"
+              >
+                {challenge.id === 'challenge-headshot-ff' && isFreeFireConnected ? 'Participer au challenge' : challenge.cta}
+              </button>
+              {challenge.isMain ? (
+                <div className="rounded-xl border border-white/10 bg-black/30 p-3">
+                  <p className="mb-2 text-xs text-zinc-300">Leaderboard — Headshot King</p>
+                  <div className="space-y-1">
+                    {headshotLeaderboard.map((row, index) => (
+                      <div key={row.name} className="flex items-center justify-between text-xs">
+                        <span className={row.current ? 'font-semibold text-[#FF7900]' : 'text-zinc-300'}>{index + 1}. {row.name}</span>
+                        <span className={row.current ? 'font-semibold text-[#FF7900]' : 'text-zinc-300'}>{row.score} headshots</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </article>
           ))}
         </div>
       )}
@@ -149,6 +196,27 @@ export default function Esport() {
                 </div>
               </article>
             ))}
+          </div>
+        </ModalOverlay>
+      ) : null}
+
+      {showConnectModal ? (
+        <ModalOverlay title="Connecter mon compte Free Fire" onClose={() => setShowConnectModal(false)}>
+          <p className="text-sm text-zinc-300">Associe ton ID joueur pour participer au challenge et suivre ton score.</p>
+          <input value={freeFirePlayerId} onChange={(event) => setFreeFirePlayerId(event.target.value)} placeholder="ID joueur Free Fire" className="mt-3 w-full rounded-lg border border-white/20 bg-zinc-900 px-3 py-2 text-sm text-white outline-none" />
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <button type="button" onClick={() => setShowConnectModal(false)} className="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold text-zinc-200">Annuler</button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsFreeFireConnected(true);
+                setShowConnectModal(false);
+                showToast('Compte Free Fire connecté pour la démo');
+              }}
+              className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white"
+            >
+              Connecter mon compte
+            </button>
           </div>
         </ModalOverlay>
       ) : null}

@@ -26,13 +26,14 @@ function getXpGainFromReward(reward) {
   return reward * 2;
 }
 
-export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onGoShop, onDownloadGame, onWatchAd, bestScore = 0 }) {
+export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onWatchAd, bestScore = 0 }) {
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [score, setScore] = useState(0);
   const [coinsCollected, setCoinsCollected] = useState(0);
   const [coinPosition, setCoinPosition] = useState(getRandomPosition);
   const [showFeedback, setShowFeedback] = useState(false);
   const [hasCoinImage, setHasCoinImage] = useState(true);
+  const [adBoostMessage, setAdBoostMessage] = useState('');
   const completionSentRef = useRef(false);
 
   const isGameOver = timeLeft <= 0;
@@ -86,11 +87,12 @@ export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onGo
     setCoinsCollected(0);
     setCoinPosition(getRandomPosition());
     setShowFeedback(false);
+    setAdBoostMessage('');
   };
 
   if (isGameOver) {
     return (
-      <div className="rounded-2xl border border-orangeBrand bg-[#121212] p-4 text-center shadow-lg shadow-orangeBrand/10">
+      <div className="relative rounded-2xl border border-orangeBrand bg-[#121212] p-4 text-center shadow-lg shadow-orangeBrand/10">
         <p className="text-xs uppercase tracking-[0.18em] text-orangeBrand">Partie terminée</p>
         <h4 className="mt-1 text-xl font-bold text-white">Catch the Coin</h4>
         <div className="mt-4 flex justify-center">
@@ -103,6 +105,7 @@ export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onGo
         <p className="text-xs text-zinc-300">Ton meilleur score : {Math.max(bestScore, score)}</p>
         <p className="mt-1 text-sm text-orange-200">Bravo, tu as gagné +{reward} Max it Points</p>
         <p className="mt-1 text-xs text-zinc-400">{performanceMessage}</p>
+        <button type="button" onClick={onBack} aria-label="Fermer" className="absolute right-4 top-4 rounded-md border border-white/20 px-2 py-0.5 text-sm text-zinc-200">✕</button>
 
         <div className="mt-3 rounded-lg border border-white/10 bg-black/30 p-3 text-left">
           <p className="text-xs text-zinc-300">Progression niveau : {nextXp} / {targetXp} XP</p>
@@ -115,27 +118,19 @@ export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onGo
           <button type="button" onClick={onUsePoints} className="w-full rounded-xl bg-orangeBrand px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110">
             Utiliser mes points
           </button>
-          <button type="button" onClick={onGoShop} className="w-full rounded-xl border border-orangeBrand/60 bg-orangeBrand/10 px-3 py-2 text-sm font-medium text-orange-100">
-            Voir les offres boutique
-          </button>
-          <button type="button" onClick={onDownloadGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
-            Télécharger un jeu recommandé pour gagner +200 points
-          </button>
-          <button type="button" onClick={restartGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
-            Rejouer
-          </button>
           <button
             type="button"
             onClick={() => {
               onWatchAd?.();
-              restartGame();
+              setAdBoostMessage('XP doublée pour la prochaine partie (simulation).');
             }}
             className="w-full rounded-xl border border-orangeBrand/40 bg-orangeBrand/10 px-3 py-2 text-sm font-medium text-orange-100"
           >
-            Regarder une pub pour rejouer et améliorer mon score
+            Regarder une pub pour doubler mes XP
           </button>
-          <button type="button" onClick={onBack} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-300">
-            Retour à Jouer
+          {adBoostMessage ? <p className="text-xs text-emerald-300">{adBoostMessage}</p> : null}
+          <button type="button" onClick={restartGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
+            Rejouer
           </button>
         </div>
       </div>
