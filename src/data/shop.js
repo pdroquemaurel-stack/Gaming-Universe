@@ -260,3 +260,18 @@ export const previousPurchases = [
     cta: 'Racheter',
   },
 ];
+
+export const gamingDataBundles = [
+  { id: 'data-free-fire', name: 'DATA Free Fire', details: '1 Go dédié Free Fire', validity: '7 jours', price: 500, bonusLabel: '+50 Max it Points', pointsBonus: 50, xpBonus: 0, paymentMethods: ['DCB / facture mobile', 'Orange Money', 'Carte bancaire'] },
+  { id: 'data-gameloft', name: 'DATA Gameloft', details: '2 Go dédiés aux jeux Gameloft', validity: '14 jours', price: 1000, bonusLabel: '+100 XP', pointsBonus: 0, xpBonus: 100, paymentMethods: ['DCB / facture mobile', 'Orange Money', 'Carte bancaire'] },
+  { id: 'gaming-night-pass', name: 'Gaming Night Pass', details: 'Data gaming illimitée de 22h à 6h', validity: '1 nuit', price: 300, bonusLabel: 'Streak boost x2 ou +30 Max it Points', pointsBonus: 30, xpBonus: 0, paymentMethods: ['DCB / facture mobile', 'Orange Money', 'Carte bancaire'] },
+  { id: 'esport-pack', name: 'Esport Pack', details: '3 Go gaming + accès tournoi premium', validity: '30 jours', price: 2000, bonusLabel: 'Badge premium +150 XP', pointsBonus: 0, xpBonus: 150, paymentMethods: ['DCB / facture mobile', 'Orange Money', 'Carte bancaire'] },
+];
+
+export const pointsRedemptionItems = [
+  { id: 'r1', title: 'Réduction sur un bundle Data Gaming', cost: 150 },
+  { id: 'r2', title: 'Ticket tournoi Free Fire', cost: 100 },
+  { id: 'r3', title: 'Boost XP x2 pendant 24h', cost: 200 },
+  { id: 'r4', title: 'Badge Premium', cost: 250 },
+  { id: 'r5', title: 'Session sans publicité', cost: 300 },
+];
