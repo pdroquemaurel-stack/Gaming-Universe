@@ -217,6 +217,13 @@ export const shopECards = [
 // Compatibilité rétro : conserve l'ancien export utilisé dans d'autres écrans potentiels.
 export const shopGames = popularShopGames;
 
+export const gamingDataBundles = [
+  { id: 'bundle-ff', name: 'DATA Free Fire', details: '1 Go dédié Free Fire', validity: '7 jours', price: 500, bonus: '+50 Max it Points' },
+  { id: 'bundle-gameloft', name: 'DATA Gameloft', details: '2 Go dédiés jeux Gameloft', validity: '14 jours', price: 1000, bonus: '+100 XP' },
+  { id: 'bundle-night-pass', name: 'Gaming Night Pass', details: 'Data gaming de 22h à 6h', validity: '1 nuit', price: 300, bonus: 'streak boost' },
+  { id: 'bundle-esport-pack', name: 'Esport Pack', details: '3 Go gaming + accès tournoi premium', validity: '30 jours', price: 2000, bonus: 'badge premium + points cashback' },
+];
+
 
 export const previousPurchases = [
   {

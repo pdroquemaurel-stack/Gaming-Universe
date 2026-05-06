@@ -12,6 +12,7 @@ import { useToast } from '../components/ToastProvider';
 import {
   popularShopGames,
   previousPurchases,
+  gamingDataBundles,
   shopECards,
   shopPromotions,
   shopSubscriptions,
@@ -21,6 +22,7 @@ export default function Gameshop({ onNavigate }) {
   const [selectedGame, setSelectedGame] = useState(null);
   const [playerId, setPlayerId] = useState('');
   const [connected, setConnected] = useState(false);
+  const [selectedBundle, setSelectedBundle] = useState(null);
   const { showToast } = useToast();
 
   const openGame = (game) => {
@@ -55,6 +57,21 @@ export default function Gameshop({ onNavigate }) {
               promo={promo}
               onBuy={() => showToast('Réduction Max it Points appliquée pour la démo')}
             />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <SectionHeader title="Gaming Data Bundles" subtitle="Offres data pensées pour tes jeux préférés" />
+        <div className="space-y-2">
+          {gamingDataBundles.map((bundle) => (
+            <article key={bundle.id} className="card-base p-3">
+              <p className="text-sm font-semibold text-white">{bundle.name}</p>
+              <p className="text-xs text-zinc-400">{bundle.details}</p>
+              <p className="text-xs text-zinc-400">Validité {bundle.validity}</p>
+              <p className="text-xs text-orangeBrand">{bundle.price.toLocaleString()} FCFA • Bonus: {bundle.bonus}</p>
+              <button type="button" onClick={() => setSelectedBundle(bundle)} className="mt-2 rounded-lg border border-orangeBrand px-3 py-1.5 text-xs font-semibold text-orangeBrand">Acheter</button>
+            </article>
           ))}
         </div>
       </div>
@@ -143,6 +160,38 @@ export default function Gameshop({ onNavigate }) {
                 ))}
               </div>
             ) : null}
+          </div>
+        </ModalOverlay>
+      ) : null}
+
+      {selectedBundle ? (
+        <ModalOverlay title="Confirmation d'achat" onClose={() => setSelectedBundle(null)}>
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-white">{selectedBundle.name}</p>
+            <p className="text-xs text-zinc-300">Prix : {selectedBundle.price.toLocaleString()} FCFA</p>
+            <p className="text-xs text-zinc-300">Validité : {selectedBundle.validity}</p>
+            <p className="text-xs text-orangeBrand">Bonus : {selectedBundle.bonus}</p>
+            <div className="rounded-lg border border-white/10 bg-zinc-900/80 p-3 text-xs text-zinc-300">
+              <p>Moyens de paiement :</p>
+              <p>• facture mobile / DCB</p>
+              <p>• Orange Money</p>
+              <p>• carte bancaire</p>
+            </div>
+            <div className="grid gap-2">
+              {['Payer sur facture mobile', 'Payer avec Orange Money', 'Payer par carte bancaire'].map((label) => (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => {
+                    showToast(`${selectedBundle.name} activé : ${selectedBundle.bonus}`);
+                    setSelectedBundle(null);
+                  }}
+                  className="w-full rounded-lg border border-orangeBrand px-3 py-2 text-xs font-semibold text-orangeBrand"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
         </ModalOverlay>
       ) : null}
