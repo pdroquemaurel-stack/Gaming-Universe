@@ -9,6 +9,7 @@ import Leaderboard from './pages/Leaderboard';
 import Play from './pages/Play';
 import Points from './pages/Points';
 import Profile from './pages/Profile';
+import { PlayerProgressProvider } from './context/PlayerProgressContext';
 
 const routeMap = {
   '/': Home,
@@ -71,6 +72,7 @@ export default function App() {
   const CurrentView = useMemo(() => routeMap[currentPath] || Home, [currentPath]);
 
   return (
+    <PlayerProgressProvider>
     <ToastProvider>
       <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-10 pt-28 text-white">
         <GlobalHeader onNavigate={navigate} />
@@ -78,5 +80,6 @@ export default function App() {
         <CurrentView currentPath={currentPath} currentSearch={currentSearch} onNavigate={navigate} />
       </div>
     </ToastProvider>
+  </PlayerProgressProvider>
   );
 }

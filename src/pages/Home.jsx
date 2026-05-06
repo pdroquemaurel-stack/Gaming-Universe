@@ -1,148 +1,50 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { useToast } from '../components/ToastProvider';
-import { bundles, continuePlayingGames, dailyMissions, leaderboard, playerDefaults } from '../data/mockGamingData';
+import { usePlayerProgress } from '../context/PlayerProgressContext';
 
-const memoryStore = {};
-const safeStorage = {
-  get(key, fallback) {
-    try {
-      const raw = window.localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : fallback;
-    } catch {
-      return key in memoryStore ? memoryStore[key] : fallback;
-    }
-  },
-  set(key, value) {
-    try {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch {
-      memoryStore[key] = value;
-    }
-  },
-};
+const dailyRewards = [20, 30, 40, 50, 60, 80, 120];
+const missions = [
+  { id: 1, title: 'Joue à Catch the Coin', progress: 1, total: 1, reward: '+50 Max it Points', status: 'Terminé', cta: 'Rejouer' },
+  { id: 2, title: 'Regarde une pub pour doubler ton XP', progress: 0, total: 1, reward: '+100 XP', status: 'À faire', cta: 'Jouer maintenant' },
+  { id: 3, title: 'Découvre un bundle gaming', progress: 0, total: 1, reward: '+30 Max it Points', status: 'À faire', cta: 'Voir la boutique' },
+];
 
-export default function Home() {
+export default function Home({ onNavigate }) {
+  const { progress, updateProgress, addActivity } = usePlayerProgress();
   const { showToast } = useToast();
-  const initial = safeStorage.get('playerHubState', {
-    xp: playerDefaults.xp,
-    wallet: playerDefaults.wallet,
-    coins: playerDefaults.coins,
-    streakCount: playerDefaults.streak,
-    lastClaimDate: null,
-    activities: [],
-  });
-
-  const [state, setState] = useState(initial);
-  const [sessionModal, setSessionModal] = useState(false);
-  const [purchaseBundle, setPurchaseBundle] = useState(null);
-
-  const persist = (next) => {
-    setState(next);
-    safeStorage.set('playerHubState', next);
-  };
-
-  const addActivity = (label) => {
-    const next = { ...state, activities: [label, ...state.activities].slice(0, 6) };
-    persist(next);
-  };
-
-  const xpPercent = Math.min(Math.round((state.xp / playerDefaults.xpTarget) * 100), 100);
   const today = new Date().toISOString().slice(0, 10);
-  const claimedToday = state.lastClaimDate === today;
+  const claimedToday = progress.lastClaimDate === today;
+  const xpPercent = Math.min(Math.round((progress.xp / progress.xpTarget) * 100), 100);
+
+  const streakDays = useMemo(() => Array.from({ length: 7 }).map((_, index) => {
+    const activeDay = progress.streakCount % 7 || 7;
+    return { day: index + 1, done: index < activeDay - 1, today: index === activeDay - 1 };
+  }), [progress.streakCount]);
 
   const claimDaily = () => {
-    if (claimedToday) return showToast('Déjà récupéré aujourd’hui');
-    const next = { ...state, coins: state.coins + 30, streakCount: state.streakCount + 1, lastClaimDate: today, activities: [`Daily reward claimed +30 coins`, ...state.activities].slice(0, 6) };
-    persist(next);
-    showToast('Reward claimed: +30 coins');
+    if (claimedToday) return showToast('Reviens demain pour continuer ta série');
+    const dayIndex = progress.streakCount % 7;
+    const reward = dailyRewards[dayIndex];
+    updateProgress((prev) => ({ ...prev, points: prev.points + reward, streakCount: prev.streakCount + 1, lastClaimDate: today }));
+    addActivity(`Récompense quotidienne : +${reward} Max it Points`);
+    showToast(`Récompense récupérée : +${reward} Max it Points`);
   };
 
-  const completeSession = (gameName) => {
-    const next = { ...state, xp: state.xp + 25, coins: state.coins + 10, activities: [`${gameName} session +25 XP`, ...state.activities].slice(0, 6) };
-    persist(next);
-    setSessionModal(true);
-  };
+  if (!progress.isOnboardingDone) {
+    return <section className="card-base space-y-4 text-center"><h2 className="text-2xl font-bold">Bienvenue dans Max it Gaming</h2><ol className="space-y-1 text-sm text-zinc-300"><li>1. Joue instantanément</li><li>2. Gagne des Max it Points et de l’XP</li><li>3. Utilise tes points dans la section Points ou pour accéder à des avantages</li></ol><button className="w-full rounded-lg bg-orangeBrand py-2 font-semibold" onClick={() => updateProgress((p) => ({ ...p, isOnboardingDone: true }))}>Commencer</button></section>;
+  }
 
-  const confirmPurchase = () => {
-    if (!purchaseBundle) return;
-    if (state.wallet < purchaseBundle.price) {
-      showToast('Solde insuffisant. Recharge ton wallet pour activer ce bundle.');
-      return;
-    }
-    const next = {
-      ...state,
-      wallet: state.wallet - purchaseBundle.price,
-      coins: state.coins + purchaseBundle.coinsBonus,
-      xp: state.xp + purchaseBundle.xpBonus,
-      activities: [`${purchaseBundle.name} purchased -${purchaseBundle.price} FCFA`, `Bundle bonus ${purchaseBundle.bonus}`, ...state.activities].slice(0, 6),
-    };
-    persist(next);
-    setPurchaseBundle(null);
-    showToast(`${purchaseBundle.name} activé avec succès`);
-  };
-
-  const streakDays = useMemo(
-    () => Array.from({ length: 7 }).map((_, index) => ({ day: index + 1, done: index < Math.min(state.streakCount, 7), today: index === Math.min(state.streakCount, 6) && !claimedToday })),
-    [state.streakCount, claimedToday],
-  );
-
-  return (
-    <section className="space-y-4">
-      <header className="card-base orange-glow sticky top-20 z-10 bg-gradient-to-br from-zinc-900 to-black">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orangeBrand/30 font-bold text-orangeBrand">{playerDefaults.avatar}</div>
-            <div><p className="text-sm font-bold text-white">{playerDefaults.name}</p><p className="text-xs text-zinc-300">Level {playerDefaults.level}</p></div>
-          </div>
-          <button className="text-lg">🔔</button>
-        </div>
-        <p className="mt-2 text-xs text-zinc-300">XP: {state.xp} / {playerDefaults.xpTarget}</p>
-        <div className="h-2 rounded-full bg-zinc-800"><div className="h-full rounded-full bg-orangeBrand" style={{ width: `${xpPercent}%` }} /></div>
-        <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
-          <div className="rounded-lg bg-zinc-900/80 p-2">Wallet<br /><span className="font-bold text-orangeBrand">{state.wallet.toLocaleString()} FCFA</span></div>
-          <div className="rounded-lg bg-zinc-900/80 p-2">Coins<br /><span className="font-bold text-orangeBrand">{state.coins}</span></div>
-          <div className="rounded-lg bg-zinc-900/80 p-2">Streak<br /><span className="font-bold text-orangeBrand">{state.streakCount} jours</span></div>
-        </div>
-      </header>
-
-      <div>
-        <SectionHeader title="Continue Playing" subtitle="Reprends ta session en 1 clic" />
-        <div className="space-y-2">
-          {continuePlayingGames.map((game) => (
-            <article key={game.id} className="card-base flex items-center justify-between gap-3 p-3">
-              <div className="min-w-0"><p className="text-sm font-semibold">{game.visual} {game.name}</p><p className="text-xs text-zinc-400">Progression {game.progress}% • {game.lastSession}</p><p className="text-xs text-orangeBrand">{game.reward}</p></div>
-              <button onClick={() => completeSession(game.name)} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold">Reprendre</button>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <div className="card-base">
-        <SectionHeader title="Daily Streak" subtitle="Reviens chaque jour" />
-        <div className="mt-2 flex gap-1">{streakDays.map((d) => <div key={d.day} className={`flex-1 rounded-md p-2 text-center text-[10px] ${d.done ? 'bg-orangeBrand/30 text-orangeBrand' : d.today ? 'border border-orangeBrand text-orangeBrand' : 'bg-zinc-800 text-zinc-500'}`}>J{d.day}</div>)}</div>
-        <button onClick={claimDaily} className="mt-3 w-full rounded-lg border border-orangeBrand py-2 text-xs font-semibold text-orangeBrand">{claimedToday ? 'Déjà récupéré aujourd’hui' : 'Claim daily reward (+30 coins)'}</button>
-      </div>
-
-      <div>
-        <SectionHeader title="Daily Missions" subtitle="Play, challenge, bundles" />
-        <div className="space-y-2">{dailyMissions.map((m) => <article key={m.id} className="card-base p-3"><div className="flex items-center justify-between"><p className="text-sm font-semibold">{m.title}</p><span className="text-[11px] text-orangeBrand">{m.status}</span></div><p className="text-xs text-zinc-400">{m.progress}/{m.total} • Récompense: {m.reward}</p><div className="mt-2 h-1.5 rounded bg-zinc-800"><div className="h-full rounded bg-orangeBrand" style={{ width: `${(m.progress / m.total) * 100}%` }} /></div></article>)}</div>
-      </div>
-
-      <div className="card-base"><SectionHeader title="Compete Now" subtitle="Challenge, tournoi, leaderboard" /><p className="text-sm">Free Fire Headshot Challenge</p><p className="text-xs text-zinc-400">500 coins + badge • 1 240 participants</p><button className="mt-2 rounded-lg bg-orangeBrand px-3 py-1.5 text-xs">Join now</button><div className="mt-3 space-y-1">{leaderboard.map((row, i) => <div key={row.name} className={`flex justify-between rounded px-2 py-1 text-xs ${row.current ? 'bg-orangeBrand/20 text-orangeBrand' : 'bg-zinc-900 text-zinc-300'}`}><span>{i + 1}. {row.name}</span><span>{row.points} pts</span></div>)}</div></div>
-
-      <div>
-        <SectionHeader title="Gaming Data Bundles" subtitle="Offres data contextualisées gaming" />
-        <div className="space-y-2">{bundles.map((b) => <article key={b.id} className="card-base p-3"><p className="text-sm font-semibold">{b.name}</p><p className="text-xs text-zinc-400">{b.details} • {b.validity}</p><p className="text-xs text-orangeBrand">{b.price} FCFA • Bonus: {b.bonus}</p><button onClick={() => setPurchaseBundle(b)} className="mt-2 rounded-lg border border-orangeBrand px-3 py-1.5 text-xs text-orangeBrand">{b.cta}</button></article>)}</div>
-      </div>
-
-      <div className="card-base"><SectionHeader title="Your Gaming Loop" subtitle="Play → Reward → Progress → Compete → Spend" /><p className="text-xs text-zinc-300">Play instantly • Earn XP & coins • Climb leaderboard • Spend rewards • Come back tomorrow</p></div>
-
-      <div className="card-base"><SectionHeader title="Wallet Activity" subtitle="Historique récent" /><div className="space-y-1">{state.activities.length ? state.activities.map((a, idx) => <p key={`${a}-${idx}`} className="text-xs text-zinc-300">• {a}</p>) : <p className="text-xs text-zinc-500">Aucune activité pour le moment.</p>}</div></div>
-
-      {sessionModal && <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4"><div className="card-base w-full max-w-xs"><h3 className="text-lg font-bold">Session completed</h3><p className="mt-1 text-sm text-zinc-300">+25 XP • +10 coins</p><div className="mt-3 grid grid-cols-3 gap-2 text-[11px]"><button onClick={() => setSessionModal(false)} className="rounded bg-orangeBrand px-2 py-2">Play again</button><button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand">Join challenge</button><button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand">Use coins</button></div></div></div>}
-
-      {purchaseBundle && <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4"><div className="card-base w-full max-w-xs"><h3 className="text-base font-bold">Confirmation d'achat</h3><p className="mt-1 text-sm">{purchaseBundle.name}</p><p className="text-xs text-zinc-300">Prix: {purchaseBundle.price} FCFA</p><p className="text-xs text-zinc-300">Wallet actuel: {state.wallet} FCFA</p><p className="text-xs text-orangeBrand">Bonus: {purchaseBundle.bonus}</p><div className="mt-3 flex gap-2"><button onClick={confirmPurchase} className="flex-1 rounded bg-orangeBrand py-2 text-xs">Confirm purchase</button><button onClick={() => setPurchaseBundle(null)} className="flex-1 rounded border border-white/20 py-2 text-xs">Cancel</button></div></div></div>}
-    </section>
-  );
+  return <section className="space-y-4">
+    <header className="card-base orange-glow">
+      <div className="flex items-center gap-3"><div className="flex h-12 w-12 items-center justify-center rounded-full bg-orangeBrand/20 text-orangeBrand font-bold">M</div><div><p className="font-bold">Mon Player Hub</p><p className="text-xs text-zinc-400">Mon niveau {progress.level}</p></div></div>
+      <p className="mt-2 text-xs">XP : {progress.xp} / {progress.xpTarget}</p><div className="h-2 rounded-full bg-zinc-800"><div className="h-full rounded-full bg-orangeBrand" style={{ width: `${xpPercent}%` }} /></div>
+      <div className="mt-3 grid grid-cols-3 gap-2 text-xs"><div className="rounded bg-zinc-900 p-2">Mes points<br/><span className="text-orangeBrand font-bold">{progress.points}</span></div><div className="rounded bg-zinc-900 p-2">Mon niveau<br/><span className="text-orangeBrand font-bold">{progress.level}</span></div><div className="rounded bg-zinc-900 p-2">Streak<br/><span className="text-orangeBrand font-bold">{progress.streakCount} jours</span></div></div>
+      <p className="mt-3 text-[11px] text-zinc-400">XP : fais progresser ton niveau • Max it Points : débloque des avantages, réductions et accès</p>
+    </header>
+    <div className="card-base"><SectionHeader title="Daily Streak" subtitle="Bonus fidélité Max it" /><div className="mt-2 flex gap-1">{streakDays.map((d) => <div key={d.day} className={`flex-1 rounded-md p-2 text-center text-[10px] ${d.done ? 'bg-orangeBrand/30 text-orangeBrand' : d.today ? 'border border-orangeBrand text-orangeBrand' : 'bg-zinc-800 text-zinc-500'}`}>J{d.day}<br/>+{dailyRewards[d.day - 1]} pts</div>)}</div><button onClick={claimDaily} className="mt-3 w-full rounded-lg border border-orangeBrand py-2 text-xs font-semibold text-orangeBrand">Récupérer ma récompense</button>{claimedToday ? <p className="mt-2 text-xs text-zinc-400">Reviens demain pour continuer ta série</p> : null}</div>
+    <div><SectionHeader title="Missions du jour" subtitle="Récompense gaming" /><div className="space-y-2">{missions.map((m) => <article key={m.id} className="card-base p-3"><div className="flex justify-between"><p className="text-sm font-semibold">{m.title}</p><span className="text-[11px] text-orangeBrand">{m.status}</span></div><p className="text-xs text-zinc-400">{m.progress}/{m.total} • {m.reward}</p><div className="mt-2 h-1.5 rounded bg-zinc-800"><div className="h-full rounded bg-orangeBrand" style={{ width: `${(m.progress / m.total) * 100}%` }} /></div><button onClick={() => onNavigate('/play')} className="mt-2 rounded border border-orangeBrand px-3 py-1 text-xs text-orangeBrand">{m.cta}</button></article>)}</div></div>
+    <div className="card-base"><SectionHeader title="Derniers jeux joués" /><button className="rounded bg-orangeBrand px-3 py-2 text-xs" onClick={() => onNavigate('/play')}>Retourner jouer</button></div>
+    <div className="card-base"><SectionHeader title="Historique d’activité" />{progress.activities.length ? progress.activities.map((a, i) => <p key={i} className="text-xs text-zinc-300">• {a}</p>) : <p className="text-xs text-zinc-500">Aucune activité.</p>}</div>
+  </section>;
 }
