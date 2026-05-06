@@ -37,6 +37,31 @@ export const esportTournaments = [
   { id: 'fc-future', name: 'FC Mobile Future Stars', game: 'EA Sports FC', gameLogo: 'https://play-lh.googleusercontent.com/yQHb1bk88ENXLZ2_ZO-st7cuG78pva5yRAge2CjhBPoBoEng1ouxyx30vK4s4Z7553Kohd9pPVm1GC2Phs8slA=s256-rw', cover: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1280&q=80', status: 'future', statusLabel: 'À venir', players: 64, prize: 'Pass VIP + pack coins', dateLabel: 'Dans 12 jours', format: '1v1 Knockout', date: '16 mai 2026', requirements: 'Inscriptions bientôt disponibles', cta: 'Me notifier' },
 ];
 
+export const esportChallenges = [
+  {
+    id: 'challenge-headshot-ff',
+    title: 'Headshot King',
+    game: 'Free Fire',
+    objective: 'Faire le maximum de headshots sur Free Fire',
+    timeLeft: '3 jours',
+    reward: '2 500 Max it Points',
+    participants: 1248,
+    status: 'En cours',
+    cta: 'Joindre mon compte Free Fire',
+    isMain: true,
+  },
+  { id: 'challenge-lap-asphalt', title: 'Fastest Lap', game: 'Asphalt', timeLeft: '5 jours', reward: '1 200 Max it Points', participants: 830, cta: 'Participer' },
+  { id: 'challenge-survival-pubg', title: 'Daily Survival', game: 'PUBG Mobile', timeLeft: '1 jour', reward: '1 000 Max it Points', participants: 965, cta: 'Participer' },
+  { id: 'challenge-combo-fc', title: 'Combo Master', game: 'FC Mobile', timeLeft: '4 jours', reward: '1 500 Max it Points', participants: 702, cta: 'Participer' },
+];
+
+export const headshotLeaderboard = [
+  { name: 'Amine', score: 84 },
+  { name: 'Sarah', score: 79 },
+  { name: 'Paul', score: 66, current: true },
+  { name: 'Kevin', score: 61 },
+];
+
 export const premiumPlans = [
   {
     id: 'day-pass',
