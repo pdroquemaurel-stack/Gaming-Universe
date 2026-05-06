@@ -1,176 +1,148 @@
-import Carousel from '../components/Carousel';
-import FeatureCard from '../components/FeatureCard';
+import { useMemo, useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { useToast } from '../components/ToastProvider';
-import { discoverItems, favoriteGames, lastPurchases } from '../data/mockData';
+import { bundles, continuePlayingGames, dailyMissions, leaderboard, playerDefaults } from '../data/mockGamingData';
 
-const kpis = [
-  { label: 'points gagnés', value: '12 450' },
-  { label: 'jeux actifs', value: '8' },
-  { label: 'tournois en cours', value: '3' },
-];
-
-const playerProgress = {
-  titre: 'Explorateur Gaming — Niveau 3',
-  xp: 650,
-  xpTarget: 1000,
-  points: '12 450',
-  rang: 'Top 12',
+const memoryStore = {};
+const safeStorage = {
+  get(key, fallback) {
+    try {
+      const raw = window.localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch {
+      return key in memoryStore ? memoryStore[key] : fallback;
+    }
+  },
+  set(key, value) {
+    try {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      memoryStore[key] = value;
+    }
+  },
 };
 
-const dailyChallenges = [
-  { id: 'daily-play', icon: '🕹️', title: 'Jouer à un mini-jeu', reward: '+50 points', status: 'Terminé', cta: 'Jouer', route: '/play' },
-  { id: 'daily-video', icon: '🎬', title: 'Regarder une vidéo E-Sport', reward: '+20 points', status: 'À faire', cta: 'Regarder', route: '/esport' },
-  { id: 'daily-tournament', icon: '🏆', title: 'Participer à un tournoi', reward: '+100 points', status: 'À faire', cta: 'Voir les tournois', route: '/esport' },
-];
-
-const socialKpis = [
-  '3 amis jouent à PUBG Mobile',
-  'Amina t’a dépassé au classement',
-  'Karim vient de gagner +120 points',
-  '1240 joueurs actifs aujourd’hui',
-];
-
-const friendActivity = [
-  { id: 'friend-1', name: 'Amina', avatar: 'A', action: 'a gagné 120 points sur Catch the Coin', time: 'Il y a 5 min' },
-  { id: 'friend-2', name: 'Karim', avatar: 'K', action: 's’est inscrit au tournoi Free Fire', time: 'Il y a 12 min' },
-  { id: 'friend-3', name: 'Youssef', avatar: 'Y', action: 'a acheté une e-card Steam', time: 'Il y a 40 min' },
-];
-
-export default function Home({ onNavigate }) {
+export default function Home() {
   const { showToast } = useToast();
-  const xpPercent = Math.min(Math.round((playerProgress.xp / playerProgress.xpTarget) * 100), 100);
+  const initial = safeStorage.get('playerHubState', {
+    xp: playerDefaults.xp,
+    wallet: playerDefaults.wallet,
+    coins: playerDefaults.coins,
+    streakCount: playerDefaults.streak,
+    lastClaimDate: null,
+    activities: [],
+  });
+
+  const [state, setState] = useState(initial);
+  const [sessionModal, setSessionModal] = useState(false);
+  const [purchaseBundle, setPurchaseBundle] = useState(null);
+
+  const persist = (next) => {
+    setState(next);
+    safeStorage.set('playerHubState', next);
+  };
+
+  const addActivity = (label) => {
+    const next = { ...state, activities: [label, ...state.activities].slice(0, 6) };
+    persist(next);
+  };
+
+  const xpPercent = Math.min(Math.round((state.xp / playerDefaults.xpTarget) * 100), 100);
+  const today = new Date().toISOString().slice(0, 10);
+  const claimedToday = state.lastClaimDate === today;
+
+  const claimDaily = () => {
+    if (claimedToday) return showToast('Déjà récupéré aujourd’hui');
+    const next = { ...state, coins: state.coins + 30, streakCount: state.streakCount + 1, lastClaimDate: today, activities: [`Daily reward claimed +30 coins`, ...state.activities].slice(0, 6) };
+    persist(next);
+    showToast('Reward claimed: +30 coins');
+  };
+
+  const completeSession = (gameName) => {
+    const next = { ...state, xp: state.xp + 25, coins: state.coins + 10, activities: [`${gameName} session +25 XP`, ...state.activities].slice(0, 6) };
+    persist(next);
+    setSessionModal(true);
+  };
+
+  const confirmPurchase = () => {
+    if (!purchaseBundle) return;
+    if (state.wallet < purchaseBundle.price) {
+      showToast('Solde insuffisant. Recharge ton wallet pour activer ce bundle.');
+      return;
+    }
+    const next = {
+      ...state,
+      wallet: state.wallet - purchaseBundle.price,
+      coins: state.coins + purchaseBundle.coinsBonus,
+      xp: state.xp + purchaseBundle.xpBonus,
+      activities: [`${purchaseBundle.name} purchased -${purchaseBundle.price} FCFA`, `Bundle bonus ${purchaseBundle.bonus}`, ...state.activities].slice(0, 6),
+    };
+    persist(next);
+    setPurchaseBundle(null);
+    showToast(`${purchaseBundle.name} activé avec succès`);
+  };
+
+  const streakDays = useMemo(
+    () => Array.from({ length: 7 }).map((_, index) => ({ day: index + 1, done: index < Math.min(state.streakCount, 7), today: index === Math.min(state.streakCount, 6) && !claimedToday })),
+    [state.streakCount, claimedToday],
+  );
 
   return (
-    <section className="space-y-6">
-      <header className="orange-glow card-base space-y-4 bg-gradient-to-br from-zinc-900 to-black">
-        <p className="text-xs uppercase tracking-[0.2em] text-orangeBrand">Max it Gaming</p>
-        <h1 className="text-2xl font-bold tracking-tight text-white">Le hub gaming de Max it</h1>
-        <p className="text-sm text-zinc-200">Joue, gagne des points, achète du contenu et participe à des compétitions.</p>
-
-        <div className="grid grid-cols-3 gap-2">
-          {kpis.map((kpi) => (
-            <article key={kpi.label} className="rounded-xl border border-white/10 bg-black/30 p-2 text-center">
-              <p className="text-sm font-extrabold text-orangeBrand">{kpi.value}</p>
-              <p className="text-[10px] uppercase tracking-wide text-zinc-400">{kpi.label}</p>
-            </article>
-          ))}
+    <section className="space-y-4">
+      <header className="card-base orange-glow sticky top-20 z-10 bg-gradient-to-br from-zinc-900 to-black">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orangeBrand/30 font-bold text-orangeBrand">{playerDefaults.avatar}</div>
+            <div><p className="text-sm font-bold text-white">{playerDefaults.name}</p><p className="text-xs text-zinc-300">Level {playerDefaults.level}</p></div>
+          </div>
+          <button className="text-lg">🔔</button>
         </div>
-
-        <div className="grid grid-cols-2 gap-2">
-          <button type="button" onClick={() => onNavigate('/play')} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white">Commencer à jouer</button>
-          <button type="button" onClick={() => onNavigate('/points?tab=use')} className="rounded-lg border border-orangeBrand px-3 py-2 text-xs font-semibold text-orangeBrand">Utiliser mes points</button>
+        <p className="mt-2 text-xs text-zinc-300">XP: {state.xp} / {playerDefaults.xpTarget}</p>
+        <div className="h-2 rounded-full bg-zinc-800"><div className="h-full rounded-full bg-orangeBrand" style={{ width: `${xpPercent}%` }} /></div>
+        <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
+          <div className="rounded-lg bg-zinc-900/80 p-2">Wallet<br /><span className="font-bold text-orangeBrand">{state.wallet.toLocaleString()} FCFA</span></div>
+          <div className="rounded-lg bg-zinc-900/80 p-2">Coins<br /><span className="font-bold text-orangeBrand">{state.coins}</span></div>
+          <div className="rounded-lg bg-zinc-900/80 p-2">Streak<br /><span className="font-bold text-orangeBrand">{state.streakCount} jours</span></div>
         </div>
       </header>
 
-      <div className="card-base space-y-3">
-        <SectionHeader title="Progression joueur" subtitle="Monte de niveau chaque jour" />
-        <p className="text-sm font-semibold text-white">{playerProgress.titre}</p>
-        <p className="text-xs text-zinc-300">XP : {playerProgress.xp} / {playerProgress.xpTarget}</p>
-        <div className="h-2 rounded-full bg-zinc-800">
-          <div className="h-full rounded-full bg-orangeBrand" style={{ width: `${xpPercent}%` }} />
-        </div>
-        <div className="grid grid-cols-2 gap-2 text-xs">
-          <div className="rounded-lg border border-white/10 bg-zinc-900/70 p-2 text-zinc-200">Points disponibles : <span className="font-semibold text-orangeBrand">{playerProgress.points}</span></div>
-          <div className="rounded-lg border border-white/10 bg-zinc-900/70 p-2 text-zinc-200">Rang : <span className="font-semibold text-orangeBrand">{playerProgress.rang}</span></div>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <SectionHeader title="Défis du jour" subtitle="Complète tes missions pour gagner plus" />
+      <div>
+        <SectionHeader title="Continue Playing" subtitle="Reprends ta session en 1 clic" />
         <div className="space-y-2">
-          {dailyChallenges.map((challenge) => (
-            <article key={challenge.id} className="card-base flex items-center justify-between gap-3 p-3">
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-white">{challenge.icon} {challenge.title}</p>
-                <p className="text-xs text-zinc-300">{challenge.reward} • {challenge.status}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  showToast('Défi du jour lancé');
-                  onNavigate(challenge.route);
-                }}
-                className="rounded-lg border border-orangeBrand px-3 py-1.5 text-xs font-semibold text-orangeBrand"
-              >
-                {challenge.cta}
-              </button>
+          {continuePlayingGames.map((game) => (
+            <article key={game.id} className="card-base flex items-center justify-between gap-3 p-3">
+              <div className="min-w-0"><p className="text-sm font-semibold">{game.visual} {game.name}</p><p className="text-xs text-zinc-400">Progression {game.progress}% • {game.lastSession}</p><p className="text-xs text-orangeBrand">{game.reward}</p></div>
+              <button onClick={() => completeSession(game.name)} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold">Reprendre</button>
             </article>
           ))}
         </div>
       </div>
 
-      <div className="card-base space-y-2">
-        <SectionHeader title="Activité de tes amis" subtitle="Reste connecté à ta squad" />
-        <div className="grid grid-cols-2 gap-2">
-          {socialKpis.map((item) => (
-            <p key={item} className="rounded-lg border border-white/10 bg-zinc-900/70 px-2 py-1.5 text-xs text-zinc-200">{item}</p>
-          ))}
-        </div>
-        <div className="space-y-2">
-          {friendActivity.map((activity) => (
-            <article key={activity.id} className="flex items-center gap-2 rounded-lg border border-white/10 bg-black/30 px-2 py-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-orangeBrand/20 text-xs font-bold text-orangeBrand">{activity.avatar}</div>
-              <div className="min-w-0">
-                <p className="text-xs text-zinc-200"><span className="font-semibold text-white">{activity.name}</span> {activity.action}</p>
-                <p className="text-[11px] text-zinc-500">{activity.time}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <div className="card-base overflow-hidden bg-gradient-to-r from-orangeBrand/20 to-zinc-900">
-        <SectionHeader title="Événement du jour" subtitle="Moment fort de la communauté" />
-        <p className="mt-1 text-sm font-semibold text-white">Tournoi Free Fire — ce soir 20h</p>
-        <p className="mt-1 text-xs text-zinc-300">Récompense : Samsung S25 + 50 Go data</p>
-        <button type="button" onClick={() => onNavigate('/esport')} className="mt-3 rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white">Voir l’événement</button>
+      <div className="card-base">
+        <SectionHeader title="Daily Streak" subtitle="Reviens chaque jour" />
+        <div className="mt-2 flex gap-1">{streakDays.map((d) => <div key={d.day} className={`flex-1 rounded-md p-2 text-center text-[10px] ${d.done ? 'bg-orangeBrand/30 text-orangeBrand' : d.today ? 'border border-orangeBrand text-orangeBrand' : 'bg-zinc-800 text-zinc-500'}`}>J{d.day}</div>)}</div>
+        <button onClick={claimDaily} className="mt-3 w-full rounded-lg border border-orangeBrand py-2 text-xs font-semibold text-orangeBrand">{claimedToday ? 'Déjà récupéré aujourd’hui' : 'Claim daily reward (+30 coins)'}</button>
       </div>
 
       <div>
-        <SectionHeader title="À découvrir" subtitle="Tendances du moment" />
-        <Carousel
-          items={discoverItems}
-          autoScrollMs={3200}
-          cardWidthClass="w-full"
-          renderItem={(item) => (
-            <FeatureCard title={item.title} description={item.description} cta={item.cta} image={item.image} fallback={item.fallback} />
-          )}
-        />
+        <SectionHeader title="Daily Missions" subtitle="Play, challenge, bundles" />
+        <div className="space-y-2">{dailyMissions.map((m) => <article key={m.id} className="card-base p-3"><div className="flex items-center justify-between"><p className="text-sm font-semibold">{m.title}</p><span className="text-[11px] text-orangeBrand">{m.status}</span></div><p className="text-xs text-zinc-400">{m.progress}/{m.total} • Récompense: {m.reward}</p><div className="mt-2 h-1.5 rounded bg-zinc-800"><div className="h-full rounded bg-orangeBrand" style={{ width: `${(m.progress / m.total) * 100}%` }} /></div></article>)}</div>
       </div>
 
-      <div>
-        <SectionHeader title="Favoris" subtitle="Accès rapide" />
-        <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
-          {favoriteGames.map((game) => (
-            <article key={game.id} className="card-base w-36 flex-shrink-0 overflow-hidden p-0">
-              {game.image ? <img src={game.image} alt={game.title} className="h-24 w-full object-cover" /> : <div className="flex h-24 w-full items-center justify-center bg-zinc-800 text-3xl">{game.fallback}</div>}
-              <div className="p-3">
-                <h3 className="text-sm font-semibold text-white">{game.title}</h3>
-                <p className="mt-1 text-xs text-zinc-400">{game.genre}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
+      <div className="card-base"><SectionHeader title="Compete Now" subtitle="Challenge, tournoi, leaderboard" /><p className="text-sm">Free Fire Headshot Challenge</p><p className="text-xs text-zinc-400">500 coins + badge • 1 240 participants</p><button className="mt-2 rounded-lg bg-orangeBrand px-3 py-1.5 text-xs">Join now</button><div className="mt-3 space-y-1">{leaderboard.map((row, i) => <div key={row.name} className={`flex justify-between rounded px-2 py-1 text-xs ${row.current ? 'bg-orangeBrand/20 text-orangeBrand' : 'bg-zinc-900 text-zinc-300'}`}><span>{i + 1}. {row.name}</span><span>{row.points} pts</span></div>)}</div></div>
 
       <div>
-        <SectionHeader title="Derniers achats" subtitle="Transactions récentes" />
-        <div className="space-y-2">
-          {lastPurchases.map((purchase) => (
-            <article key={purchase.id} className="card-base flex items-center justify-between gap-3 p-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-800 text-lg">{purchase.icon}</div>
-                <div>
-                  <h3 className="text-sm font-semibold text-white">{purchase.item}</h3>
-                  <p className="mt-1 text-xs text-zinc-400">{purchase.game}</p>
-                </div>
-              </div>
-              <span className="text-xs font-semibold text-orangeBrand">{purchase.price}</span>
-            </article>
-          ))}
-        </div>
+        <SectionHeader title="Gaming Data Bundles" subtitle="Offres data contextualisées gaming" />
+        <div className="space-y-2">{bundles.map((b) => <article key={b.id} className="card-base p-3"><p className="text-sm font-semibold">{b.name}</p><p className="text-xs text-zinc-400">{b.details} • {b.validity}</p><p className="text-xs text-orangeBrand">{b.price} FCFA • Bonus: {b.bonus}</p><button onClick={() => setPurchaseBundle(b)} className="mt-2 rounded-lg border border-orangeBrand px-3 py-1.5 text-xs text-orangeBrand">{b.cta}</button></article>)}</div>
       </div>
+
+      <div className="card-base"><SectionHeader title="Your Gaming Loop" subtitle="Play → Reward → Progress → Compete → Spend" /><p className="text-xs text-zinc-300">Play instantly • Earn XP & coins • Climb leaderboard • Spend rewards • Come back tomorrow</p></div>
+
+      <div className="card-base"><SectionHeader title="Wallet Activity" subtitle="Historique récent" /><div className="space-y-1">{state.activities.length ? state.activities.map((a, idx) => <p key={`${a}-${idx}`} className="text-xs text-zinc-300">• {a}</p>) : <p className="text-xs text-zinc-500">Aucune activité pour le moment.</p>}</div></div>
+
+      {sessionModal && <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4"><div className="card-base w-full max-w-xs"><h3 className="text-lg font-bold">Session completed</h3><p className="mt-1 text-sm text-zinc-300">+25 XP • +10 coins</p><div className="mt-3 grid grid-cols-3 gap-2 text-[11px]"><button onClick={() => setSessionModal(false)} className="rounded bg-orangeBrand px-2 py-2">Play again</button><button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand">Join challenge</button><button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand">Use coins</button></div></div></div>}
+
+      {purchaseBundle && <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4"><div className="card-base w-full max-w-xs"><h3 className="text-base font-bold">Confirmation d'achat</h3><p className="mt-1 text-sm">{purchaseBundle.name}</p><p className="text-xs text-zinc-300">Prix: {purchaseBundle.price} FCFA</p><p className="text-xs text-zinc-300">Wallet actuel: {state.wallet} FCFA</p><p className="text-xs text-orangeBrand">Bonus: {purchaseBundle.bonus}</p><div className="mt-3 flex gap-2"><button onClick={confirmPurchase} className="flex-1 rounded bg-orangeBrand py-2 text-xs">Confirm purchase</button><button onClick={() => setPurchaseBundle(null)} className="flex-1 rounded border border-white/20 py-2 text-xs">Cancel</button></div></div></div>}
     </section>
   );
 }
