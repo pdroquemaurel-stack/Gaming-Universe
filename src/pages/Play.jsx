@@ -9,7 +9,6 @@ import SectionHeader from '../components/SectionHeader';
 import AssetImage from '../components/AssetImage';
 import { useToast } from '../components/ToastProvider';
 import { myGames, playCategories, playCategoryChips, popularGames, recommendedGames } from '../data/play';
-import { usePlayerProgress } from '../context/PlayerProgressContext';
 
 const STORAGE_KEYS = {
   lastScore: 'maxit_catch_coin_last_score',
@@ -38,7 +37,6 @@ export default function Play({ onNavigate }) {
   const [activeGame, setActiveGame] = useState(null);
   const [catchStats, setCatchStats] = useState({ lastScore: 0, lastReward: 0, bestScore: 0 });
   const { showToast } = useToast();
-  const { updateProgress, addActivity } = usePlayerProgress();
 
   useEffect(() => {
     setCatchStats({
@@ -68,9 +66,7 @@ export default function Play({ onNavigate }) {
     window.localStorage.setItem(STORAGE_KEYS.bestScore, String(bestScore));
 
     setCatchStats({ lastScore: score, lastReward: reward, bestScore });
-    updateProgress((p) => ({ ...p, points: p.points + reward, xp: p.xp + xpGain, bestCatchTheCoinScore: Math.max(p.bestCatchTheCoinScore, score) }));
-    addActivity(`Catch the Coin terminé : +${reward} Max it Points, +${xpGain} XP`);
-    showToast(`Partie terminée : +${reward} Max it Points et +${xpGain} XP`);
+    showToast(`Partie terminée : +${reward} points et +${xpGain} XP`);
   };
 
   return (
@@ -141,7 +137,15 @@ export default function Play({ onNavigate }) {
                 onNavigate('/points?tab=use');
                 setActiveGame(null);
               }}
-              onWatchAd={() => { updateProgress((p) => ({ ...p, xp: p.xp + catchStats.lastReward * 2 })); addActivity('XP doublée après publicité'); showToast('XP doublée grâce à la publicité'); }}
+              onGoShop={() => {
+                onNavigate('/shop');
+                setActiveGame(null);
+              }}
+              onDownloadGame={() => {
+                showToast('+50 points gagnés');
+                window.open('https://play.google.com/store/apps/details?id=com.dts.freefireth', '_blank', 'noopener,noreferrer');
+              }}
+              onWatchAd={() => showToast('Publicité terminée — nouvelle tentative débloquée')}
               bestScore={catchStats.bestScore}
             />
           ) : (

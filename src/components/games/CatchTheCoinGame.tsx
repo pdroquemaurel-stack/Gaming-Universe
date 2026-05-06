@@ -26,7 +26,7 @@ function getXpGainFromReward(reward) {
   return reward * 2;
 }
 
-export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onWatchAd, bestScore = 0 }) {
+export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onGoShop, onDownloadGame, onWatchAd, bestScore = 0 }) {
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [score, setScore] = useState(0);
   const [coinsCollected, setCoinsCollected] = useState(0);
@@ -90,15 +90,53 @@ export default function CatchTheCoinGame({ onBack, onComplete, onUsePoints, onWa
 
   if (isGameOver) {
     return (
-      <div className="relative rounded-2xl border border-orangeBrand bg-[#121212] p-4 text-center shadow-lg shadow-orangeBrand/10">
-        <button type="button" onClick={onBack} className="absolute right-3 top-3 text-zinc-400">✕</button>
+      <div className="rounded-2xl border border-orangeBrand bg-[#121212] p-4 text-center shadow-lg shadow-orangeBrand/10">
         <p className="text-xs uppercase tracking-[0.18em] text-orangeBrand">Partie terminée</p>
         <h4 className="mt-1 text-xl font-bold text-white">Catch the Coin</h4>
-        <p className="mt-2 text-sm text-zinc-200">+{reward} Max it Points • +{xpGain} XP</p>
+        <div className="mt-4 flex justify-center">
+          <div className="rounded-full border border-orangeBrand/60 bg-orangeBrand/20 px-5 py-2 text-sm font-semibold text-orange-100">
+            +{reward} Max it Points
+          </div>
+        </div>
+        <p className="mt-3 text-sm text-zinc-200">Score : {score}</p>
+        <p className="text-sm text-zinc-200">XP gagnée : +{xpGain}</p>
+        <p className="text-xs text-zinc-300">Ton meilleur score : {Math.max(bestScore, score)}</p>
+        <p className="mt-1 text-sm text-orange-200">Bravo, tu as gagné +{reward} Max it Points</p>
+        <p className="mt-1 text-xs text-zinc-400">{performanceMessage}</p>
+
+        <div className="mt-3 rounded-lg border border-white/10 bg-black/30 p-3 text-left">
+          <p className="text-xs text-zinc-300">Progression niveau : {nextXp} / {targetXp} XP</p>
+          <div className="mt-2 h-2 rounded-full bg-zinc-800">
+            <div className="h-full rounded-full bg-orangeBrand" style={{ width: `${progressionPercent}%` }} />
+          </div>
+        </div>
+
         <div className="mt-5 space-y-2">
-          <button type="button" onClick={onUsePoints} className="w-full rounded-xl bg-orangeBrand px-3 py-2 text-sm font-semibold text-white">Utiliser mes points</button>
-          <button type="button" onClick={onWatchAd} className="w-full rounded-xl border border-orangeBrand/40 bg-orangeBrand/10 px-3 py-2 text-sm font-medium text-orange-100">Regarder une pub pour doubler mes XP</button>
-          <button type="button" onClick={restartGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">Rejouer</button>
+          <button type="button" onClick={onUsePoints} className="w-full rounded-xl bg-orangeBrand px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110">
+            Utiliser mes points
+          </button>
+          <button type="button" onClick={onGoShop} className="w-full rounded-xl border border-orangeBrand/60 bg-orangeBrand/10 px-3 py-2 text-sm font-medium text-orange-100">
+            Voir les offres boutique
+          </button>
+          <button type="button" onClick={onDownloadGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
+            Télécharger un jeu recommandé pour gagner +200 points
+          </button>
+          <button type="button" onClick={restartGame} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
+            Rejouer
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              onWatchAd?.();
+              restartGame();
+            }}
+            className="w-full rounded-xl border border-orangeBrand/40 bg-orangeBrand/10 px-3 py-2 text-sm font-medium text-orange-100"
+          >
+            Regarder une pub pour rejouer et améliorer mon score
+          </button>
+          <button type="button" onClick={onBack} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-300">
+            Retour à Jouer
+          </button>
         </div>
       </div>
     );
