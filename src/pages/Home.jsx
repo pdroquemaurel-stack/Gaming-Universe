@@ -144,7 +144,7 @@ export default function Home({ onNavigate }) {
 
   return (
     <section className="space-y-6">
-      <div className="sticky top-[96px] z-30 -mx-4 -mt-5 mb-2 bg-[#0B0B0B] px-4 pt-5 pb-3 shadow-lg shadow-black/40">
+      <div className="sticky top-[88px] z-30 -mx-4 -mt-5 mb-2 bg-[#0B0B0B] px-4 pt-5 pb-3 shadow-lg shadow-black/40">
         <header
           className={`card-base overflow-hidden border border-white/10 bg-[#0B0B0B] shadow-md shadow-black/30 transition-all duration-300 ${isProfileCompact ? 'py-3' : 'py-4'}`}
         >
