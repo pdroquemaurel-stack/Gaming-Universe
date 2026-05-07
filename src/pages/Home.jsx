@@ -144,32 +144,35 @@ export default function Home({ onNavigate }) {
 
   return (
     <section className="space-y-6">
-      <header
-        className={`card-base sticky top-[116px] z-20 overflow-hidden border border-white/10 bg-[#0B0B0B] shadow-md shadow-black/30 transition-all duration-300 ${isProfileCompact ? 'py-3' : 'py-4'}`}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orangeBrand/30 font-bold text-orangeBrand">{playerDefaults.avatar}</div>
-            <div>
-              <p className="text-sm font-bold text-white">{playerDefaults.name}</p>
-              <p className="text-xs text-zinc-300">{isProfileCompact ? `Lv. ${playerDefaults.level}` : `Level ${playerDefaults.level}`}</p>
-            </div>
-          </div>
-          <button className="text-lg transition duration-200 hover:scale-105 active:scale-95">🔔</button>
-        </div>
-        <p className={`text-xs text-zinc-300 transition-all duration-300 ${isProfileCompact ? 'mt-1' : 'mt-2'}`}>XP: {state.xp} / {playerDefaults.xpTarget}</p>
-        <div className={`rounded-full bg-zinc-800 transition-all duration-300 ${isProfileCompact ? 'h-1.5' : 'h-2'}`}>
-          <div className="h-full rounded-full bg-orangeBrand transition-all duration-300" style={{ width: `${xpPercent}%` }} />
-        </div>
-        <div
-          className={`grid overflow-hidden text-xs transition-all duration-300 ${isProfileCompact ? 'mt-0 max-h-0 opacity-0' : 'mt-3 max-h-40 grid-cols-3 gap-2 opacity-100'}`}
-          aria-hidden={isProfileCompact}
+      <div className="sticky top-[116px] z-30 -mx-4 mb-2 bg-[#0B0B0B] px-4 pb-3 shadow-lg shadow-black/40">
+        <header
+          className={`card-base overflow-hidden border border-white/10 bg-[#0B0B0B] shadow-md shadow-black/30 transition-all duration-300 ${isProfileCompact ? 'py-3' : 'py-4'}`}
         >
-          <div className="rounded-lg bg-zinc-900 p-2">Level<br /><span className="font-bold text-orangeBrand">{playerDefaults.level}</span></div>
-          <div className="rounded-lg bg-zinc-900 p-2">Max it Points<br /><span className="font-bold text-orangeBrand">{state.coins}</span></div>
-          <div className="rounded-lg bg-zinc-900 p-2">Streak<br /><span className="font-bold text-orangeBrand">{state.streakCount} jours</span></div>
-        </div>
-      </header>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orangeBrand/30 font-bold text-orangeBrand">{playerDefaults.avatar}</div>
+              <div>
+                <p className="text-sm font-bold text-white">{playerDefaults.name}</p>
+                <p className="text-xs text-zinc-300">{isProfileCompact ? `Lv. ${playerDefaults.level}` : `Level ${playerDefaults.level}`}</p>
+              </div>
+            </div>
+            <button className="text-lg transition duration-200 hover:scale-105 active:scale-95">🔔</button>
+          </div>
+          <p className={`text-xs text-zinc-300 transition-all duration-300 ${isProfileCompact ? 'mt-1' : 'mt-2'}`}>XP: {state.xp} / {playerDefaults.xpTarget}</p>
+          <div className={`rounded-full bg-zinc-800 transition-all duration-300 ${isProfileCompact ? 'h-1.5' : 'h-2'}`}>
+            <div className="h-full rounded-full bg-orangeBrand transition-all duration-300" style={{ width: `${xpPercent}%` }} />
+          </div>
+          <div
+            className={`grid overflow-hidden text-xs transition-all duration-300 ${isProfileCompact ? 'mt-0 max-h-0 opacity-0' : 'mt-3 max-h-40 grid-cols-3 gap-2 opacity-100'}`}
+            aria-hidden={isProfileCompact}
+          >
+            <div className="rounded-lg bg-zinc-900 p-2">Level<br /><span className="font-bold text-orangeBrand">{playerDefaults.level}</span></div>
+            <div className="rounded-lg bg-zinc-900 p-2">Max it Points<br /><span className="font-bold text-orangeBrand">{state.coins}</span></div>
+            <div className="rounded-lg bg-zinc-900 p-2">Streak<br /><span className="font-bold text-orangeBrand">{state.streakCount} jours</span></div>
+          </div>
+        </header>
+        <div className="h-3 w-full bg-[#0B0B0B]" aria-hidden="true" />
+      </div>
 
       <article className="relative overflow-hidden rounded-2xl border border-orangeBrand/30 bg-gradient-to-br from-zinc-900 via-black to-zinc-950 p-5 shadow-lg shadow-orangeBrand/10">
         <div className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-orangeBrand/20 blur-3xl" />
