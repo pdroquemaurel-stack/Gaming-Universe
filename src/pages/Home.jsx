@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { useToast } from '../components/ToastProvider';
 import { continuePlayingGames, dailyMissions, leaderboard, playerDefaults } from '../data/mockGamingData';
+import CommunitySurvey from '../components/CommunitySurvey';
 
 const memoryStore = {};
 const safeStorage = {
@@ -109,6 +110,8 @@ export default function Home() {
         <SectionHeader title="Daily Missions" subtitle="Play, challenge, bundles" />
         <div className="space-y-2">{dailyMissions.map((m) => <article key={m.id} className="card-base p-3"><div className="flex items-center justify-between"><p className="text-sm font-semibold">{m.title}</p><span className="text-[11px] text-orangeBrand">{m.status}</span></div><p className="text-xs text-zinc-400">{m.progress}/{m.total} • Récompense: {m.reward}</p><div className="mt-2 h-1.5 rounded bg-zinc-800"><div className="h-full rounded bg-orangeBrand" style={{ width: `${(m.progress / m.total) * 100}%` }} /></div></article>)}</div>
       </div>
+
+      <CommunitySurvey />
 
       <div className="card-base"><SectionHeader title="Compete Now" subtitle="Challenge, tournoi, leaderboard" /><p className="text-sm">Free Fire Headshot Challenge</p><p className="text-xs text-zinc-400">500 Max it Points + badge • 1 240 participants</p><button className="mt-2 rounded-lg bg-orangeBrand px-3 py-1.5 text-xs">Participer</button><div className="mt-3 space-y-1">{leaderboard.map((row, i) => <div key={row.name} className={`flex justify-between rounded px-2 py-1 text-xs ${row.current ? 'bg-orangeBrand/20 text-orangeBrand' : 'bg-zinc-900 text-zinc-300'}`}><span>{i + 1}. {row.name}</span><span>{row.points} pts</span></div>)}</div></div>
 
