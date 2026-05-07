@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { useToast } from '../components/ToastProvider';
 import { continuePlayingGames, dailyMissions, leaderboard, playerDefaults } from '../data/mockGamingData';
@@ -64,6 +64,7 @@ export default function Home({ onNavigate }) {
   const [freeFireId, setFreeFireId] = useState(initialFreeFireId);
   const [freeFireInput, setFreeFireInput] = useState('');
   const [freeFireInputError, setFreeFireInputError] = useState('');
+  const [isProfileCompact, setIsProfileCompact] = useState(false);
 
   const isFreeFireConnected = Boolean(freeFireId?.trim());
 
@@ -110,6 +111,23 @@ export default function Home({ onNavigate }) {
     [state.streakCount, claimedToday],
   );
 
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const shouldCompact = window.scrollY > 56;
+        setIsProfileCompact((prev) => (prev === shouldCompact ? prev : shouldCompact));
+        ticking = false;
+      });
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const handleJoinChallenge = () => {
     const trimmed = freeFireInput.trim();
     if (!trimmed) {
@@ -126,22 +144,27 @@ export default function Home({ onNavigate }) {
 
   return (
     <section className="space-y-6">
-      <header className="card-base sticky top-[116px] z-20 border border-white/10 bg-[#0B0B0B] shadow-md shadow-black/30">
+      <header
+        className={`card-base sticky top-[116px] z-20 overflow-hidden border border-white/10 bg-[#0B0B0B] shadow-md shadow-black/30 transition-all duration-300 ${isProfileCompact ? 'py-3' : 'py-4'}`}
+      >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orangeBrand/30 font-bold text-orangeBrand">{playerDefaults.avatar}</div>
             <div>
               <p className="text-sm font-bold text-white">{playerDefaults.name}</p>
-              <p className="text-xs text-zinc-300">Level {playerDefaults.level}</p>
+              <p className="text-xs text-zinc-300">{isProfileCompact ? `Lv. ${playerDefaults.level}` : `Level ${playerDefaults.level}`}</p>
             </div>
           </div>
           <button className="text-lg transition duration-200 hover:scale-105 active:scale-95">🔔</button>
         </div>
-        <p className="mt-2 text-xs text-zinc-300">XP: {state.xp} / {playerDefaults.xpTarget}</p>
-        <div className="h-2 rounded-full bg-zinc-800">
+        <p className={`text-xs text-zinc-300 transition-all duration-300 ${isProfileCompact ? 'mt-1' : 'mt-2'}`}>XP: {state.xp} / {playerDefaults.xpTarget}</p>
+        <div className={`rounded-full bg-zinc-800 transition-all duration-300 ${isProfileCompact ? 'h-1.5' : 'h-2'}`}>
           <div className="h-full rounded-full bg-orangeBrand transition-all duration-300" style={{ width: `${xpPercent}%` }} />
         </div>
-        <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
+        <div
+          className={`grid overflow-hidden text-xs transition-all duration-300 ${isProfileCompact ? 'mt-0 max-h-0 opacity-0' : 'mt-3 max-h-40 grid-cols-3 gap-2 opacity-100'}`}
+          aria-hidden={isProfileCompact}
+        >
           <div className="rounded-lg bg-zinc-900 p-2">Level<br /><span className="font-bold text-orangeBrand">{playerDefaults.level}</span></div>
           <div className="rounded-lg bg-zinc-900 p-2">Max it Points<br /><span className="font-bold text-orangeBrand">{state.coins}</span></div>
           <div className="rounded-lg bg-zinc-900 p-2">Streak<br /><span className="font-bold text-orangeBrand">{state.streakCount} jours</span></div>
@@ -211,7 +234,7 @@ export default function Home({ onNavigate }) {
       <div className="card-base border border-white/10 bg-zinc-900/70 p-4"><SectionHeader title="Your Gaming Loop" subtitle="Play → Reward → Progress → Compete → Spend" /><p className="text-xs text-zinc-300">Play instantly • Earn XP & Max it Points • Climb leaderboard • Spend rewards • Come back tomorrow</p></div>
       <div className="card-base border border-white/10 bg-zinc-900/50 p-3.5"><SectionHeader title="Activité récente" subtitle="Historique récent" /><div className="space-y-1">{state.activities.length ? state.activities.map((a, idx) => <p key={`${a}-${idx}`} className="text-xs text-zinc-400">• {a}</p>) : <p className="text-xs text-zinc-500">Aucune activité pour le moment.</p>}</div></div>
 
-      {joinModalOpen ? <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4"><div className="card-base w-full max-w-sm border border-white/10 bg-zinc-900/95 p-5"><h3 className="text-lg font-bold text-white">Participer au challenge Free Fire</h3><p className="mt-2 text-sm text-zinc-300">Renseigne ton ID joueur Free Fire pour rejoindre le challenge Headshot King et suivre ton score dans le leaderboard.</p><input value={freeFireInput} onChange={(event) => { setFreeFireInput(event.target.value); if (freeFireInputError) setFreeFireInputError(''); }} placeholder="ID joueur Free Fire" className="mt-3 w-full rounded-lg border border-white/20 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-orangeBrand/50" />{freeFireInputError ? <p className="mt-2 text-xs text-red-300">{freeFireInputError}</p> : null}<div className="mt-4 grid grid-cols-2 gap-2"><button onClick={() => { setJoinModalOpen(false); setFreeFireInputError(''); }} className="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold text-zinc-200">Annuler</button><button onClick={handleJoinChallenge} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Valider ma participation</button></div></div></div> : null}
+      {joinModalOpen ? <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4"><div className="card-base w-full max-w-sm border border-white/10 bg-[#0B0B0B] p-5 shadow-xl shadow-black/40"><h3 className="text-lg font-bold text-white">Participer au challenge Free Fire</h3><p className="mt-2 text-sm text-zinc-300">Renseigne ton ID joueur Free Fire pour rejoindre le challenge Headshot King et suivre ton score dans le leaderboard.</p><input value={freeFireInput} onChange={(event) => { setFreeFireInput(event.target.value); if (freeFireInputError) setFreeFireInputError(''); }} placeholder="ID joueur Free Fire" className="mt-3 w-full rounded-lg border border-white/20 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-orangeBrand/50" />{freeFireInputError ? <p className="mt-2 text-xs text-red-300">{freeFireInputError}</p> : null}<div className="mt-4 grid grid-cols-2 gap-2"><button onClick={() => { setJoinModalOpen(false); setFreeFireInputError(''); }} className="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold text-zinc-200">Annuler</button><button onClick={handleJoinChallenge} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Valider ma participation</button></div></div></div> : null}
 
       {rulesModal ? <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4"><div className="card-base w-full max-w-sm border border-white/10 bg-zinc-900/95 p-5"><h3 className="text-lg font-bold text-white">Règles de l’événement</h3><p className="mt-2 text-sm text-zinc-300">Fais le plus de headshots possible en session classée. Les récompenses sont attribuées selon ton rang final.</p><ul className="mt-3 list-disc space-y-1 pl-4 text-xs text-zinc-300"><li>Durée : 3 jours</li><li>Récompense max : 2 500 Max it Points</li><li>Bonus actif : Weekend Double XP</li></ul><button onClick={() => setRulesModal(false)} className="mt-4 w-full rounded-lg bg-orangeBrand py-2 text-sm font-semibold text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Compris</button></div></div> : null}
       {sessionModal ? <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4"><div className="card-base w-full max-w-xs border border-white/10 bg-zinc-900/95"><h3 className="text-lg font-bold">Partie terminée</h3><p className="mt-1 text-sm text-zinc-300">+25 XP • +10 Max it Points</p><div className="mt-3 grid grid-cols-3 gap-2 text-[11px]"><button onClick={() => setSessionModal(false)} className="rounded bg-orangeBrand px-2 py-2 text-black transition duration-200 hover:brightness-110">Rejouer</button><button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand transition duration-200 hover:bg-orangeBrand/10">Participer</button><button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand transition duration-200 hover:bg-orangeBrand/10">Utiliser mes points</button></div></div></div> : null}
