@@ -19,7 +19,7 @@ function isSubscriptionActive() {
   return window.localStorage.getItem(STORAGE_KEY_PREMIUM) === 'true';
 }
 
-export default function Esport() {
+export default function Esport({ currentSearch }) {
   const [activeTab, setActiveTab] = useState('video');
   const [selectedTournament, setSelectedTournament] = useState(null);
   const [premiumTarget, setPremiumTarget] = useState(null);
@@ -33,6 +33,14 @@ export default function Esport() {
   useEffect(() => {
     setIsPremiumSubscriber(isSubscriptionActive());
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(currentSearch || '');
+    const requestedTab = params.get('tab');
+    if (requestedTab && ['video', 'competition', 'challenge'].includes(requestedTab)) {
+      setActiveTab(requestedTab);
+    }
+  }, [currentSearch]);
 
   const groupedTournaments = useMemo(() => groups.map((group) => ({ ...group, items: esportTournaments.filter((tournament) => tournament.status === group.id) })), []);
 
