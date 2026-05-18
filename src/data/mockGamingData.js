@@ -1,12 +1,17 @@
+import { playerProfile } from './playerProfile';
+
 export const playerDefaults = {
-  name: 'Paul',
-  avatar: 'P',
-  level: 7,
-  xp: 1340,
-  xpTarget: 2000,
-  wallet: 2500,
-  coins: 420,
-  streak: 4,
+  name: playerProfile.pseudo,
+  initials: playerProfile.initials,
+  avatar: playerProfile.initials,
+  level: playerProfile.level,
+  levelName: playerProfile.levelName,
+  xp: playerProfile.xpCurrent,
+  xpTarget: playerProfile.xpNextLevel,
+  coins: playerProfile.coins,
+  streak: playerProfile.streak,
+  country: playerProfile.country,
+  rank: playerProfile.rank,
 };
 
 export const continuePlayingGames = [
@@ -31,6 +36,6 @@ export const bundles = [
 export const leaderboard = [
   { name: 'Amine', points: '12 450' },
   { name: 'Sarah', points: '11 980' },
-  { name: 'Paul', points: '10 750', current: true },
+  { name: 'AkosuaK95', points: '10 750', current: true },
   { name: 'Kevin', points: '9 800' },
 ];

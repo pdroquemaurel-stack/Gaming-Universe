@@ -42,7 +42,7 @@ const gameContexts = ['Tournoi en cours', 'Streak actif', 'Quick session'];
 const freeFireLeaderboard = [
   { name: 'Amine', score: 84 },
   { name: 'Sarah', score: 79 },
-  { name: 'Paul', score: 66, current: true },
+  { name: 'AkosuaK95', score: 66, current: true },
   { name: 'Kevin', score: 61 },
 ];
 
@@ -71,6 +71,7 @@ export default function Home({ onNavigate }) {
   const persist = (next) => {
     setState(next);
     safeStorage.set('playerHubState', next);
+    window.dispatchEvent(new CustomEvent('maxit:state-updated', { detail: next }));
   };
 
   const xpPercent = Math.min(Math.round((state.xp / playerDefaults.xpTarget) * 100), 100);
@@ -200,7 +201,7 @@ export default function Home({ onNavigate }) {
                   </div>
                 ))}
               </div>
-              <p className="mt-2 text-xs text-zinc-200">Ton score : <span className="font-semibold text-orangeBrand">66 headshots</span></p>
+              <p className="mt-2 text-xs text-zinc-200">Ton score (<span className="font-semibold text-orangeBrand">AkosuaK95</span>) : <span className="font-semibold text-orangeBrand">66 headshots</span></p>
               <p className="text-xs text-zinc-200">Classement actuel : <span className="font-semibold text-orangeBrand">#3</span></p>
             </div>
           ) : null}
