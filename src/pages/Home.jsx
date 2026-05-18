@@ -46,8 +46,32 @@ const freeFireLeaderboard = [
   { name: 'Kevin', score: 61 },
 ];
 
+function useCountdown(targetMs) {
+  const [diff, setDiff] = useState(() => Math.max(targetMs - Date.now(), 0));
+  useEffect(() => {
+    const id = setInterval(() => setDiff(Math.max(targetMs - Date.now(), 0)), 1000);
+    return () => clearInterval(id);
+  }, [targetMs]);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  return { d, h, m, s };
+}
+
 export default function Home({ onNavigate }) {
   const { showToast } = useToast();
+  // Target fixed ~3 days from initial load, stored in sessionStorage so it persists during the demo session
+  const tournamentTarget = useMemo(() => {
+    const key = 'maxit_tournament_target';
+    const stored = window.sessionStorage.getItem(key);
+    if (stored) return Number(stored);
+    const ts = Date.now() + 3 * 24 * 3600 * 1000 + 2 * 3600 * 1000 + 14 * 60 * 1000 + 38 * 1000;
+    window.sessionStorage.setItem(key, String(ts));
+    return ts;
+  }, []);
+  const countdown = useCountdown(tournamentTarget);
+
   const initial = safeStorage.get('playerHubState', {
     xp: playerDefaults.xp,
     coins: playerDefaults.coins,
@@ -145,7 +169,7 @@ export default function Home({ onNavigate }) {
 
   return (
     <section className="space-y-6">
-      <div className="sticky top-[88px] z-30 -mx-4 -mt-5 mb-2 bg-[#0B0B0B] px-4 pt-5 pb-3 shadow-lg shadow-black/40">
+      <div className="sticky top-12 z-30 -mx-4 -mt-5 mb-2 bg-[#0B0B0B] px-4 pt-5 pb-3 shadow-lg shadow-black/40">
         <header
           className={`card-base overflow-hidden border border-white/10 bg-[#0B0B0B] shadow-md shadow-black/30 transition-all duration-300 ${isProfileCompact ? 'py-3' : 'py-4'}`}
         >
@@ -183,7 +207,17 @@ export default function Home({ onNavigate }) {
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-orangeBrand/40 bg-orangeBrand/10 px-2.5 py-1 text-[11px] font-semibold text-orangeBrand"><span className="h-2 w-2 animate-pulse rounded-full bg-orangeBrand" />Événement live</span>
               <h1 className="mt-3 text-xl font-extrabold leading-tight text-white">Free Fire Headshot Challenge</h1>
-              <p className="mt-1 text-xs text-zinc-300">3 jours restants • 2 500 Max it Points à gagner</p>
+              <div className="mt-2 flex items-center gap-2">
+                <div className="flex gap-1 text-xs font-bold">
+                  {[{ v: countdown.d, u: 'j' }, { v: countdown.h, u: 'h' }, { v: countdown.m, u: 'm' }, { v: countdown.s, u: 's' }].map(({ v, u }) => (
+                    <span key={u} className="flex min-w-[30px] flex-col items-center rounded-md bg-black/50 px-1.5 py-1 text-center leading-tight">
+                      <span className="text-sm font-extrabold text-orangeBrand tabular-nums">{String(v).padStart(2, '0')}</span>
+                      <span className="text-[9px] text-zinc-400">{u}</span>
+                    </span>
+                  ))}
+                </div>
+                <span className="text-xs text-zinc-300">• 2 500 Max it Points</span>
+              </div>
             </div>
             <span className="rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[11px] text-zinc-200">1 248 joueurs</span>
           </div>

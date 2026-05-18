@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import GlobalHeader from './components/GlobalHeader';
 import MainNav from './components/MainNav';
+import SplashScreen from './components/SplashScreen';
 import { ToastProvider } from './components/ToastProvider';
 import Esport from './pages/Esport';
 import Gameshop from './pages/Gameshop';
@@ -44,6 +45,9 @@ function parseNavigationTarget(pathOrLegacy) {
 }
 
 export default function App() {
+  const [splashDone, setSplashDone] = useState(() => {
+    return Boolean(window.sessionStorage.getItem('maxit_splash_shown'));
+  });
   const [currentPath, setCurrentPath] = useState(() => normalizePath(window.location.pathname));
   const [currentSearch, setCurrentSearch] = useState(() => window.location.search || '');
 
@@ -68,10 +72,16 @@ export default function App() {
     setCurrentSearch(target.search);
   };
 
+  const handleSplashDone = () => {
+    window.sessionStorage.setItem('maxit_splash_shown', '1');
+    setSplashDone(true);
+  };
+
   const CurrentView = useMemo(() => routeMap[currentPath] || Home, [currentPath]);
 
   return (
     <ToastProvider>
+      {!splashDone && <SplashScreen onDone={handleSplashDone} />}
       <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-20 pt-14 text-white">
         <GlobalHeader onNavigate={navigate} />
         <MainNav currentPath={currentPath} onNavigate={navigate} />
