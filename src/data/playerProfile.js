@@ -1,0 +1,16 @@
+export const playerProfile = {
+  pseudo: 'AkosuaK95',
+  initials: 'AK',
+  level: 24,
+  levelName: 'Gold',
+  xpCurrent: 1280,
+  xpNextLevel: 2000,
+  coins: 1240,
+  streak: 8,
+  rank: 'Top 15%',
+  country: 'Sénégal',
+  gamesPlayed: 42,
+  tournamentsPlayed: 4,
+  bundle: 'Gaming Bundle',
+  dataRemaining: '2,4 Go',
+};

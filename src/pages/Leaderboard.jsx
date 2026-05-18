@@ -34,7 +34,7 @@ export default function Leaderboard() {
         ))}
       </div>
 
-      <LeaderboardCard entries={entries} currentPlayer="Paul" />
+      <LeaderboardCard entries={entries} currentPlayer="AkosuaK95" />
 
       <article className="card-base bg-gradient-to-r from-orangeBrand/20 to-zinc-900/60">
         <SectionHeader title="Récompenses" />

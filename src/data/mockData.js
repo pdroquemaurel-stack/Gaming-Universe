@@ -304,7 +304,7 @@ export const leaderboardGlobal = [
   { rank: 1, player: 'AwaGamer', country: 'Senegal', points: 980, badge: 'Légende' },
   { rank: 2, player: 'NeoKing', country: "Côte d’Ivoire", points: 945, badge: 'Pro' },
   { rank: 3, player: 'PixelFox', country: 'Maroc', points: 920, badge: 'Élite' },
-  { rank: 12, player: 'Paul', country: 'Maroc', points: 720, badge: 'Montant' },
+  { rank: 12, player: 'AkosuaK95', country: 'Sénégal', points: 720, badge: 'Montant' },
   { rank: 14, player: 'CamGiant', country: 'Cameroun', points: 700, badge: 'Montant' },
 ];
 
@@ -312,13 +312,13 @@ export const leaderboardCountry = [
   { rank: 1, player: 'MinaAtlas', country: 'Maroc', points: 900, badge: 'Légende' },
   { rank: 2, player: 'RifSniper', country: 'Maroc', points: 860, badge: 'Pro' },
   { rank: 3, player: 'Casashot', country: 'Maroc', points: 820, badge: 'Élite' },
-  { rank: 12, player: 'Paul', country: 'Maroc', points: 720, badge: 'Montant' },
+  { rank: 12, player: 'AkosuaK95', country: 'Sénégal', points: 720, badge: 'Montant' },
   { rank: 16, player: 'AtlasJoy', country: 'Maroc', points: 670, badge: 'Compétiteur' },
 ];
 
 export const leaderboardFriends = [
   { rank: 1, player: 'Amine', country: 'Maroc', points: 760, badge: 'Élite' },
-  { rank: 2, player: 'Paul', country: 'Maroc', points: 720, badge: 'Montant' },
+  { rank: 2, player: 'AkosuaK95', country: 'Sénégal', points: 720, badge: 'Montant' },
   { rank: 3, player: 'Fatou', country: 'Senegal', points: 690, badge: 'Compétiteur' },
   { rank: 4, player: 'Kader', country: 'Mali', points: 655, badge: 'Compétiteur' },
   { rank: 5, player: 'Aya', country: 'Cameroun', points: 620, badge: 'Starter' },

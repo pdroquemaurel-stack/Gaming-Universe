@@ -72,7 +72,7 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-10 pt-28 text-white">
+      <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-20 pt-14 text-white">
         <GlobalHeader onNavigate={navigate} />
         <MainNav currentPath={currentPath} onNavigate={navigate} />
         <CurrentView currentPath={currentPath} currentSearch={currentSearch} onNavigate={navigate} />

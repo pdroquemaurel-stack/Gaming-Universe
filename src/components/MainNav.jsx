@@ -1,14 +1,15 @@
 const navItems = [
-  { label: 'ACCUEIL', path: '/' },
-  { label: 'JOUER', path: '/play' },
-  { label: 'BOUTIQUE', path: '/shop' },
-  { label: 'E-SPORT', path: '/esport' },
+  { label: 'Accueil', path: '/', icon: '🏠' },
+  { label: 'Jouer', path: '/play', icon: '🎮' },
+  { label: 'E-sport', path: '/esport', icon: '🏆' },
+  { label: 'Boutique', path: '/shop', icon: '🛒' },
+  { label: 'Profil', path: '/profile', icon: '👤' },
 ];
 
 export default function MainNav({ currentPath, onNavigate }) {
   return (
-    <nav className="fixed left-0 right-0 top-12 z-40 border-b border-white/10 bg-black/95 backdrop-blur">
-      <ul className="mx-auto grid h-11 max-w-md grid-cols-4 gap-1 px-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-orangeBrand/20 bg-[#0B0B0B]/97 pb-safe backdrop-blur-md">
+      <ul className="mx-auto grid h-16 max-w-md grid-cols-5">
         {navItems.map((item) => {
           const isActive = currentPath === item.path;
 
@@ -17,11 +18,19 @@ export default function MainNav({ currentPath, onNavigate }) {
               <button
                 type="button"
                 onClick={() => onNavigate(item.path)}
-                className={`w-full rounded-lg px-1 py-2 text-[11px] font-bold tracking-wide ${
-                  isActive ? 'bg-orangeBrand/15 text-orangeBrand' : 'text-zinc-300'
-                }`}
+                className={`flex flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 transition-all duration-200
+                  ${isActive ? 'text-orangeBrand' : 'text-zinc-500 active:text-zinc-300'}`}
+                style={{ minWidth: 0, width: '100%' }}
               >
-                {item.label}
+                <span
+                  className={`flex h-7 w-7 items-center justify-center rounded-lg text-base transition-all duration-200
+                    ${isActive ? 'bg-orangeBrand/20 scale-110' : ''}`}
+                >
+                  {item.icon}
+                </span>
+                <span className={`text-[10px] font-semibold leading-none ${isActive ? 'text-orangeBrand' : 'text-zinc-500'}`}>
+                  {item.label}
+                </span>
               </button>
             </li>
           );
