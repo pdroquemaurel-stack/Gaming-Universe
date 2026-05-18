@@ -19,9 +19,13 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      <div className="pointer-events-none fixed inset-x-0 bottom-4 z-[120] mx-auto flex w-full max-w-md flex-col gap-2 px-4">
+      <div className="pointer-events-none fixed inset-x-0 top-14 z-[120] mx-auto flex w-full max-w-md flex-col gap-2 px-4">
         {toasts.map((toast) => (
-          <div key={toast.id} className="rounded-xl border border-orangeBrand/40 bg-black/90 px-4 py-3 text-sm font-medium text-orange-100 shadow-lg shadow-orangeBrand/20">
+          <div
+            key={toast.id}
+            style={{ animation: 'toastSlideDown 0.25s ease-out' }}
+            className="rounded-xl border border-orangeBrand/40 bg-black px-4 py-3 text-sm font-medium text-orange-100 shadow-lg shadow-orangeBrand/20"
+          >
             {toast.message}
           </div>
         ))}
