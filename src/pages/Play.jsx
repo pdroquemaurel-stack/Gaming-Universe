@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import BubbleDashGame from '../components/games/BubbleDashGame';
 import CatchTheCoinGame from '../components/games/CatchTheCoinGame';
 import AppCard from '../components/AppCard';
 import CategoryChips from '../components/CategoryChips';
@@ -15,7 +14,6 @@ const STORAGE_KEYS = {
   lastScore: 'maxit_catch_coin_last_score',
   lastReward: 'maxit_catch_coin_last_reward',
   bestScore: 'maxit_catch_coin_best_score',
-  bubbleBest: 'maxit_bubble_dash_best_score',
 };
 
 function readNumber(key) {
@@ -38,7 +36,6 @@ export default function Play({ onNavigate }) {
   const [selectedGame, setSelectedGame] = useState(null);
   const [activeGame, setActiveGame] = useState(null);
   const [catchStats, setCatchStats] = useState({ lastScore: 0, lastReward: 0, bestScore: 0 });
-  const [bubbleBest, setBubbleBest] = useState(0);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -47,7 +44,6 @@ export default function Play({ onNavigate }) {
       lastReward: readNumber(STORAGE_KEYS.lastReward),
       bestScore: readNumber(STORAGE_KEYS.bestScore),
     });
-    setBubbleBest(readNumber(STORAGE_KEYS.bubbleBest));
   }, []);
 
   const currentCategory = useMemo(() => playCategories.find((category) => category.id === selectedCategory), [selectedCategory]);
@@ -71,13 +67,6 @@ export default function Play({ onNavigate }) {
 
     setCatchStats({ lastScore: score, lastReward: reward, bestScore });
     showToast(`Partie terminée : +${reward} points et +${xpGain} XP`);
-  };
-
-  const handleBubbleComplete = ({ score, reward, xpGain }) => {
-    const best = Math.max(bubbleBest, score);
-    window.localStorage.setItem(STORAGE_KEYS.bubbleBest, String(best));
-    setBubbleBest(best);
-    showToast(`Bubble Dash : +${reward} points et +${xpGain} XP`);
   };
 
   return (
@@ -158,12 +147,6 @@ export default function Play({ onNavigate }) {
               }}
               onWatchAd={() => showToast('Publicité terminée — nouvelle tentative débloquée')}
               bestScore={catchStats.bestScore}
-            />
-          ) : activeGame.id === 'bubble-dash' ? (
-            <BubbleDashGame
-              onBack={() => setActiveGame(null)}
-              onComplete={handleBubbleComplete}
-              bestScore={bubbleBest}
             />
           ) : (
             <>
