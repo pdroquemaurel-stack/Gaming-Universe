@@ -1,19 +1,17 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function ModalOverlay({ title, onClose, children, fullScreenMobile = false }) {
   useEffect(() => {
     const prevBody = document.body.style.overflow;
-    const prevHtml = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
 
     return () => {
       document.body.style.overflow = prevBody;
-      document.documentElement.style.overflow = prevHtml;
     };
   }, []);
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/75 p-3 backdrop-blur-sm">
       <div className={`w-full overflow-y-auto border border-orangeBrand bg-[#101010] shadow-2xl shadow-black/60 ${
         fullScreenMobile
@@ -26,6 +24,7 @@ export default function ModalOverlay({ title, onClose, children, fullScreenMobil
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

@@ -44,7 +44,7 @@ body {
 }
 
 .page-slide-in {
-  animation: pageSlideIn 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: pageSlideIn 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards;
 }
 
 @keyframes missionComplete {
