@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import ModalOverlay from '../components/ModalOverlay';
 import SectionHeader from '../components/SectionHeader';
 import { useToast } from '../components/ToastProvider';
 import { continuePlayingGames, dailyMissions, leaderboard, playerDefaults } from '../data/mockGamingData';
@@ -72,16 +73,6 @@ export default function Home({ onNavigate }) {
 
   const isFreeFireConnected = Boolean(freeFireId?.trim());
 
-  useEffect(() => {
-    const anyOpen = joinModalOpen || rulesModal || sessionModal;
-    document.body.style.overflow = anyOpen ? 'hidden' : '';
-    document.documentElement.style.overflow = anyOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, [joinModalOpen, rulesModal, sessionModal]);
-
   const persist = (next) => {
     setState(next);
     safeStorage.set('playerHubState', next);
@@ -93,7 +84,7 @@ export default function Home({ onNavigate }) {
   const claimedToday = state.lastClaimDate === today;
 
   const claimDaily = () => {
-    if (claimedToday) return showToast('Déjà récupéré aujourd’hui');
+    if (claimedToday) return showToast("Déjà récupéré aujourd'hui");
     const next = {
       ...state,
       coins: state.coins + 30,
@@ -245,7 +236,7 @@ export default function Home({ onNavigate }) {
         <div className="space-y-3">{continuePlayingGames.map((game, idx) => { const contextLabel = gameContexts[idx % gameContexts.length]; const progress = Math.max(8, Math.min(100, game.progress)); return <article key={game.id} className="card-base border border-white/10 bg-gradient-to-br from-zinc-900/80 via-zinc-900/70 to-black/60 p-4 transition duration-200 hover:scale-[1.01] hover:border-orangeBrand/40 hover:shadow-lg hover:shadow-orangeBrand/20 active:scale-[0.99]"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="text-base font-semibold text-white">{game.visual} {game.name}</p><p className="mt-1 text-xs text-zinc-400">{game.lastSession}</p></div><span className="rounded-full border border-orangeBrand/30 bg-orangeBrand/10 px-2 py-1 text-[10px] font-semibold text-orangeBrand">{contextLabel}</span></div><div className="mt-3 h-1.5 rounded-full bg-zinc-800"><div className="h-full rounded-full bg-orangeBrand transition-all duration-300" style={{ width: `${progress}%` }} /></div><div className="mt-3 flex items-center justify-between gap-2"><div><p className="text-xs text-zinc-300">Progression {game.progress}%</p><p className="text-xs font-semibold text-orangeBrand">{game.reward} • +10 Max it Points</p></div><button onClick={() => completeSession(game.name)} className="rounded-lg bg-orangeBrand px-3.5 py-2 text-xs font-semibold text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Reprendre</button></div></article>; })}</div>
       </div>
 
-      <div className="card-base border border-white/10 bg-zinc-900/70 p-4"><SectionHeader title="Daily Streak" subtitle="Reviens chaque jour" /><div className="mt-2 flex gap-1">{streakDays.map((d) => <div key={d.day} className={`flex-1 rounded-md p-2 text-center text-[10px] ${d.done ? 'bg-orangeBrand/30 text-orangeBrand' : d.today ? 'border border-orangeBrand text-orangeBrand' : 'bg-zinc-800 text-zinc-500'}`}>J{d.day}</div>)}</div><button onClick={claimDaily} className="mt-3 w-full rounded-lg border border-orangeBrand/70 py-2 text-xs font-semibold text-orangeBrand transition duration-200 hover:bg-orangeBrand/10 active:scale-[0.99]">{claimedToday ? 'Déjà récupéré aujourd’hui' : 'Récupérer ma récompense (+30 Max it Points)'}</button></div>
+      <div className="card-base border border-white/10 bg-zinc-900/70 p-4"><SectionHeader title="Daily Streak" subtitle="Reviens chaque jour" /><div className="mt-2 flex gap-1">{streakDays.map((d) => <div key={d.day} className={`flex-1 rounded-md p-2 text-center text-[10px] ${d.done ? 'bg-orangeBrand/30 text-orangeBrand' : d.today ? 'border border-orangeBrand text-orangeBrand' : 'bg-zinc-800 text-zinc-500'}`}>J{d.day}</div>)}</div><button onClick={claimDaily} className="mt-3 w-full rounded-lg border border-orangeBrand/70 py-2 text-xs font-semibold text-orangeBrand transition duration-200 hover:bg-orangeBrand/10 active:scale-[0.99]">{claimedToday ? "Déjà récupéré aujourd'hui" : 'Récupérer ma récompense (+30 Max it Points)'}</button></div>
 
       <div>
         <SectionHeader title="Daily Missions" subtitle="Play, challenge, bundles" />
@@ -298,10 +289,45 @@ export default function Home({ onNavigate }) {
       <div className="card-base border border-white/10 bg-zinc-900/70 p-4"><SectionHeader title="Your Gaming Loop" subtitle="Play → Reward → Progress → Compete → Spend" /><p className="text-xs text-zinc-300">Play instantly • Earn XP & Max it Points • Climb leaderboard • Spend rewards • Come back tomorrow</p></div>
       <div className="card-base border border-white/10 bg-zinc-900/50 p-3.5"><SectionHeader title="Activité récente" subtitle="Historique récent" /><div className="space-y-1">{state.activities.length ? state.activities.map((a, idx) => <p key={`${a}-${idx}`} className="text-xs text-zinc-400">• {a}</p>) : <p className="text-xs text-zinc-500">Aucune activité pour le moment.</p>}</div></div>
 
-      {joinModalOpen ? <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4"><div className="card-base w-full max-w-sm border border-white/10 bg-[#0B0B0B] p-5 shadow-xl shadow-black/40"><h3 className="text-lg font-bold text-white">Participer au challenge Free Fire</h3><p className="mt-2 text-sm text-zinc-300">Renseigne ton ID joueur Free Fire pour rejoindre le challenge Headshot King et suivre ton score dans le leaderboard.</p><input value={freeFireInput} onChange={(event) => { setFreeFireInput(event.target.value); if (freeFireInputError) setFreeFireInputError(''); }} placeholder="ID joueur Free Fire" className="mt-3 w-full rounded-lg border border-white/20 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-orangeBrand/50" />{freeFireInputError ? <p className="mt-2 text-xs text-red-300">{freeFireInputError}</p> : null}<div className="mt-4 grid grid-cols-2 gap-2"><button onClick={() => { setJoinModalOpen(false); setFreeFireInputError(''); }} className="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold text-zinc-200">Annuler</button><button onClick={handleJoinChallenge} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Valider ma participation</button></div></div></div> : null}
+      {joinModalOpen ? (
+        <ModalOverlay title="Participer au challenge Free Fire" onClose={() => { setJoinModalOpen(false); setFreeFireInputError(''); }}>
+          <p className="text-sm text-zinc-300">Renseigne ton ID joueur Free Fire pour rejoindre le challenge Headshot King et suivre ton score dans le leaderboard.</p>
+          <input
+            value={freeFireInput}
+            onChange={(event) => { setFreeFireInput(event.target.value); if (freeFireInputError) setFreeFireInputError(''); }}
+            placeholder="ID joueur Free Fire"
+            className="mt-3 w-full rounded-lg border border-white/20 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-orangeBrand/50"
+          />
+          {freeFireInputError ? <p className="mt-2 text-xs text-red-300">{freeFireInputError}</p> : null}
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <button onClick={() => { setJoinModalOpen(false); setFreeFireInputError(''); }} className="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold text-zinc-200">Annuler</button>
+            <button onClick={handleJoinChallenge} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Valider ma participation</button>
+          </div>
+        </ModalOverlay>
+      ) : null}
 
-      {rulesModal ? <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4"><div className="card-base w-full max-w-sm border border-white/10 bg-zinc-900/95 p-5"><h3 className="text-lg font-bold text-white">Règles de l’événement</h3><p className="mt-2 text-sm text-zinc-300">Fais le plus de headshots possible en session classée. Les récompenses sont attribuées selon ton rang final.</p><ul className="mt-3 list-disc space-y-1 pl-4 text-xs text-zinc-300"><li>Durée : 3 jours</li><li>Récompense max : 2 500 Max it Points</li><li>Bonus actif : Weekend Double XP</li></ul><button onClick={() => setRulesModal(false)} className="mt-4 w-full rounded-lg bg-orangeBrand py-2 text-sm font-semibold text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Compris</button></div></div> : null}
-      {sessionModal ? <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4"><div className="card-base w-full max-w-xs border border-white/10 bg-zinc-900/95"><h3 className="text-lg font-bold">Partie terminée</h3><p className="mt-1 text-sm text-zinc-300">+25 XP • +10 Max it Points</p><div className="mt-3 grid grid-cols-3 gap-2 text-[11px]"><button onClick={() => setSessionModal(false)} className="rounded bg-orangeBrand px-2 py-2 text-black transition duration-200 hover:brightness-110">Rejouer</button><button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand transition duration-200 hover:bg-orangeBrand/10">Participer</button><button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand transition duration-200 hover:bg-orangeBrand/10">Utiliser mes points</button></div></div></div> : null}
+      {rulesModal ? (
+        <ModalOverlay title="Règles de l'événement" onClose={() => setRulesModal(false)}>
+          <p className="text-sm text-zinc-300">Fais le plus de headshots possible en session classée. Les récompenses sont attribuées selon ton rang final.</p>
+          <ul className="mt-3 list-disc space-y-1 pl-4 text-xs text-zinc-300">
+            <li>Durée : 3 jours</li>
+            <li>Récompense max : 2 500 Max it Points</li>
+            <li>Bonus actif : Weekend Double XP</li>
+          </ul>
+          <button onClick={() => setRulesModal(false)} className="mt-4 w-full rounded-lg bg-orangeBrand py-2 text-sm font-semibold text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Compris</button>
+        </ModalOverlay>
+      ) : null}
+
+      {sessionModal ? (
+        <ModalOverlay title="Partie terminée" onClose={() => setSessionModal(false)}>
+          <p className="text-sm text-zinc-300">+25 XP • +10 Max it Points</p>
+          <div className="mt-3 grid grid-cols-3 gap-2 text-[11px]">
+            <button onClick={() => setSessionModal(false)} className="rounded bg-orangeBrand px-2 py-2 text-black transition duration-200 hover:brightness-110">Rejouer</button>
+            <button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand transition duration-200 hover:bg-orangeBrand/10">Participer</button>
+            <button onClick={() => setSessionModal(false)} className="rounded border border-orangeBrand px-2 py-2 text-orangeBrand transition duration-200 hover:bg-orangeBrand/10">Utiliser mes points</button>
+          </div>
+        </ModalOverlay>
+      ) : null}
     </section>
   );
 }
