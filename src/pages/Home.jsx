@@ -156,7 +156,7 @@ export default function Home({ onNavigate }) {
 
   return (
     <section className="space-y-6">
-      <div className="sticky top-5 z-30 -mx-4 -mt-5 mb-2 bg-[#0B0B0B] px-4 pt-5 pb-3 shadow-lg shadow-black/40">
+      <div className="sticky top-14 z-30 -mx-4 -mt-5 mb-2 bg-[#0B0B0B] px-4 pt-5 pb-3 shadow-lg shadow-black/40">
         <header className="card-base overflow-hidden border border-white/10 bg-[#0B0B0B] py-4 shadow-md shadow-black/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
