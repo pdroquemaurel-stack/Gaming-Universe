@@ -159,16 +159,13 @@ export default function Play({ onNavigate }) {
       ) : null}
 
       {adPlaying ? (
-        <div
-          className="fixed left-0 right-0 z-[45] flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm"
-          style={{ top: '56px', bottom: 'calc(64px + env(safe-area-inset-bottom, 0px))' }}
-        >
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95">
           <div className="flex flex-col items-center gap-5 text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">Publicité en cours</p>
             <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-orangeBrand/30 bg-orangeBrand/10">
               <span className="text-4xl font-black text-orangeBrand">{adCountdown}</span>
             </div>
-            <div className="h-1.5 w-48 overflow-hidden rounded-full bg-zinc-800">
+            <div className="w-48 overflow-hidden rounded-full bg-zinc-800 h-1.5">
               <div
                 className="h-full rounded-full bg-orangeBrand transition-all duration-1000"
                 style={{ width: `${((3 - adCountdown) / 3) * 100}%` }}
