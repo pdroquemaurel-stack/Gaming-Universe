@@ -16,9 +16,9 @@ export const popularShopGames = [
     storeUrl: 'https://www.fortnite.com/download',
     description: 'Connecte ton ID joueur pour accéder à tes contenus Fortnite.',
     items: [
-      { id: 'vbucks-pack', name: 'Pack V-Bucks', image: 'https://images.unsplash.com/photo-1624953587687-daf255b6b80a?auto=format&fit=crop&w=900&q=80', description: 'Monnaie virtuelle Fortnite.', price: '8,99€', pointsDiscount: 'Utilise 400 points pour -10%', badge: 'Populaire' },
-      { id: 'fortnite-pass', name: 'Battle Pass', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80', description: 'Passe de saison premium.', price: '10,99€', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Meilleure offre' },
-      { id: 'fortnite-skin', name: 'Skin Pack', image: 'https://images.unsplash.com/photo-1547394765-185e1e68f34e?auto=format&fit=crop&w=900&q=80', description: 'Pack cosmétique exclusif.', price: '6,99€', pointsDiscount: 'Réduction Max it Points disponible', badge: 'Nouveau' },
+      { id: 'vbucks-pack', name: 'Pack V-Bucks', image: 'https://images.unsplash.com/photo-1624953587687-daf255b6b80a?auto=format&fit=crop&w=900&q=80', description: 'Monnaie virtuelle Fortnite.', price: '5 900 F CFA', pointsDiscount: 'Utilise 400 points pour -10%', badge: 'Populaire' },
+      { id: 'fortnite-pass', name: 'Battle Pass', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80', description: 'Passe de saison premium.', price: '7 200 F CFA', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Meilleure offre' },
+      { id: 'fortnite-skin', name: 'Skin Pack', image: 'https://images.unsplash.com/photo-1547394765-185e1e68f34e?auto=format&fit=crop&w=900&q=80', description: 'Pack cosmétique exclusif.', price: '4 600 F CFA', pointsDiscount: 'Réduction Max it Points disponible', badge: 'Nouveau' },
     ],
   },
   {
@@ -30,8 +30,8 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.tencent.ig',
     description: 'Recharge ton compte PUBG et débloque des contenus premium.',
     items: [
-      { id: 'pubg-uc', name: 'UC Pack', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80', description: 'Monnaie UC en jeu.', price: '5,99€', pointsDiscount: 'Utilise 300 points pour -10%', badge: 'Populaire' },
-      { id: 'pubg-royale', name: 'Royale Pass', image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=900&q=80', description: 'Pass premium saisonnier.', price: '9,99€', pointsDiscount: 'Utilise 700 points pour -20%' },
+      { id: 'pubg-uc', name: 'UC Pack', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80', description: 'Monnaie UC en jeu.', price: '3 900 F CFA', pointsDiscount: 'Utilise 300 points pour -10%', badge: 'Populaire' },
+      { id: 'pubg-royale', name: 'Royale Pass', image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=900&q=80', description: 'Pass premium saisonnier.', price: '6 500 F CFA', pointsDiscount: 'Utilise 700 points pour -20%' },
     ],
   },
   {
@@ -43,7 +43,7 @@ export const popularShopGames = [
     storeUrl: 'https://www.roblox.com/download',
     description: 'Connecte ton compte Roblox pour acheter des Robux.',
     items: [
-      { id: 'robux-pack', name: 'Pack Robux', image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=900&q=80', description: 'Crédits Robux pour tes achats.', price: '8,49€', pointsDiscount: 'Utilise 500 points pour -10%', badge: 'Populaire' },
+      { id: 'robux-pack', name: 'Pack Robux', image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=900&q=80', description: 'Crédits Robux pour tes achats.', price: '5 500 F CFA', pointsDiscount: 'Utilise 500 points pour -10%', badge: 'Populaire' },
     ],
   },
   {
@@ -55,8 +55,8 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.dts.freefireth',
     description: 'Accède aux packs Diamonds et passes élite.',
     items: [
-      { id: 'ff-diamonds', name: 'Diamonds', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80', description: 'Diamonds pour cosmétiques et bundles.', price: '4,99€', pointsDiscount: 'Utilise 300 points pour -15%', badge: 'Populaire' },
-      { id: 'ff-elite-pass', name: 'Elite Pass', image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=900&q=80', description: 'Récompenses élite mensuelles.', price: '7,99€', pointsDiscount: 'Réduction Max it Points disponible' },
+      { id: 'ff-diamonds', name: 'Diamonds', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80', description: 'Diamonds pour cosmétiques et bundles.', price: '3 200 F CFA', pointsDiscount: 'Utilise 300 points pour -15%', badge: 'Populaire' },
+      { id: 'ff-elite-pass', name: 'Elite Pass', image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=900&q=80', description: 'Récompenses élite mensuelles.', price: '5 200 F CFA', pointsDiscount: 'Réduction Max it Points disponible' },
     ],
   },
   {
@@ -68,7 +68,7 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.ea.gp.fifamobile',
     description: 'Achète des FC Points et packs Ultimate Team mobile.',
     items: [
-      { id: 'fc-points', name: 'FC Points', image: 'https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=900&q=80', description: 'Monnaie premium FC Mobile.', price: '9,99€', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Meilleure offre' },
+      { id: 'fc-points', name: 'FC Points', image: 'https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=900&q=80', description: 'Monnaie premium FC Mobile.', price: '6 500 F CFA', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Meilleure offre' },
     ],
   },
   {
@@ -80,7 +80,7 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.activision.callofduty.shooter',
     description: 'Connecte-toi pour acheter des COD Points.',
     items: [
-      { id: 'cod-points', name: 'COD Points', image: 'https://images.unsplash.com/photo-1511882150382-421056c89033?auto=format&fit=crop&w=900&q=80', description: 'Crédits premium COD Mobile.', price: '6,99€', pointsDiscount: 'Utilise 300 points pour -10%', badge: 'Populaire' },
+      { id: 'cod-points', name: 'COD Points', image: 'https://images.unsplash.com/photo-1511882150382-421056c89033?auto=format&fit=crop&w=900&q=80', description: 'Crédits premium COD Mobile.', price: '4 600 F CFA', pointsDiscount: 'Utilise 300 points pour -10%', badge: 'Populaire' },
     ],
   },
   {
@@ -92,7 +92,7 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.mobile.legends',
     description: 'Recharge des Diamonds et offres héroïques.',
     items: [
-      { id: 'ml-diamonds', name: 'Diamonds MLBB', image: 'https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=900&q=80', description: 'Monnaie premium pour héros et skins.', price: '5,49€', pointsDiscount: 'Réduction Max it Points disponible', badge: 'Nouveau' },
+      { id: 'ml-diamonds', name: 'Diamonds MLBB', image: 'https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=900&q=80', description: 'Monnaie premium pour héros et skins.', price: '3 600 F CFA', pointsDiscount: 'Réduction Max it Points disponible', badge: 'Nouveau' },
     ],
   },
   {
@@ -104,8 +104,8 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.supercell.clashroyale',
     description: 'Débloque Gems et Pass Royale en quelques clics.',
     items: [
-      { id: 'cr-gems', name: 'Pack Gems', image: 'https://images.unsplash.com/photo-1573567161165-2fe7adca0649?auto=format&fit=crop&w=900&q=80', description: 'Gems pour coffres et achats.', price: '4,99€', pointsDiscount: 'Utilise 300 points pour -10%' },
-      { id: 'cr-pass', name: 'Pass Royale', image: 'https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&w=900&q=80', description: 'Pass saisonnier premium.', price: '6,49€', pointsDiscount: 'Utilise 500 points pour -15%', badge: 'Populaire' },
+      { id: 'cr-gems', name: 'Pack Gems', image: 'https://images.unsplash.com/photo-1573567161165-2fe7adca0649?auto=format&fit=crop&w=900&q=80', description: 'Gems pour coffres et achats.', price: '3 200 F CFA', pointsDiscount: 'Utilise 300 points pour -10%' },
+      { id: 'cr-pass', name: 'Pass Royale', image: 'https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&w=900&q=80', description: 'Pass saisonnier premium.', price: '4 200 F CFA', pointsDiscount: 'Utilise 500 points pour -15%', badge: 'Populaire' },
     ],
   },
   {
@@ -117,8 +117,8 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.supercell.brawlstars',
     description: 'Achète Gems et Brawl Pass pour progresser plus vite.',
     items: [
-      { id: 'brawl-gems', name: 'Gems', image: 'https://images.unsplash.com/photo-1573567161165-2fe7adca0649?auto=format&fit=crop&w=900&q=80', description: 'Monnaie premium Brawl Stars.', price: '4,49€', pointsDiscount: 'Réduction Max it Points disponible' },
-      { id: 'brawl-pass', name: 'Brawl Pass', image: 'https://images.unsplash.com/photo-1511882150382-421056c89033?auto=format&fit=crop&w=900&q=80', description: 'Pass premium saisonnier.', price: '7,99€', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Meilleure offre' },
+      { id: 'brawl-gems', name: 'Gems', image: 'https://images.unsplash.com/photo-1573567161165-2fe7adca0649?auto=format&fit=crop&w=900&q=80', description: 'Monnaie premium Brawl Stars.', price: '2 900 F CFA', pointsDiscount: 'Réduction Max it Points disponible' },
+      { id: 'brawl-pass', name: 'Brawl Pass', image: 'https://images.unsplash.com/photo-1511882150382-421056c89033?auto=format&fit=crop&w=900&q=80', description: 'Pass premium saisonnier.', price: '5 200 F CFA', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Meilleure offre' },
     ],
   },
   {
@@ -130,7 +130,7 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.miHoYo.GenshinImpact',
     description: 'Recharge des Genesis Crystals pour tes invocations.',
     items: [
-      { id: 'genshin-crystals', name: 'Genesis Crystals', image: 'https://images.unsplash.com/photo-1624953587687-daf255b6b80a?auto=format&fit=crop&w=900&q=80', description: 'Cristaux premium Genshin.', price: '10,99€', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Populaire' },
+      { id: 'genshin-crystals', name: 'Genesis Crystals', image: 'https://images.unsplash.com/photo-1624953587687-daf255b6b80a?auto=format&fit=crop&w=900&q=80', description: 'Cristaux premium Genshin.', price: '7 200 F CFA', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Populaire' },
     ],
   },
   {
@@ -142,7 +142,7 @@ export const popularShopGames = [
     storeUrl: 'https://www.minecraft.net/fr-fr/download',
     description: 'Achète des Minecoins et contenus du marketplace.',
     items: [
-      { id: 'minecoins', name: 'Minecoins', image: 'https://images.unsplash.com/photo-1627856014754-2907e2355f2e?auto=format&fit=crop&w=900&q=80', description: 'Crédits pour mondes et skins.', price: '5,99€', pointsDiscount: 'Utilise 400 points pour -10%', badge: 'Nouveau' },
+      { id: 'minecoins', name: 'Minecoins', image: 'https://images.unsplash.com/photo-1627856014754-2907e2355f2e?auto=format&fit=crop&w=900&q=80', description: 'Crédits pour mondes et skins.', price: '3 900 F CFA', pointsDiscount: 'Utilise 400 points pour -10%', badge: 'Nouveau' },
     ],
   },
   {
@@ -154,16 +154,16 @@ export const popularShopGames = [
     storeUrl: 'https://play.google.com/store/apps/details?id=com.riotgames.league.wildrift',
     description: 'Relie ton profil et obtiens des Wild Cores.',
     items: [
-      { id: 'wild-cores', name: 'Wild Cores', image: 'https://images.unsplash.com/photo-1511882150382-421056c89033?auto=format&fit=crop&w=900&q=80', description: 'Monnaie premium Wild Rift.', price: '8,99€', pointsDiscount: 'Utilise 500 points pour -10%', badge: 'Populaire' },
+      { id: 'wild-cores', name: 'Wild Cores', image: 'https://images.unsplash.com/photo-1511882150382-421056c89033?auto=format&fit=crop&w=900&q=80', description: 'Monnaie premium Wild Rift.', price: '5 900 F CFA', pointsDiscount: 'Utilise 500 points pour -10%', badge: 'Populaire' },
     ],
   },
 ];
 
 export const shopPromotions = [
-  { id: 'freefire-diamonds-promo', title: 'Pack Diamonds Free Fire', game: 'Free Fire', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80', originalPrice: '5,99€', promoPrice: '4,99€', pointsDiscount: 'Utilise 300 points pour -15%', badge: 'Promo' },
-  { id: 'robux-bonus-promo', title: 'Pack Robux Bonus', game: 'Roblox', image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=900&q=80', originalPrice: '9,99€', promoPrice: '8,49€', pointsDiscount: 'Utilise 500 points pour -10%', badge: 'Promo' },
-  { id: 'pubg-battle-pass-promo', title: 'Battle Pass PUBG', game: 'PUBG Mobile', image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=900&q=80', originalPrice: '11,99€', promoPrice: '9,99€', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Promo' },
-  { id: 'fortnite-vbucks-promo', title: 'V-Bucks Fortnite', game: 'Fortnite', image: 'https://images.unsplash.com/photo-1624953587687-daf255b6b80a?auto=format&fit=crop&w=900&q=80', originalPrice: '8,99€', promoPrice: '7,99€', pointsDiscount: 'Utilise 400 points pour -10%', badge: 'Promo' },
+  { id: 'freefire-diamonds-promo', title: 'Pack Diamonds Free Fire', game: 'Free Fire', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80', originalPrice: '3 900 F CFA', promoPrice: '3 200 F CFA', pointsDiscount: 'Utilise 300 points pour -15%', badge: 'Promo' },
+  { id: 'robux-bonus-promo', title: 'Pack Robux Bonus', game: 'Roblox', image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=900&q=80', originalPrice: '6 500 F CFA', promoPrice: '5 500 F CFA', pointsDiscount: 'Utilise 500 points pour -10%', badge: 'Promo' },
+  { id: 'pubg-battle-pass-promo', title: 'Battle Pass PUBG', game: 'PUBG Mobile', image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=900&q=80', originalPrice: '7 800 F CFA', promoPrice: '6 500 F CFA', pointsDiscount: 'Utilise 700 points pour -20%', badge: 'Promo' },
+  { id: 'fortnite-vbucks-promo', title: 'V-Bucks Fortnite', game: 'Fortnite', image: 'https://images.unsplash.com/photo-1624953587687-daf255b6b80a?auto=format&fit=crop&w=900&q=80', originalPrice: '5 900 F CFA', promoPrice: '5 200 F CFA', pointsDiscount: 'Utilise 400 points pour -10%', badge: 'Promo' },
 ];
 
 export const shopSubscriptions = [
@@ -172,7 +172,7 @@ export const shopSubscriptions = [
     name: 'Gaming Pass 1 jour',
     duration: '1 jour',
     benefits: ['Accès vidéos premium', 'Bonus points', 'Tournois premium'],
-    price: '0,49€',
+    price: '320 F CFA',
     pointsOption: 'ou 100 points',
   },
   {
@@ -180,7 +180,7 @@ export const shopSubscriptions = [
     name: 'Gaming Pass 7 jours',
     duration: '7 jours',
     benefits: ['Vidéos premium', 'Tournois premium', 'Bonus quotidien'],
-    price: '1,99€',
+    price: '1 300 F CFA',
     pointsOption: 'ou 500 points',
     badge: 'Populaire',
   },
@@ -189,7 +189,7 @@ export const shopSubscriptions = [
     name: 'Gaming Pass 30 jours',
     duration: '30 jours',
     benefits: ['Tout inclus', 'Contenus premium', 'Bonus points x2'],
-    price: '4,99€',
+    price: '3 200 F CFA',
     pointsOption: 'ou 1 500 points',
     badge: 'Meilleure offre',
   },
@@ -198,20 +198,20 @@ export const shopSubscriptions = [
     name: 'Mini-jeux sans pub',
     duration: 'Mensuel',
     benefits: ['Expérience sans publicité', 'Parties plus fluides'],
-    price: '1,49€',
+    price: '980 F CFA',
     pointsOption: 'Utilise 400 points pour -20%',
   },
 ];
 
 export const shopECards = [
-  { id: 'playstation-card', name: 'PlayStation Store', image: 'https://gmedia.playstation.com/is/image/SIEPDC/gift-cards-digital-card-keyart-01-en-20oct22?$facebook$', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
-  { id: 'xbox-card', name: 'Xbox', image: 'https://thumbs.dreamstime.com/b/e-r-143552371.jpg', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-10% avec 1 000 points', badge: 'Instantané' },
-  { id: 'steam-card', name: 'Steam', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyPF9UGCqP5ee_owuCZs_rkxb8gcT80bTWIw&s', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
-  { id: 'google-play-card', name: 'Google Play', image: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: 'Bonus 200 points offert', badge: 'Instantané' },
-  { id: 'nintendo-card', name: 'Nintendo eShop', image: 'https://images.unsplash.com/photo-1617096200347-cb04ae810b1d?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
-  { id: 'riot-card', name: 'Riot Games', image: 'https://images.unsplash.com/photo-1548686304-89d188a80029?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-10% avec 1 000 points', badge: 'Numérique' },
-  { id: 'roblox-card', name: 'Roblox', image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: 'Bonus 200 points offert', badge: 'Instantané' },
-  { id: 'garena-card', name: 'Garena / Free Fire', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=900&q=80', amounts: ['5€', '10€', '20€', '50€'], priceLabel: 'À partir de 5€', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
+  { id: 'playstation-card', name: 'PlayStation Store', image: 'https://gmedia.playstation.com/is/image/SIEPDC/gift-cards-digital-card-keyart-01-en-20oct22?$facebook$', amounts: ['3 500 F', '6 500 F', '13 000 F', '33 000 F'], priceLabel: 'À partir de 3 500 F CFA', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
+  { id: 'xbox-card', name: 'Xbox', image: 'https://thumbs.dreamstime.com/b/e-r-143552371.jpg', amounts: ['3 500 F', '6 500 F', '13 000 F', '33 000 F'], priceLabel: 'À partir de 3 500 F CFA', pointsDiscount: '-10% avec 1 000 points', badge: 'Instantané' },
+  { id: 'steam-card', name: 'Steam', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyPF9UGCqP5ee_owuCZs_rkxb8gcT80bTWIw&s', amounts: ['3 500 F', '6 500 F', '13 000 F', '33 000 F'], priceLabel: 'À partir de 3 500 F CFA', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
+  { id: 'google-play-card', name: 'Google Play', image: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=900&q=80', amounts: ['3 500 F', '6 500 F', '13 000 F', '33 000 F'], priceLabel: 'À partir de 3 500 F CFA', pointsDiscount: 'Bonus 200 points offert', badge: 'Instantané' },
+  { id: 'nintendo-card', name: 'Nintendo eShop', image: 'https://images.unsplash.com/photo-1617096200347-cb04ae810b1d?auto=format&fit=crop&w=900&q=80', amounts: ['3 500 F', '6 500 F', '13 000 F', '33 000 F'], priceLabel: 'À partir de 3 500 F CFA', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
+  { id: 'riot-card', name: 'Riot Games', image: 'https://images.unsplash.com/photo-1548686304-89d188a80029?auto=format&fit=crop&w=900&q=80', amounts: ['3 500 F', '6 500 F', '13 000 F', '33 000 F'], priceLabel: 'À partir de 3 500 F CFA', pointsDiscount: '-10% avec 1 000 points', badge: 'Numérique' },
+  { id: 'roblox-card', name: 'Roblox', image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?auto=format&fit=crop&w=900&q=80', amounts: ['3 500 F', '6 500 F', '13 000 F', '33 000 F'], priceLabel: 'À partir de 3 500 F CFA', pointsDiscount: 'Bonus 200 points offert', badge: 'Instantané' },
+  { id: 'garena-card', name: 'Garena / Free Fire', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=900&q=80', amounts: ['3 500 F', '6 500 F', '13 000 F', '33 000 F'], priceLabel: 'À partir de 3 500 F CFA', pointsDiscount: '-5% avec 500 points', badge: 'Numérique' },
 ];
 
 // Compatibilité rétro : conserve l'ancien export utilisé dans d'autres écrans potentiels.
@@ -232,7 +232,7 @@ export const previousPurchases = [
     game: 'Fortnite',
     image: 'https://images.unsplash.com/photo-1624953587687-daf255b6b80a?auto=format&fit=crop&w=400&q=80',
     date: 'Hier',
-    price: '8,99€',
+    price: '5 900 F CFA',
     status: 'Utilisé',
     cta: 'Racheter',
   },
@@ -242,7 +242,7 @@ export const previousPurchases = [
     game: 'Roblox',
     image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=400&q=80',
     date: 'Il y a 3 jours',
-    price: '4,99€',
+    price: '3 200 F CFA',
     status: 'Disponible',
     cta: 'Racheter',
   },
@@ -252,7 +252,7 @@ export const previousPurchases = [
     game: 'PUBG Mobile',
     image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=400&q=80',
     date: 'Il y a 1 semaine',
-    price: '11,99€',
+    price: '7 800 F CFA',
     status: 'Activé',
     cta: 'Racheter',
   },
@@ -262,7 +262,7 @@ export const previousPurchases = [
     game: 'Free Fire',
     image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80',
     date: 'Il y a 2 semaines',
-    price: '5,99€',
+    price: '3 900 F CFA',
     status: 'Utilisé',
     cta: 'Racheter',
   },

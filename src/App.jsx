@@ -46,11 +46,13 @@ function parseNavigationTarget(pathOrLegacy) {
 export default function App() {
   const [currentPath, setCurrentPath] = useState(() => normalizePath(window.location.pathname));
   const [currentSearch, setCurrentSearch] = useState(() => window.location.search || '');
+  const [pageKey, setPageKey] = useState(0);
 
   useEffect(() => {
     const onPopState = () => {
       setCurrentPath(normalizePath(window.location.pathname));
       setCurrentSearch(window.location.search || '');
+      setPageKey((k) => k + 1);
     };
 
     window.addEventListener('popstate', onPopState);
@@ -66,6 +68,7 @@ export default function App() {
     window.history.pushState({}, '', `${target.path}${target.search}`);
     setCurrentPath(target.path);
     setCurrentSearch(target.search);
+    setPageKey((k) => k + 1);
   };
 
   const CurrentView = useMemo(() => routeMap[currentPath] || Home, [currentPath]);
@@ -75,7 +78,9 @@ export default function App() {
       <div className="mx-auto min-h-screen max-w-md bg-[#0B0B0B] px-4 pb-20 pt-14 text-white">
         <GlobalHeader onNavigate={navigate} />
         <MainNav currentPath={currentPath} onNavigate={navigate} />
-        <CurrentView currentPath={currentPath} currentSearch={currentSearch} onNavigate={navigate} />
+        <div key={pageKey} className="page-slide-in">
+          <CurrentView currentPath={currentPath} currentSearch={currentSearch} onNavigate={navigate} />
+        </div>
       </div>
     </ToastProvider>
   );

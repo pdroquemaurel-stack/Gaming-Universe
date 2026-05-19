@@ -64,7 +64,11 @@ export default function Home({ onNavigate }) {
   const [freeFireId, setFreeFireId] = useState(initialFreeFireId);
   const [freeFireInput, setFreeFireInput] = useState('');
   const [freeFireInputError, setFreeFireInputError] = useState('');
-  const [isProfileCompact, setIsProfileCompact] = useState(false);
+  const [completedMissions, setCompletedMissions] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('maxit_completed_missions') || '[]')); }
+    catch { return new Set(); }
+  });
+  const [justCompleted, setJustCompleted] = useState(null);
 
   const isFreeFireConnected = Boolean(freeFireId?.trim());
 
@@ -112,22 +116,29 @@ export default function Home({ onNavigate }) {
     [state.streakCount, claimedToday],
   );
 
-  useEffect(() => {
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(() => {
-        const shouldCompact = window.scrollY > 56;
-        setIsProfileCompact((prev) => (prev === shouldCompact ? prev : shouldCompact));
-        ticking = false;
-      });
-    };
+  const parseMissionReward = (rewardStr) => {
+    const coinsMatch = rewardStr?.match(/(\d+)\s*Max it Points/i);
+    const xpMatch = rewardStr?.match(/(\d+)\s*XP/i);
+    return { coins: coinsMatch ? parseInt(coinsMatch[1]) : 0, xp: xpMatch ? parseInt(xpMatch[1]) : 0 };
+  };
 
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  const handleCompleteMission = (mission) => {
+    if (completedMissions.has(mission.id)) return;
+    const { coins: rewardCoins, xp: rewardXp } = parseMissionReward(mission.reward);
+    const newCompleted = new Set([...completedMissions, mission.id]);
+    setCompletedMissions(newCompleted);
+    try { localStorage.setItem('maxit_completed_missions', JSON.stringify([...newCompleted])); } catch {}
+    setJustCompleted(mission.id);
+    setTimeout(() => setJustCompleted(null), 700);
+    const next = {
+      ...state,
+      coins: state.coins + (rewardCoins || 50),
+      xp: state.xp + (rewardXp || 25),
+      activities: [`Mission "${mission.title}" complétée +${rewardCoins || 50} Coins`, ...state.activities].slice(0, 6),
+    };
+    persist(next);
+    showToast(`✅ Mission complétée ! +${rewardCoins || 50} Coins • +${rewardXp || 25} XP`);
+  };
 
   const handleJoinChallenge = () => {
     const trimmed = freeFireInput.trim();
@@ -145,28 +156,23 @@ export default function Home({ onNavigate }) {
 
   return (
     <section className="space-y-6">
-      <div className="sticky top-[88px] z-30 -mx-4 -mt-5 mb-2 bg-[#0B0B0B] px-4 pt-5 pb-3 shadow-lg shadow-black/40">
-        <header
-          className={`card-base overflow-hidden border border-white/10 bg-[#0B0B0B] shadow-md shadow-black/30 transition-all duration-300 ${isProfileCompact ? 'py-3' : 'py-4'}`}
-        >
+      <div className="sticky top-14 z-30 -mx-4 -mt-5 mb-2 bg-[#0B0B0B] px-4 pt-5 pb-3 shadow-lg shadow-black/40">
+        <header className="card-base overflow-hidden border border-white/10 bg-[#0B0B0B] py-4 shadow-md shadow-black/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orangeBrand/30 font-bold text-orangeBrand">{playerDefaults.avatar}</div>
               <div>
                 <p className="text-sm font-bold text-white">{playerDefaults.name}</p>
-                <p className="text-xs text-zinc-300">{isProfileCompact ? `Lv. ${playerDefaults.level}` : `Level ${playerDefaults.level}`}</p>
+                <p className="text-xs text-zinc-300">Level {playerDefaults.level}</p>
               </div>
             </div>
             <button className="text-lg transition duration-200 hover:scale-105 active:scale-95">🔔</button>
           </div>
-          <p className={`text-xs text-zinc-300 transition-all duration-300 ${isProfileCompact ? 'mt-1' : 'mt-2'}`}>XP: {state.xp} / {playerDefaults.xpTarget}</p>
-          <div className={`rounded-full bg-zinc-800 transition-all duration-300 ${isProfileCompact ? 'h-1.5' : 'h-2'}`}>
+          <p className="mt-2 text-xs text-zinc-300">XP: {state.xp} / {playerDefaults.xpTarget}</p>
+          <div className="h-2 rounded-full bg-zinc-800">
             <div className="h-full rounded-full bg-orangeBrand transition-all duration-300" style={{ width: `${xpPercent}%` }} />
           </div>
-          <div
-            className={`grid overflow-hidden text-xs transition-all duration-300 ${isProfileCompact ? 'mt-0 max-h-0 opacity-0' : 'mt-3 max-h-40 grid-cols-3 gap-2 opacity-100'}`}
-            aria-hidden={isProfileCompact}
-          >
+          <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
             <div className="rounded-lg bg-zinc-900 p-2">Level<br /><span className="font-bold text-orangeBrand">{playerDefaults.level}</span></div>
             <div className="rounded-lg bg-zinc-900 p-2">Max it Points<br /><span className="font-bold text-orangeBrand">{state.coins}</span></div>
             <div className="rounded-lg bg-zinc-900 p-2">Streak<br /><span className="font-bold text-orangeBrand">{state.streakCount} jours</span></div>
@@ -231,7 +237,51 @@ export default function Home({ onNavigate }) {
 
       <div className="card-base border border-white/10 bg-zinc-900/70 p-4"><SectionHeader title="Daily Streak" subtitle="Reviens chaque jour" /><div className="mt-2 flex gap-1">{streakDays.map((d) => <div key={d.day} className={`flex-1 rounded-md p-2 text-center text-[10px] ${d.done ? 'bg-orangeBrand/30 text-orangeBrand' : d.today ? 'border border-orangeBrand text-orangeBrand' : 'bg-zinc-800 text-zinc-500'}`}>J{d.day}</div>)}</div><button onClick={claimDaily} className="mt-3 w-full rounded-lg border border-orangeBrand/70 py-2 text-xs font-semibold text-orangeBrand transition duration-200 hover:bg-orangeBrand/10 active:scale-[0.99]">{claimedToday ? 'Déjà récupéré aujourd’hui' : 'Récupérer ma récompense (+30 Max it Points)'}</button></div>
 
-      <div><SectionHeader title="Daily Missions" subtitle="Play, challenge, bundles" /><div className="space-y-2.5">{dailyMissions.map((m) => <article key={m.id} className="card-base border border-white/10 bg-zinc-900/70 p-3.5 transition duration-200 hover:border-orangeBrand/30"><div className="flex items-center justify-between"><p className="text-sm font-semibold">{m.title}</p><span className="text-[11px] text-orangeBrand">{m.status}</span></div><p className="text-xs text-zinc-400">{m.progress}/{m.total} • Récompense: {m.reward}</p><div className="mt-2 h-1.5 rounded bg-zinc-800"><div className="h-full rounded bg-orangeBrand transition-all duration-300" style={{ width: `${(m.progress / m.total) * 100}%` }} /></div></article>)}</div></div>
+      <div>
+        <SectionHeader title="Daily Missions" subtitle="Play, challenge, bundles" />
+        <div className="space-y-2.5">
+          {dailyMissions.map((m) => {
+            const done = completedMissions.has(m.id);
+            const completing = justCompleted === m.id;
+            return (
+              <article
+                key={m.id}
+                className={`card-base border p-3.5 transition-all duration-300 ${completing ? 'mission-completing' : ''} ${
+                  done
+                    ? 'border-green-500/40 bg-green-950/30'
+                    : 'border-white/10 bg-zinc-900/70 hover:border-orangeBrand/30'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-semibold">{m.title}</p>
+                  {done ? (
+                    <span className={`text-lg leading-none transition-transform duration-300 ${completing ? 'scale-125' : 'scale-100'}`}>✅</span>
+                  ) : (
+                    <button
+                      onClick={() => handleCompleteMission(m)}
+                      className="shrink-0 rounded-lg border border-orangeBrand/40 bg-orangeBrand/10 px-2.5 py-1 text-[11px] font-semibold text-orangeBrand transition duration-200 hover:bg-orangeBrand/20 active:scale-95"
+                    >
+                      Compléter
+                    </button>
+                  )}
+                </div>
+                <p className="mt-1 text-xs text-zinc-400">
+                  {done ? `${m.total}/${m.total}` : `${m.progress}/${m.total}`} • Récompense : {m.reward}
+                </p>
+                <div className="mt-2 h-1.5 rounded bg-zinc-800">
+                  <div
+                    className="h-full rounded transition-all duration-500"
+                    style={{
+                      width: done ? '100%' : `${(m.progress / m.total) * 100}%`,
+                      background: done ? '#22c55e' : '#FF7900',
+                    }}
+                  />
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
 
       <CommunitySurvey />
       <div className="card-base border border-white/10 bg-zinc-900/70 p-4"><SectionHeader title="Compete Now" subtitle="Challenge, tournoi, leaderboard" /><p className="text-sm">Free Fire Headshot Challenge</p><p className="text-xs text-zinc-400">500 Max it Points + badge • 1 240 participants</p><button className="mt-2 rounded-lg bg-orangeBrand px-3 py-1.5 text-xs text-black transition duration-200 hover:brightness-110 active:scale-[0.98]">Participer</button><div className="mt-3 space-y-1">{leaderboard.map((row, i) => <div key={row.name} className={`flex justify-between rounded px-2 py-1 text-xs ${row.current ? 'bg-orangeBrand/20 text-orangeBrand' : 'bg-zinc-900 text-zinc-300'}`}><span>{i + 1}. {row.name}</span><span>{row.points} pts</span></div>)}</div></div>
