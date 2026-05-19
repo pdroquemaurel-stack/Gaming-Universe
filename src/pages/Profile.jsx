@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useToast } from '../components/ToastProvider';
 import { playerProfile } from '../data/playerProfile';
+import { leaderboardFriends } from '../data/mockData';
 
 const memoryStore = {};
 const safeStorage = {
@@ -14,6 +16,8 @@ const safeStorage = {
 };
 
 export default function Profile() {
+  const { showToast } = useToast();
+
   const [liveState, setLiveState] = useState(() =>
     safeStorage.get('playerHubState', {
       xp: playerProfile.xpCurrent,
@@ -21,6 +25,12 @@ export default function Profile() {
       streakCount: playerProfile.streak,
     }),
   );
+
+  const [friends, setFriends] = useState(
+    leaderboardFriends.filter((f) => f.player !== 'AkosuaK95'),
+  );
+  const [addInput, setAddInput] = useState('');
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     const onUpdate = (event) => setLiveState(event.detail);
@@ -49,10 +59,26 @@ export default function Profile() {
   ];
 
   const recentGames = [
-    { name: 'Free Fire', date: 'Aujourd\'hui', xp: '+25 XP' },
+    { name: 'Free Fire', date: "Aujourd'hui", xp: '+25 XP' },
     { name: 'Asphalt', date: 'Hier', xp: '+20 XP' },
     { name: 'Bubble Heroes', date: 'Il y a 2 jours', xp: '+15 XP' },
   ];
+
+  const handleAddFriend = () => {
+    const pseudo = addInput.trim();
+    if (!pseudo) return;
+    if (friends.some((f) => f.player.toLowerCase() === pseudo.toLowerCase())) {
+      showToast('Cet ami est déjà dans ta liste');
+      return;
+    }
+    setFriends((prev) => [
+      ...prev,
+      { rank: prev.length + 1, player: pseudo, country: '—', points: 0, badge: 'Nouveau' },
+    ]);
+    setAddInput('');
+    setShowAddForm(false);
+    showToast(`${pseudo} ajouté à tes amis !`);
+  };
 
   return (
     <section className="space-y-5">
@@ -142,6 +168,59 @@ export default function Profile() {
             </div>
           ))}
         </div>
+      </article>
+
+      <article className="card-base space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-white">Mes amis</h2>
+          <span className="text-xs text-zinc-400">{friends.length} ami{friends.length !== 1 ? 's' : ''}</span>
+        </div>
+
+        {friends.length === 0 && !showAddForm && (
+          <p className="text-xs text-zinc-500">Aucun ami pour l'instant. Ajoute-en un !</p>
+        )}
+
+        <div className="space-y-2">
+          {friends.map((friend) => (
+            <div key={friend.player} className="flex items-center gap-3 rounded-xl border border-white/8 bg-black/30 px-3 py-2.5">
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-orangeBrand/20 text-xs font-bold text-orangeBrand">
+                {friend.player.slice(0, 2).toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-white">{friend.player}</p>
+                <p className="text-xs text-zinc-400">{friend.country} · {friend.badge}</p>
+              </div>
+              <span className="text-xs font-semibold text-orangeBrand">{friend.points > 0 ? `${friend.points} pts` : '—'}</span>
+            </div>
+          ))}
+        </div>
+
+        {showAddForm ? (
+          <div className="flex gap-2">
+            <input
+              value={addInput}
+              onChange={(e) => setAddInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddFriend()}
+              placeholder="Pseudo de l'ami"
+              className="min-w-0 flex-1 rounded-lg border border-white/20 bg-zinc-900 px-3 py-2 text-sm text-white outline-none placeholder:text-zinc-500 focus:border-orangeBrand"
+              autoFocus
+            />
+            <button type="button" onClick={handleAddFriend} className="rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white">
+              Ajouter
+            </button>
+            <button type="button" onClick={() => { setShowAddForm(false); setAddInput(''); }} className="rounded-lg border border-white/20 px-3 py-2 text-xs text-zinc-300">
+              ✕
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowAddForm(true)}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-white/20 py-2.5 text-xs font-semibold text-zinc-400 transition-colors hover:border-orangeBrand/50 hover:text-orangeBrand"
+          >
+            + Ajouter un ami
+          </button>
+        )}
       </article>
 
       <article className="card-base space-y-3">
