@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import CatchTheCoinGame from '../components/games/CatchTheCoinGame';
 import AppCard from '../components/AppCard';
 import CategoryChips from '../components/CategoryChips';
@@ -158,7 +159,7 @@ export default function Play({ onNavigate }) {
         </ModalOverlay>
       ) : null}
 
-      {adPlaying ? (
+      {adPlaying ? createPortal(
         <div
           className="fixed left-0 right-0 z-[45] flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm"
           style={{ top: '56px', bottom: 'calc(64px + env(safe-area-inset-bottom, 0px))' }}
@@ -176,7 +177,8 @@ export default function Play({ onNavigate }) {
             </div>
             <p className="text-sm text-zinc-300">Récompense : <span className="font-semibold text-orangeBrand">+25 Coins</span></p>
           </div>
-        </div>
+        </div>,
+        document.body
       ) : null}
 
       {activeGame ? (
