@@ -8,7 +8,7 @@ const navItems = [
 
 export default function MainNav({ currentPath, onNavigate }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-orangeBrand/20 bg-[#0B0B0B]/97 pb-safe backdrop-blur-md">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-orangeBrand/20 bg-[#060608] pb-safe">
       <ul className="mx-auto grid h-16 max-w-md grid-cols-5">
         {navItems.map((item) => {
           const isActive = currentPath === item.path;

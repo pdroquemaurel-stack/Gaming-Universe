@@ -36,6 +36,8 @@ export default function Play({ onNavigate }) {
   const [selectedGame, setSelectedGame] = useState(null);
   const [activeGame, setActiveGame] = useState(null);
   const [catchStats, setCatchStats] = useState({ lastScore: 0, lastReward: 0, bestScore: 0 });
+  const [adPlaying, setAdPlaying] = useState(false);
+  const [adCountdown, setAdCountdown] = useState(3);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -57,6 +59,28 @@ export default function Play({ onNavigate }) {
     }),
     [catchStats, currentCategory?.instantPlay],
   );
+
+  const handleWatchAd = () => {
+    setAdPlaying(true);
+    setAdCountdown(3);
+    const interval = setInterval(() => {
+      setAdCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setAdPlaying(false);
+          try {
+            const stored = JSON.parse(localStorage.getItem('playerHubState') || '{}');
+            const updated = { ...stored, coins: (stored.coins || 0) + 25 };
+            localStorage.setItem('playerHubState', JSON.stringify(updated));
+            window.dispatchEvent(new CustomEvent('maxit:state-updated', { detail: updated }));
+          } catch {}
+          showToast('Pub terminée — +25 Coins gagnés !');
+          return 3;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const handleCatchComplete = ({ score, reward, xpGain }) => {
     const bestScore = Math.max(catchStats.bestScore, score);
@@ -123,8 +147,33 @@ export default function Play({ onNavigate }) {
               </div>
             </div>
             <button type="button" onClick={() => { setActiveGame(selectedGame); setSelectedGame(null); }} className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-sm font-semibold text-white">Jouer</button>
+            <button
+              type="button"
+              onClick={() => { setSelectedGame(null); handleWatchAd(); }}
+              className="w-full rounded-lg border border-orangeBrand/40 bg-black/30 px-3 py-2 text-sm font-semibold text-orangeBrand transition duration-200 hover:bg-orangeBrand/10 active:scale-[0.98]"
+            >
+              👁 Regarder une pub → +25 Coins
+            </button>
           </div>
         </ModalOverlay>
+      ) : null}
+
+      {adPlaying ? (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95">
+          <div className="flex flex-col items-center gap-5 text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">Publicité en cours</p>
+            <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-orangeBrand/30 bg-orangeBrand/10">
+              <span className="text-4xl font-black text-orangeBrand">{adCountdown}</span>
+            </div>
+            <div className="w-48 overflow-hidden rounded-full bg-zinc-800 h-1.5">
+              <div
+                className="h-full rounded-full bg-orangeBrand transition-all duration-1000"
+                style={{ width: `${((3 - adCountdown) / 3) * 100}%` }}
+              />
+            </div>
+            <p className="text-sm text-zinc-300">Récompense : <span className="font-semibold text-orangeBrand">+25 Coins</span></p>
+          </div>
+        </div>
       ) : null}
 
       {activeGame ? (
