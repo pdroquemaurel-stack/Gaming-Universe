@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { createPortal } from 'react-dom';
 
 const OVERLAY_STYLE = {
   top: '56px',
@@ -21,7 +20,7 @@ export default function PurchaseConfirmationModal({ product, onClose }) {
 
   if (!product) return null;
 
-  return createPortal(
+  return (
     <div
       className="fixed left-0 right-0 z-[45] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
       style={OVERLAY_STYLE}
@@ -35,8 +34,7 @@ export default function PurchaseConfirmationModal({ product, onClose }) {
           Terminer
         </button>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }
 
