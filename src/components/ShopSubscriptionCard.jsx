@@ -13,13 +13,9 @@ export default function ShopSubscriptionCard({ subscription, onSubscribe }) {
           <li key={benefit}>• {benefit}</li>
         ))}
       </ul>
-      <div className="rounded-lg border border-white/10 bg-zinc-950/80 p-2">
-        <p className="text-sm font-semibold text-white">{subscription.price}</p>
-        {subscription.pointsOption ? (
-          <p className="mt-1 inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] text-amber-300">
-            🪙 {subscription.pointsOption}
-          </p>
-        ) : null}
+      <div className="rounded-lg border border-white/10 bg-zinc-950/80 p-2 text-xs text-zinc-200">
+        <p className="font-semibold text-white">{subscription.price}</p>
+        <p>{subscription.pointsOption}</p>
       </div>
       <button type="button" onClick={() => onSubscribe(subscription)} className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-xs font-semibold text-white">S’abonner</button>
     </article>
