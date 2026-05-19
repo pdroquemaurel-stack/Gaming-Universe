@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import CatchTheCoinGame from '../components/games/CatchTheCoinGame';
+import IframeGame from '../components/games/IframeGame';
 import AppCard from '../components/AppCard';
 import CategoryChips from '../components/CategoryChips';
 import GameCard from '../components/GameCard';
@@ -197,6 +198,8 @@ export default function Play({ onNavigate }) {
               onWatchAd={() => showToast('Publicité terminée — nouvelle tentative débloquée')}
               bestScore={catchStats.bestScore}
             />
+          ) : activeGame.iframeUrl ? (
+            <IframeGame game={activeGame} />
           ) : (
             <>
               <p className="text-sm text-zinc-300">{activeGame.description}</p>

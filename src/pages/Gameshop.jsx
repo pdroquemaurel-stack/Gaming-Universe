@@ -19,29 +19,29 @@ import {
 } from '../data/shop';
 
 const FILTERS = [
-  { id: ‘all’, label: ‘Tout’ },
-  { id: ‘games’, label: ‘Jeux’ },
-  { id: ‘promos’, label: ‘Promos’ },
-  { id: ‘data’, label: ‘Data’ },
-  { id: ‘subscriptions’, label: ‘Abonnements’ },
-  { id: ‘ecards’, label: ‘E-Cards’ },
+  { id: 'all', label: 'Tout' },
+  { id: 'games', label: 'Jeux' },
+  { id: 'promos', label: 'Promos' },
+  { id: 'data', label: 'Data' },
+  { id: 'subscriptions', label: 'Abonnements' },
+  { id: 'ecards', label: 'E-Cards' },
 ];
 
 export default function Gameshop({ onNavigate }) {
   const [selectedGame, setSelectedGame] = useState(null);
-  const [playerId, setPlayerId] = useState(‘’);
+  const [playerId, setPlayerId] = useState('');
   const [connected, setConnected] = useState(false);
   const [selectedBundle, setSelectedBundle] = useState(null);
-  const [activeFilter, setActiveFilter] = useState(‘all’);
+  const [activeFilter, setActiveFilter] = useState('all');
   const { showToast } = useToast();
 
   const openGame = (game) => {
     setSelectedGame(game);
-    setPlayerId(‘’);
+    setPlayerId('');
     setConnected(false);
   };
 
-  const show = (category) => activeFilter === ‘all’ || activeFilter === category;
+  const show = (category) => activeFilter === 'all' || activeFilter === category;
 
   return (
     <section className="space-y-6">
@@ -49,14 +49,14 @@ export default function Gameshop({ onNavigate }) {
         <div className="flex items-start justify-between gap-2">
           <div>
             <h1 className="text-2xl font-bold text-white">Boutique Gaming</h1>
-            <p className="mt-1 text-xs text-zinc-300">Achète du contenu, utilise tes points et profite d’offres partenaires.</p>
+            <p className="mt-1 text-xs text-zinc-300">Achète du contenu, utilise tes points et profite d'offres partenaires.</p>
           </div>
           <span className="rounded-full border border-orangeBrand/40 bg-orangeBrand/10 px-2 py-1 text-[10px] font-semibold text-orangeBrand">Promos du jour</span>
         </div>
 
         <div className="flex items-center justify-between rounded-xl border border-white/10 bg-zinc-950/90 p-3">
           <p className="text-sm font-semibold text-white">🪙 12 450 points</p>
-          <button type="button" onClick={() => onNavigate(‘/points?tab=use’)} className="rounded-lg border border-orangeBrand px-3 py-1.5 text-xs font-semibold text-orangeBrand">Voir mes points</button>
+          <button type="button" onClick={() => onNavigate('/points?tab=use')} className="rounded-lg border border-orangeBrand px-3 py-1.5 text-xs font-semibold text-orangeBrand">Voir mes points</button>
         </div>
       </header>
 
@@ -68,8 +68,8 @@ export default function Gameshop({ onNavigate }) {
             onClick={() => setActiveFilter(f.id)}
             className={`flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
               activeFilter === f.id
-                ? ‘bg-orangeBrand text-white’
-                : ‘border border-white/20 text-zinc-300’
+                ? 'bg-orangeBrand text-white'
+                : 'border border-white/20 text-zinc-300'
             }`}
           >
             {f.label}
@@ -77,7 +77,7 @@ export default function Gameshop({ onNavigate }) {
         ))}
       </div>
 
-      {show(‘games’) && (
+      {show('games') && (
         <div>
           <SectionHeader title="Jeux populaires" subtitle="Connecte ton profil joueur pour voir les contenus disponibles" />
           <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
@@ -88,7 +88,7 @@ export default function Gameshop({ onNavigate }) {
         </div>
       )}
 
-      {show(‘promos’) && (
+      {show('promos') && (
         <div>
           <SectionHeader title="Promotions du moment" subtitle="Des offres gaming boostées avec Max it Points" />
           <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
@@ -96,14 +96,14 @@ export default function Gameshop({ onNavigate }) {
               <ShopPromotionCard
                 key={promo.id}
                 promo={promo}
-                onBuy={() => showToast(‘Réduction Max it Points appliquée pour la démo’)}
+                onBuy={() => showToast('Réduction Max it Points appliquée pour la démo')}
               />
             ))}
           </div>
         </div>
       )}
 
-      {show(‘data’) && (
+      {show('data') && (
         <div>
           <SectionHeader title="Gaming Data Bundles" subtitle="Offres data pensées pour tes jeux préférés" />
           <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
@@ -123,7 +123,7 @@ export default function Gameshop({ onNavigate }) {
         </div>
       )}
 
-      {show(‘subscriptions’) && (
+      {show('subscriptions') && (
         <div>
           <SectionHeader title="Abonnements Gaming" subtitle="Passe premium et options sans pub" />
           <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
@@ -131,25 +131,25 @@ export default function Gameshop({ onNavigate }) {
               <ShopSubscriptionCard
                 key={subscription.id}
                 subscription={subscription}
-                onSubscribe={() => showToast(‘Abonnement activé pour la démo’)}
+                onSubscribe={() => showToast('Abonnement activé pour la démo')}
               />
             ))}
           </div>
         </div>
       )}
 
-      {show(‘ecards’) && (
+      {show('ecards') && (
         <div>
           <SectionHeader title="E-Cards" subtitle="Cartes cadeaux instantanées" />
           <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
             {shopECards.map((card) => (
-              <ECardItem key={card.id} card={card} onBuy={() => showToast(‘Achat simulé pour la démo’)} />
+              <ECardItem key={card.id} card={card} onBuy={() => showToast('Achat simulé pour la démo')} />
             ))}
           </div>
         </div>
       )}
 
-      {activeFilter === ‘all’ && (
+      {activeFilter === 'all' && (
         <>
           <div className="card-base space-y-3">
             <SectionHeader title="Mes avantages Max it Points" subtitle="Profite au maximum de tes points" />
@@ -159,14 +159,14 @@ export default function Gameshop({ onNavigate }) {
               <li>• Accède à des abonnements premium</li>
               <li>• Participe à des tirages au sort</li>
             </ul>
-            <button type="button" onClick={() => onNavigate(‘/points?tab=use’)} className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-sm font-semibold text-white">Voir mes points</button>
+            <button type="button" onClick={() => onNavigate('/points?tab=use')} className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-sm font-semibold text-white">Voir mes points</button>
           </div>
 
           <div className="space-y-2">
             <SectionHeader title="Mes anciens achats" subtitle="Retrouve tes derniers achats gaming" />
             <div className="space-y-2">
               {previousPurchases.map((purchase) => (
-                <PreviousPurchaseCard key={purchase.id} purchase={purchase} onRepurchase={() => showToast(‘Achat simulé pour la démo’)} />
+                <PreviousPurchaseCard key={purchase.id} purchase={purchase} onRepurchase={() => showToast('Achat simulé pour la démo')} />
               ))}
             </div>
           </div>
