@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import CatchTheCoinGame from '../components/games/CatchTheCoinGame';
 import AppCard from '../components/AppCard';
 import AssetImage from '../components/AssetImage';
@@ -18,6 +18,9 @@ const STORAGE_KEYS = {
   bestScore: 'maxit_catch_coin_best_score',
 };
 
+const DAILY_TOTAL_PTS = dailyGames.reduce((sum, g) => sum + g.points, 0);
+const rankEmoji = ['🥇', '🥈', '🥉'];
+
 function readNumber(key) {
   const value = Number(window.localStorage.getItem(key));
   return Number.isFinite(value) ? value : 0;
@@ -36,7 +39,143 @@ function markDailyPlayed(gameId) {
   window.localStorage.setItem(`maxit_daily_${gameId}`, TODAY);
 }
 
-const rankEmoji = ['🥇', '🥈', '🥉'];
+function simRewardFromScore(score) {
+  if (score >= 15) return 100;
+  if (score >= 10) return 60;
+  if (score >= 5) return 30;
+  return 15;
+}
+
+function getPercentileBeat(score) {
+  if (score >= 20) return 95;
+  if (score >= 15) return 88;
+  if (score >= 12) return 78;
+  if (score >= 10) return 72;
+  if (score >= 7) return 58;
+  if (score >= 5) return 44;
+  return 28;
+}
+
+function awardPoints(amount) {
+  try {
+    const stored = JSON.parse(localStorage.getItem('playerHubState') || '{}');
+    const updated = { ...stored, coins: (stored.coins || 0) + amount };
+    localStorage.setItem('playerHubState', JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent('maxit:state-updated', { detail: updated }));
+  } catch {}
+}
+
+function shareScore(gameName, score, percentile) {
+  const text = `🎮 Je viens de faire ${score} pts sur ${gameName} et je bats ${percentile}% des joueurs aujourd'hui sur Gaming Universe ! Tu penses me battre ? 💪`;
+  if (typeof navigator !== 'undefined' && navigator.share) {
+    navigator.share({ title: 'Gaming Universe', text }).catch(() => {});
+  } else {
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+  }
+}
+
+// Simulated game screen for demoOnly daily games
+function SimulatedGame({ game, onBack, onComplete }) {
+  const [phase, setPhase] = useState('ready'); // ready | playing | done
+  const [progress, setProgress] = useState(0);
+  const [result, setResult] = useState(null);
+  const intervalRef = useRef(null);
+
+  const start = () => {
+    setPhase('playing');
+    setProgress(0);
+    intervalRef.current = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(intervalRef.current);
+          const score = Math.floor(Math.random() * 16) + 5;
+          const reward = simRewardFromScore(score);
+          setResult({ score, reward });
+          setPhase('done');
+          onComplete({ score, reward });
+          return 100;
+        }
+        return prev + 3.5;
+      });
+    }, 100);
+  };
+
+  useEffect(() => () => clearInterval(intervalRef.current), []);
+
+  const percentile = result ? getPercentileBeat(result.score) : 0;
+
+  if (phase === 'done' && result) {
+    return (
+      <div className="space-y-4 text-center">
+        <p className="text-xs uppercase tracking-widest text-orangeBrand">Partie terminée</p>
+        <h4 className="text-xl font-bold text-white">{game.name}</h4>
+
+        <div className="inline-flex rounded-full border border-orangeBrand/60 bg-orangeBrand/20 px-5 py-2 text-sm font-semibold text-orange-100">
+          +{result.reward} Max it Points
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 text-left">
+          <div className="rounded-xl border border-white/10 bg-black/40 p-3">
+            <p className="text-[10px] text-zinc-400">Score du jour</p>
+            <p className="mt-0.5 text-xl font-bold text-white">{result.score}</p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-black/40 p-3">
+            <p className="text-[10px] text-zinc-400">XP gagnée</p>
+            <p className="mt-0.5 text-xl font-bold text-orangeBrand">+{result.reward * 2}</p>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-3 text-left">
+          <p className="text-sm font-semibold text-emerald-300">
+            🏆 Tu bats <span className="text-white">{percentile}%</span> des joueurs aujourd'hui
+          </p>
+          <p className="mt-0.5 text-[11px] text-zinc-400">sur {game.todayPlayers.toLocaleString('fr-FR')} joueurs</p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => shareScore(game.name, result.score, percentile)}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-green-500/40 bg-green-500/10 px-3 py-2.5 text-sm font-semibold text-green-300"
+        >
+          📲 Défier un ami — Envoyer mon score
+        </button>
+        <button type="button" onClick={onBack} className="w-full rounded-xl border border-white/20 bg-zinc-900 px-3 py-2 text-sm font-medium text-zinc-100">
+          Fermer
+        </button>
+      </div>
+    );
+  }
+
+  if (phase === 'playing') {
+    return (
+      <div className="space-y-6 py-6 text-center">
+        <p className="text-base font-semibold text-white">Partie en cours…</p>
+        <div className="text-5xl">{game.emoji}</div>
+        <div className="w-full overflow-hidden rounded-full bg-zinc-800 h-2.5">
+          <div
+            className="h-full rounded-full bg-orangeBrand transition-all duration-100"
+            style={{ width: `${Math.min(progress, 100)}%` }}
+          />
+        </div>
+        <p className="text-xs text-zinc-400">{game.dailyMission}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <AssetImage src={game.image} alt={game.name} className="h-32 w-full" fallback={game.fallback} />
+      <p className="text-sm text-zinc-200">{game.description}</p>
+      <div className="rounded-lg border border-orangeBrand/30 bg-zinc-900 p-3 text-xs text-zinc-200">
+        🎯 Mission : {game.dailyMission}
+      </div>
+      <p className="text-sm font-semibold text-orangeBrand">Récompense : jusqu'à +{game.points} pts</p>
+      <button type="button" onClick={start} className="w-full rounded-lg bg-orangeBrand px-3 py-2.5 text-sm font-semibold text-white">
+        Lancer la partie
+      </button>
+    </div>
+  );
+}
 
 export default function Play({ onNavigate }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -75,12 +214,7 @@ export default function Play({ onNavigate }) {
         if (prev <= 1) {
           clearInterval(interval);
           setAdPlaying(false);
-          try {
-            const stored = JSON.parse(localStorage.getItem('playerHubState') || '{}');
-            const updated = { ...stored, coins: (stored.coins || 0) + 25 };
-            localStorage.setItem('playerHubState', JSON.stringify(updated));
-            window.dispatchEvent(new CustomEvent('maxit:state-updated', { detail: updated }));
-          } catch {}
+          awardPoints(25);
           showToast('Pub terminée — +25 Coins gagnés !');
           return 3;
         }
@@ -100,45 +234,75 @@ export default function Play({ onNavigate }) {
     showToast(`Partie terminée : +${reward} points et +${xpGain} XP`);
   };
 
-  const openDailyGame = (game) => {
-    if (game.playable) {
-      setSelectedGame(game);
-    } else {
-      window.open(game.storeUrl, '_blank', 'noopener,noreferrer');
-    }
+  const handleSimComplete = (gameId, { score, reward }) => {
+    markDailyPlayed(gameId);
+    setDailyPlayed((prev) => ({ ...prev, [gameId]: true }));
+    awardPoints(reward);
+    showToast(`Partie terminée : +${reward} Max it Points !`);
   };
+
+  const playedCount = Object.values(dailyPlayed).filter(Boolean).length;
 
   return (
     <section className="space-y-5">
       <header>
         <h1 className="text-2xl font-bold text-white">Univers <span className="text-orangeBrand">Jouer</span></h1>
-        <p className="mt-1 text-sm text-zinc-300">Découvre des jeux, gagne des points et télécharge les meilleures apps.</p>
+        <p className="mt-1 text-sm text-zinc-300">Joue, gagne des points et découvre les meilleurs jeux.</p>
       </header>
 
-      {/* Jeux du jour */}
+      {/* ── Jeux du jour ── */}
       <div>
-        <SectionHeader
-          title="Jeux du jour"
-          subtitle="1 partie par jeu · Leaderboard remis à zéro chaque jour"
-        />
+        <div className="mb-3 flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-bold text-white">Jeux du jour</h2>
+            <p className="text-xs text-zinc-400">1 partie par jeu · Leaderboard remis à zéro chaque jour</p>
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-1 text-[10px] font-semibold text-amber-300">
+              🪙 Jusqu'à {DAILY_TOTAL_PTS} pts
+            </span>
+            <span className="text-[10px] text-zinc-500">{playedCount}/{dailyGames.length} joués</span>
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 gap-3">
           {dailyGames.map((game) => {
             const played = dailyPlayed[game.id];
             return (
-              <article key={game.id} className="card-base overflow-hidden p-0">
-                <div className="relative h-16">
-                  <AssetImage src={game.image} alt={game.name} fallback={game.fallback} className="h-16 w-full" rounded="rounded-none" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/10" />
-                  <span className="absolute left-2 bottom-1.5 text-[11px] font-bold text-white drop-shadow">{game.name}</span>
-                  {played && (
-                    <span className="absolute right-1.5 top-1.5 rounded-full bg-emerald-500 px-1.5 py-0.5 text-[9px] font-bold text-white">✓ Joué</span>
+              <article
+                key={game.id}
+                className={`overflow-hidden rounded-2xl border ${
+                  played
+                    ? 'border-emerald-500/40 bg-zinc-900/70'
+                    : 'border-orangeBrand/50 bg-zinc-900/70'
+                }`}
+              >
+                {/* Image + overlays */}
+                <div className="relative h-20">
+                  <AssetImage src={game.image} alt={game.name} fallback={game.fallback} className="h-20 w-full" rounded="rounded-none" />
+                  {/* gradient de lisibilité */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  {/* filtre vert si joué */}
+                  {played && <div className="absolute inset-0 bg-emerald-500/30" />}
+                  {/* badge statut */}
+                  {played ? (
+                    <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-emerald-500 px-2 py-0.5 text-[9px] font-bold text-white">
+                      ✓ Joué
+                    </span>
+                  ) : (
+                    <span className="absolute left-2 top-2 rounded-full bg-orangeBrand px-2 py-0.5 text-[9px] font-bold text-white">
+                      +{game.points} pts
+                    </span>
                   )}
-                  {!played && (
-                    <span className="absolute right-1.5 top-1.5 rounded-full bg-orangeBrand px-1.5 py-0.5 text-[9px] font-bold text-white">+{game.points} pts</span>
-                  )}
+                  {/* nom du jeu */}
+                  <span className="absolute bottom-1.5 left-2 text-[11px] font-bold text-white drop-shadow">
+                    {game.name}
+                  </span>
                 </div>
-                <div className="space-y-1.5 p-2.5">
-                  <p className="text-[10px] text-zinc-400 leading-snug">{game.dailyMission}</p>
+
+                {/* Contenu */}
+                <div className={`space-y-2 p-2.5 ${played ? 'opacity-60' : ''}`}>
+                  <p className="text-[10px] leading-snug text-zinc-400">{game.dailyMission}</p>
                   <div className="space-y-0.5">
                     {game.dailyBestScores.slice(0, 3).map((entry, i) => (
                       <p key={entry.name} className="text-[9px] text-zinc-400">
@@ -148,17 +312,15 @@ export default function Play({ onNavigate }) {
                   </div>
                   <button
                     type="button"
-                    onClick={() => openDailyGame(game)}
                     disabled={played}
+                    onClick={() => setSelectedGame(game)}
                     className={`w-full rounded-lg py-1.5 text-[11px] font-semibold transition-colors ${
                       played
-                        ? 'cursor-default bg-zinc-800 text-zinc-500'
-                        : game.playable
-                          ? 'bg-orangeBrand text-white'
-                          : 'border border-orangeBrand/60 text-orangeBrand'
+                        ? 'cursor-default bg-emerald-900/40 text-emerald-500'
+                        : 'bg-orangeBrand text-white active:brightness-90'
                     }`}
                   >
-                    {played ? 'Déjà joué' : game.playable ? 'Jouer' : 'Télécharger'}
+                    {played ? '✓ Partie terminée' : '🎮 Jouer'}
                   </button>
                 </div>
               </article>
@@ -197,27 +359,42 @@ export default function Play({ onNavigate }) {
         </>
       )}
 
+      {/* Modal fiche jeu */}
       {selectedGame ? (
         <ModalOverlay title={selectedGame.name} onClose={() => setSelectedGame(null)}>
           <div className="space-y-3">
             <AssetImage src={selectedGame.image} alt={selectedGame.name} className="h-44 w-full" fallback={selectedGame.fallback} />
             <p className="text-sm text-zinc-200">{selectedGame.description}</p>
-            <p className="rounded-lg border border-orangeBrand/30 bg-zinc-900 p-3 text-xs text-zinc-200">Mission du jour : {selectedGame.dailyMission}</p>
-            <p className="text-sm font-semibold text-orangeBrand">Récompense : +{selectedGame.points} points max</p>
-            <p className="text-xs text-zinc-300">Joueurs aujourd'hui : <span className="font-semibold text-white">{selectedGame.todayPlayers ?? 0}</span></p>
-            <div className="rounded-lg border border-white/10 bg-black/30 p-3">
-              <p className="mb-1 text-xs text-zinc-400">Meilleurs scores du jour</p>
-              <div className="space-y-1 text-xs text-zinc-200">
-                {(selectedGame.dailyBestScores || []).map((entry, i) => (
-                  <p key={`${selectedGame.id}-${entry.name}`}>{rankEmoji[i] ?? '·'} {entry.name} — {entry.score}</p>
-                ))}
+            <p className="rounded-lg border border-orangeBrand/30 bg-zinc-900 p-3 text-xs text-zinc-200">
+              🎯 Mission : {selectedGame.dailyMission}
+            </p>
+            <p className="text-sm font-semibold text-orangeBrand">Récompense : jusqu'à +{selectedGame.points} pts</p>
+            {selectedGame.todayPlayers != null && (
+              <p className="text-xs text-zinc-300">
+                Joueurs aujourd'hui : <span className="font-semibold text-white">{selectedGame.todayPlayers.toLocaleString('fr-FR')}</span>
+              </p>
+            )}
+            {(selectedGame.dailyBestScores?.length > 0) && (
+              <div className="rounded-lg border border-white/10 bg-black/30 p-3">
+                <p className="mb-1 text-xs text-zinc-400">Meilleurs scores du jour</p>
+                <div className="space-y-1 text-xs text-zinc-200">
+                  {selectedGame.dailyBestScores.map((entry, i) => (
+                    <p key={`${selectedGame.id}-${entry.name}`}>{rankEmoji[i] ?? '·'} {entry.name} — {entry.score}</p>
+                  ))}
+                </div>
               </div>
-            </div>
-            <button type="button" onClick={() => { setActiveGame(selectedGame); setSelectedGame(null); }} className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-sm font-semibold text-white">Jouer</button>
+            )}
+            <button
+              type="button"
+              onClick={() => { setActiveGame(selectedGame); setSelectedGame(null); }}
+              className="w-full rounded-lg bg-orangeBrand px-3 py-2 text-sm font-semibold text-white"
+            >
+              Jouer
+            </button>
             <button
               type="button"
               onClick={() => { setSelectedGame(null); handleWatchAd(); }}
-              className="w-full rounded-lg border border-orangeBrand/40 bg-black/30 px-3 py-2 text-sm font-semibold text-orangeBrand transition duration-200 hover:bg-orangeBrand/10 active:scale-[0.98]"
+              className="w-full rounded-lg border border-orangeBrand/40 bg-black/30 px-3 py-2 text-sm font-semibold text-orangeBrand"
             >
               👁 Regarder une pub → +25 Coins
             </button>
@@ -225,6 +402,7 @@ export default function Play({ onNavigate }) {
         </ModalOverlay>
       ) : null}
 
+      {/* Pub overlay */}
       {adPlaying ? (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95">
           <div className="flex flex-col items-center gap-5 text-center">
@@ -240,6 +418,7 @@ export default function Play({ onNavigate }) {
         </div>
       ) : null}
 
+      {/* Modal jeu actif */}
       {activeGame ? (
         <ModalOverlay title={activeGame.name} onClose={() => setActiveGame(null)} fullScreenMobile>
           {activeGame.id === 'catch-the-coin' ? (
@@ -255,6 +434,12 @@ export default function Play({ onNavigate }) {
               onWatchAd={() => showToast('Publicité terminée — nouvelle tentative débloquée')}
               bestScore={catchStats.bestScore}
               todayPlayers={1240}
+            />
+          ) : activeGame.demoOnly ? (
+            <SimulatedGame
+              game={activeGame}
+              onBack={() => setActiveGame(null)}
+              onComplete={(result) => handleSimComplete(activeGame.id, result)}
             />
           ) : (
             <>
