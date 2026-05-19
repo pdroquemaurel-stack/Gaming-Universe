@@ -72,6 +72,16 @@ export default function Home({ onNavigate }) {
 
   const isFreeFireConnected = Boolean(freeFireId?.trim());
 
+  useEffect(() => {
+    const anyOpen = joinModalOpen || rulesModal || sessionModal;
+    document.body.style.overflow = anyOpen ? 'hidden' : '';
+    document.documentElement.style.overflow = anyOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [joinModalOpen, rulesModal, sessionModal]);
+
   const persist = (next) => {
     setState(next);
     safeStorage.set('playerHubState', next);

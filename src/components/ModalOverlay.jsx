@@ -2,20 +2,23 @@ import { useEffect } from 'react';
 
 export default function ModalOverlay({ title, onClose, children, fullScreenMobile = false }) {
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
+    const prevBody = document.body.style.overflow;
+    const prevHtml = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = prevBody;
+      document.documentElement.style.overflow = prevHtml;
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-end justify-center bg-black/75 p-3 backdrop-blur-sm sm:items-center">
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/75 p-3 backdrop-blur-sm">
       <div className={`w-full overflow-y-auto border border-orangeBrand bg-[#101010] shadow-2xl shadow-black/60 ${
         fullScreenMobile
           ? 'h-[96vh] max-h-[96vh] rounded-2xl p-4 sm:h-auto sm:max-h-[92vh] sm:max-w-md'
-          : 'max-h-[90vh] max-w-md rounded-2xl p-4'
+          : 'max-h-[85vh] max-w-md rounded-2xl p-4'
       }`}>
         <div className="mb-4 flex items-center justify-between gap-2">
           <h3 className="text-base font-bold text-white">{title}</h3>

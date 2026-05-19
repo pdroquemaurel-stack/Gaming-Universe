@@ -53,6 +53,7 @@ export default function App() {
       setCurrentPath(normalizePath(window.location.pathname));
       setCurrentSearch(window.location.search || '');
       setPageKey((k) => k + 1);
+      window.scrollTo({ top: 0, behavior: 'instant' });
     };
 
     window.addEventListener('popstate', onPopState);
@@ -69,6 +70,7 @@ export default function App() {
     setCurrentPath(target.path);
     setCurrentSearch(target.search);
     setPageKey((k) => k + 1);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const CurrentView = useMemo(() => routeMap[currentPath] || Home, [currentPath]);
