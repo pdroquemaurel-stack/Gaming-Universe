@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const OVERLAY_STYLE = {
   top: '56px',
@@ -17,7 +18,7 @@ export default function ModalOverlay({ title, onClose, children, fullScreenMobil
     };
   }, []);
 
-  return (
+  return createPortal(
     <div
       className="fixed left-0 right-0 z-[45] flex items-center justify-center bg-black/80 p-3 backdrop-blur-sm"
       style={OVERLAY_STYLE}
@@ -33,7 +34,8 @@ export default function ModalOverlay({ title, onClose, children, fullScreenMobil
           {children}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
