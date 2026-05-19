@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import CatchTheCoinGame from '../components/games/CatchTheCoinGame';
+import IframeGame from '../components/games/IframeGame';
 import AppCard from '../components/AppCard';
 import AssetImage from '../components/AssetImage';
 import CategoryChips from '../components/CategoryChips';
@@ -441,6 +442,8 @@ export default function Play({ onNavigate }) {
               onBack={() => setActiveGame(null)}
               onComplete={(result) => handleSimComplete(activeGame.id, result)}
             />
+          ) : activeGame.iframeUrl ? (
+            <IframeGame game={activeGame} />
           ) : (
             <>
               <p className="text-sm text-zinc-300">{activeGame.description}</p>
