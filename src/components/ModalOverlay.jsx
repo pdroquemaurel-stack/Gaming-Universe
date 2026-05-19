@@ -6,6 +6,11 @@ const OVERLAY_STYLE = {
   bottom: 'calc(64px + env(safe-area-inset-bottom, 0px))',
 };
 
+const OVERLAY_STYLE = {
+  top: '56px',
+  bottom: 'calc(64px + env(safe-area-inset-bottom, 0px))',
+};
+
 export default function ModalOverlay({ title, onClose, children, fullScreenMobile = false }) {
   useEffect(() => {
     const prevBody = document.body.style.overflow;
